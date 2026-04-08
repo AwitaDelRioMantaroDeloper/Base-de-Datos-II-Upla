@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Portafolio - Bases de Datos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f8ff;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4facfe, #00c6ff);
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+
+    nav {
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #007acc;
+      font-weight: bold;
+    }
+
+    section {
+      padding: 50px 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .about {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .about img {
+      width: 300px;
+      border-radius: 15px;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 15px;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .skill {
+      background: #d6f0ff;
+      padding: 10px 15px;
+      border-radius: 20px;
+      color: #007acc;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #00c6ff;
+      color: white;
+    }
+
+    button {
+      background: #007acc;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #005f99;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Mi Portafolio de Bases de Datos</h1>
+  <p>Diseño, optimización y gestión de sistemas de datos</p>
+</header>
+
+<nav>
+  <a href="#about">Sobre mí</a>
+  <a href="#projects">Proyectos</a>
+  <a href="#skills">Habilidades</a>
+  <a href="#contact">Contacto</a>
+</nav>
+
+<section id="about">
+  <h2>Sobre mí</h2>
+  <div class="about">
+    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" alt="Database">
+    <p>
+      Soy especialista en bases de datos con experiencia en diseño de modelos relacionales,
+      optimización de consultas SQL y administración de sistemas como MySQL, PostgreSQL y SQL Server.
+      Me enfoco en crear soluciones eficientes y escalables.
+    </p>
+  </div>
+</section>
+
+<section id="projects">
+  <h2>Proyectos</h2>
+  <div class="projects">
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d" alt="">
+      <div class="card-content">
+        <h3>Sistema de Inventario</h3>
+        <p>Base de datos optimizada para gestión de stock con consultas rápidas.</p>
+        <button>Ver más</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" alt="">
+      <div class="card-content">
+        <h3>Data Warehouse</h3>
+        <p>Implementación de almacén de datos para análisis empresarial.</p>
+        <button>Ver más</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31" alt="">
+      <div class="card-content">
+        <h3>Optimización SQL</h3>
+        <p>Mejora de rendimiento de consultas en grandes volúmenes de datos.</p>
+        <button>Ver más</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="skills">
+  <h2>Habilidades</h2>
+  <div class="skills">
+    <div class="skill">SQL</div>
+    <div class="skill">MySQL</div>
+    <div class="skill">PostgreSQL</div>
+    <div class="skill">SQL Server</div>
+    <div class="skill">Modelado ER</div>
+    <div class="skill">Big Data</div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contacto</h2>
+  <p>¿Quieres trabajar conmigo?</p>
+  <button onclick="alert('¡Gracias por tu interés!')">Contáctame</button>
+</section>
+
+<footer>
+  <p>© 2026 - Portafolio de Bases de Datos</p>
+</footer>
+
+</body>
+</html>
