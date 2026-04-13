@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - Portafolio BD II</title>
+    <link rel="icon" type="image/svg+xml" href="file.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #003D7A;
+            --primary-light: #0055A4;
+            --celeste: #4FC3F7;
+            --celeste-light: #81D4FA;
+            --celeste-pale: #E1F5FE;
+            --white: #FFFFFF;
+            --success: #2E7D32;
+            --danger: #D32F2F;
+            --text-dark: #263238;
+            --text-secondary: #546E7A;
+            --bg-light: #F5F9FC;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--celeste) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='40' cy='40' r='30' fill='%23ffffff' fill-opacity='0.03'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: floatBg 30s linear infinite;
+        }
+        @keyframes floatBg {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-80px, -80px); }
+        }
+        .register-container {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 61, 122, 0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+        .logo img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        h1 { text-align: center; color: var(--primary); font-size: 2rem; font-weight: 800; margin-bottom: 0.3rem; }
+        .subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; }
+        .form-group { margin-bottom: 1.3rem; }
+        .form-group label { display: block; color: var(--text-dark); font-weight: 600; margin-bottom: 0.5rem; }
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid var(--celeste-pale);
+            border-radius: 15px;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus { 
+            outline: none; 
+            border-color: var(--celeste); 
+            box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.2);
+            background: var(--white);
+        }
+        .form-group input::placeholder { color: var(--text-secondary); }
+        .form-group small { color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.3rem; display: block; }
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
+            color: var(--primary);
+            box-shadow: 0 8px 25px rgba(79, 195, 247, 0.4);
+            margin-bottom: 1rem;
+        }
+        .btn-primary:hover:not(:disabled) { 
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 35px rgba(79, 195, 247, 0.5);
+        }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-secondary { 
+            background: var(--bg-light); 
+            color: var(--primary); 
+            border: 2px solid var(--celeste);
+        }
+        .btn-secondary:hover { 
+            background: var(--celeste-pale);
+            transform: translateY(-2px);
+        }
+        .link { text-align: center; margin-top: 2rem; color: var(--text-secondary); }
+        .link a { color: var(--celeste); font-weight: 700; text-decoration: none; transition: color 0.3s ease; }
+        .link a:hover { color: var(--primary); text-decoration: underline; }
+        .notification {
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            animation: shake 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .notification.error { 
+            background: rgba(211, 47, 47, 0.1); 
+            color: var(--danger); 
+            border: 2px solid var(--danger); 
+        }
+        .notification.success { 
+            background: rgba(46, 125, 50, 0.1); 
+            color: var(--success); 
+            border: 2px solid var(--success); 
+        }
+        @keyframes shake { 
+            0%, 100% { transform: translateX(0); } 
+            25% { transform: translateX(-5px); } 
+            75% { transform: translateX(5px); } 
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 61, 122, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-confirm {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.8) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+        }
+        .modal-overlay.show .modal-confirm {
+            transform: scale(1) translateY(0);
+        }
+        .modal-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            animation: pulse 2s ease infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 195, 247, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(79, 195, 247, 0); }
+        }
+        .modal-confirm h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+        .modal-confirm p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .modal-confirm .email-highlight {
+            background: var(--celeste-pale);
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            color: var(--primary);
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        .modal-btn {
+            background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
+            color: var(--primary);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(79, 195, 247, 0.4);
+        }
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(79, 195, 247, 0.5);
+        }
+        @media (max-width: 480px) { 
+            .register-container { padding: 2rem; } 
+            h1 { font-size: 1.6rem; } 
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo">
+            <img src="file.svg" alt="Logo" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<div class=logo-fallback>BD</div>');">
+        </div>
+        <h1>Crear Cuenta</h1>
+        <p class="subtitle">Portafolio Estudiantil - Base de Datos II</p>
+        
+        <div id="notification" style="display: none;"></div>
+        
+        <form onsubmit="handleRegister(event)">
+            <div class="form-group">
+                <label>Nombre Completo</label>
+                <input type="text" id="nombre" placeholder="Tu nombre completo" required>
+            </div>
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <input type="email" id="email" placeholder="tu@email.com" required>
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="password" placeholder="••••••••" required minlength="6">
+                <small>Mínimo 6 caracteres</small>
+            </div>
+            <div class="form-group">
+                <label>Confirmar Contraseña</label>
+                <input type="password" id="confirmPassword" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                <span></span> Crear Cuenta
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">
+                <span></span> Volver al inicio
+            </button>
+        </form>
+        
+        <div class="link">¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></div>
+    </div>
+
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-confirm">
+            <div class="modal-icon">✉️</div>
+            <h2>¡Correo Enviado!</h2>
+            <p>Se ha enviado un enlace de confirmación a:</p>
+            <div class="email-highlight" id="confirmEmail"></div>
+            <p>Revisa tu bandeja de entrada y spam para confirmar tu cuenta.</p>
+            <button class="modal-btn" onclick="goToLogin()">Ir a Iniciar Sesión</button>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (window.PortafolioAuth && window.PortafolioAuth.estaAutenticado()) {
+                    window.location.href = 'index.html';
+                }
+            }, 100);
+        });
+
+        function showNotification(message, type = 'error') {
+            const div = document.getElementById('notification');
+            div.style.display = 'flex';
+            div.className = 'notification ' + type;
+            div.innerHTML = '<span>' + (type === 'error' ? '❌' : '✅') + '</span> ' + message;
+            setTimeout(() => div.style.display = 'none', 4000);
+        }
+
+        function setLoading(loading) {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = loading;
+            btn.innerHTML = loading ? '<span>⏳</span> Creando...' : '<span>✨</span> Crear Cuenta';
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('nombre').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!nombre || !email || !password) {
+                showNotification('Completa todos los campos');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showNotification('Las contraseñas no coinciden');
+                return;
+            }
+
+            if (password.length < 6) {
+                showNotification('La contraseña debe tener mínimo 6 caracteres');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const result = await window.PortafolioAuth.registrar(email, password, nombre);
+                console.log('Registro exitoso:', result);
+                
+                document.getElementById('confirmEmail').textContent = email;
+                document.getElementById('confirmModal').classList.add('show');
+                
+            } catch (error) {
+                console.error('Error registro:', error);
+                showNotification(error.message || 'Error al crear cuenta');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function goToLogin() {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

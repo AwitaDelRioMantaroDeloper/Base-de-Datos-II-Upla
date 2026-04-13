@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Portafolio BD II</title>
+    <link rel="icon" type="image/svg+xml" href="file.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #003D7A;
+            --primary-light: #0055A4;
+            --celeste: #4FC3F7;
+            --celeste-light: #81D4FA;
+            --celeste-pale: #E1F5FE;
+            --white: #FFFFFF;
+            --success: #2E7D32;
+            --danger: #D32F2F;
+            --text-dark: #263238;
+            --text-secondary: #546E7A;
+            --bg-light: #F5F9FC;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--celeste) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='40' cy='40' r='30' fill='%23ffffff' fill-opacity='0.03'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: floatBg 30s linear infinite;
+        }
+        @keyframes floatBg {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-80px, -80px); }
+        }
+        .login-container {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 61, 122, 0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+        .logo img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        h1 { text-align: center; color: var(--primary); font-size: 2rem; font-weight: 800; margin-bottom: 0.3rem; }
+        .subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; color: var(--text-dark); font-weight: 600; margin-bottom: 0.5rem; }
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid var(--celeste-pale);
+            border-radius: 15px;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus { 
+            outline: none; 
+            border-color: var(--celeste); 
+            box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.2);
+            background: var(--white);
+        }
+        .form-group input::placeholder { color: var(--text-secondary); }
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
+            color: var(--primary);
+            box-shadow: 0 8px 25px rgba(79, 195, 247, 0.4);
+            margin-bottom: 1rem;
+        }
+        .btn-primary:hover:not(:disabled) { 
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 35px rgba(79, 195, 247, 0.5);
+        }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-secondary { 
+            background: var(--bg-light); 
+            color: var(--primary); 
+            border: 2px solid var(--celeste);
+        }
+        .btn-secondary:hover { 
+            background: var(--celeste-pale);
+            transform: translateY(-2px);
+        }
+        .link { text-align: center; margin-top: 2rem; color: var(--text-secondary); }
+        .link a { color: var(--celeste); font-weight: 700; text-decoration: none; transition: color 0.3s ease; }
+        .link a:hover { color: var(--primary); text-decoration: underline; }
+        .notification {
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            animation: shake 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .notification.error { 
+            background: rgba(211, 47, 47, 0.1); 
+            color: var(--danger); 
+            border: 2px solid var(--danger); 
+        }
+        .notification.success { 
+            background: rgba(46, 125, 50, 0.1); 
+            color: var(--success); 
+            border: 2px solid var(--success); 
+        }
+        .resend-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: var(--celeste);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .resend-link:hover { color: var(--primary); }
+        .resend-link:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            text-decoration: none;
+        }
+        .demo-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .demo-link a {
+            color: var(--celeste);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .demo-link a:hover { color: var(--primary); }
+        @keyframes shake { 
+            0%, 100% { transform: translateX(0); } 
+            25% { transform: translateX(-5px); } 
+            75% { transform: translateX(5px); } 
+        }
+        @media (max-width: 480px) { 
+            .login-container { padding: 2rem; } 
+            h1 { font-size: 1.6rem; } 
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="file.svg" alt="Logo" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<div class=logo-fallback>BD</div>');">
+        </div>
+        <h1>Iniciar Sesión</h1>
+        <p class="subtitle">Portafolio Estudiantil - Base de Datos II</p>
+        
+        <div id="notification" style="display: none;"></div>
+        
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <input type="email" id="email" placeholder="codigo@ms.upla.edu.pe" required>
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                <span></span> Iniciar Sesión
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">
+                <span></span> Volver al inicio
+            </button>
+        </form>
+        
+        <div class="link">¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        window.onload = function() {
+            if (localStorage.getItem('sb_access_token')) {
+                window.location.href = 'index.html';
+            }
+        };
+
+        function showNotification(message, type = 'error') {
+            const div = document.getElementById('notification');
+            div.style.display = 'flex';
+            div.className = 'notification ' + type;
+            div.innerHTML = '<span>' + (type === 'error' ? '❌' : '✅') + '</span> ' + message;
+            setTimeout(() => div.style.display = 'none', 4000);
+        }
+
+        function setLoading(loading) {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = loading;
+            btn.innerHTML = loading ? '<span>⏳</span> Cargando...' : '<span>🚀</span> Iniciar Sesión';
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showNotification('Completa todos los campos');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                console.log('Intentando login...');
+                const result = await window.PortafolioAuth.login(email, password);
+                console.log('Login exitoso:', result);
+                
+                await window.PortafolioAuth.inicializarAuth();
+                console.log('Auth inicializado');
+                
+                showNotification('¡Bienvenido!', 'success');
+                
+                // Forzar redirección
+                setTimeout(() => {
+                    window.location.replace('index.html');
+                }, 500);
+                return;
+                
+            } catch (error) {
+                console.error('Error login:', error);
+                const errorMsg = error.message || '';
+                if (errorMsg.includes('email_not_confirmed') || errorMsg.includes('Email not confirmed') || errorMsg.includes('correo no confirmado')) {
+                    showNotification('⚠️ Debes confirmar tu correo. <span class="resend-link" onclick="resendConfirmation(\'' + email + '\')">Reenviar enlace</span>');
+                } else {
+                    showNotification(error.message || 'Credenciales incorrectas');
+                }
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function resendConfirmation(email) {
+            try {
+                const response = await fetch('https://gxsdjbxtzxssnqvphwfv.supabase.co/auth/v1/resend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4c2RqYnh0enhzc25xdnBod2Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3Njk1NDEsImV4cCI6MjA5MTM0NTU0MX0.s76qBSRiQo_RysFH8Kchud_QfXL9gPPYg1kXdJ1LuIY'
+                    },
+                    body: JSON.stringify({ email: email, type: 'signup' })
+                });
+                
+                if (response.ok) {
+                    showNotification('✅ Enlace reenviado. Revisa tu correo.');
+                } else {
+                    showNotification('Error al reenviar. Intenta más tarde.');
+                }
+            } catch (e) {
+                showNotification('Error de conexión. Verifica tu internet.');
+            }
+        }
+    </script>
+</body>
+</html>
