@@ -105,32 +105,39 @@ const supabase = {
 
         async signInWithPassword(email, password) {
             try {
+                console.log('Enviando login a:', `${supabase.url}/auth/v1/token?grant_type=password`);
+                console.log('Email:', email);
+                
                 const response = await fetch(`${supabase.url}/auth/v1/token?grant_type=password`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                     },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ 
+                        email: email, 
+                        password: password 
+                    })
                 });
-                const data = await response.json();
                 
+                const data = await response.json();
                 console.log('Login response:', response.status, data);
                 
                 if (!response.ok) {
-                    console.log('Error response:', data);
                     if (response.status === 429) {
                         throw new Error('Demasiadas solicitudes. Espera unos minutos e intenta de nuevo.');
                     }
                     if (response.status === 400) {
-                        throw new Error(data.msg || 'Correo o contraseña incorrectos.');
+                        throw new Error(data.msg || data.error_code || 'Correo o contraseña incorrectos.');
                     }
-                    throw new Error(data.error_description || data.msg || 'Credenciales incorrectas');
+                    throw new Error(data.error_description || data.msg || 'Error al iniciar sesión');
                 }
                 
                 connectionStatus = 'connected';
                 return data;
             } catch (error) {
+                console.error('Error en signInWithPassword:', error);
                 if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
                     connectionStatus = 'disconnected';
                     throw new Error('Error de conexión. Verifica tu internet.');
@@ -272,16 +279,21 @@ async function registrar(email, password, nombreCompleto) {
 }
 
 async function login(email, password) {
+    console.log('Llamando signInWithPassword...');
     const result = await supabase.auth.signInWithPassword(email, password);
+    console.log('Resultado login:', result);
     
-    if (!result.user || !result.session) {
-        throw new Error('Credenciales incorrectas');
+    if (!result || !result.access_token) {
+        console.log('No hay access_token en result:', result);
+        throw new Error('No se pudo iniciar sesión. Verifica tus credenciales.');
     }
     
-    localStorage.setItem('sb_access_token', result.session.access_token);
-    localStorage.setItem('sb_refresh_token', result.session.refresh_token);
-    localStorage.setItem('user_email', result.user.email);
-    localStorage.setItem('user_id', result.user.id);
+    const user = result.user || { id: '', email: email };
+    
+    localStorage.setItem('sb_access_token', result.access_token);
+    localStorage.setItem('sb_refresh_token', result.refresh_token);
+    localStorage.setItem('user_email', user.email || email);
+    localStorage.setItem('user_id', user.id);
     
     return result;
 }
