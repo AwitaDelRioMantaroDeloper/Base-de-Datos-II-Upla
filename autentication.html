@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Email - Exitosa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Elementos decorativos de fondo */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .bg-decoration-1 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            top: -100px;
+            right: -100px;
+        }
+
+        .bg-decoration-2 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #0284c7, #1e40af);
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .content {
+            background: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(2, 132, 199, 0.15);
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Icono de verificación */
+        .icon-wrapper {
+            margin-bottom: 40px;
+            animation: scaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .icon-circle {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(2, 132, 199, 0.3);
+        }
+
+        .icon-circle::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(2, 132, 199, 0.2));
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .checkmark {
+            position: relative;
+            z-index: 2;
+            color: white;
+            font-size: 50px;
+            line-height: 1;
+            animation: checkAnimation 0.6s ease-out 0.3s both;
+        }
+
+        @keyframes checkAnimation {
+            from {
+                transform: scale(0) rotate(-45deg);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        /* Títulos y textos */
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e3a8a, #0284c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            animation: fadeInText 0.6s ease-out 0.2s both;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #0369a1;
+            margin-bottom: 32px;
+            animation: fadeInText 0.6s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Caja de mensaje */
+        .message-box {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1.5px solid #a5f3fc;
+            border-radius: 16px;
+            padding: 28px 24px;
+            margin-bottom: 32px;
+            animation: fadeInText 0.6s ease-out 0.4s both;
+        }
+
+        .message-box p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #164e63;
+            margin-bottom: 12px;
+        }
+
+        .message-box p:last-child {
+            margin-bottom: 0;
+            color: #0c4a6e;
+            font-weight: 500;
+        }
+
+        /* Botón */
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #0284c7, #06b6d4);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(2, 132, 199, 0.3);
+            animation: fadeInText 0.6s ease-out 0.5s both;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #0369a1, #0891b2);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(2, 132, 199, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Texto de pie */
+        .footer-text {
+            font-size: 13px;
+            color: #0369a1;
+            margin-top: 28px;
+            animation: fadeInText 0.6s ease-out 0.6s both;
+        }
+
+        .footer-text a {
+            color: #0284c7;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-text a:hover {
+            color: #06b6d4;
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .content {
+                padding: 40px 24px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .icon-circle {
+                width: 80px;
+                height: 80px;
+            }
+
+            .checkmark {
+                font-size: 40px;
+            }
+
+            .message-box {
+                padding: 20px 16px;
+            }
+
+            .message-box p {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Elementos decorativos de fondo -->
+    <div class="bg-decoration bg-decoration-1"></div>
+    <div class="bg-decoration bg-decoration-2"></div>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <div class="content">
+            <!-- Icono de verificación -->
+            <div class="icon-wrapper">
+                <div class="icon-circle">
+                    <span class="checkmark">✓</span>
+                </div>
+            </div>
+
+            <!-- Título -->
+            <h1>¡Confirmación Exitosa!</h1>
+            <p class="subtitle">Tu email ha sido verificado correctamente</p>
+
+            <!-- Mensaje -->
+            <div class="message-box">
+                <p>Gracias por confirmar tu dirección de email. Tu cuenta está totalmente activada y lista para usar.</p>
+                <p>Ahora puedes acceder a todas las características de la plataforma.</p>
+            </div>
+
+            <!-- Botón -->
+            <button class="btn" onclick="irAHome()">
+                Ir a la Pestaña Principal
+            </button>
+
+            <!-- Texto de pie -->
+            <p class="footer-text">
+                Si tienes alguna pregunta, no dudes en <a href="mailto:soporte@ejemplo.com">contactarnos</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function irAHome() {
+            // Puedes personalizar esta función según lo necesites
+            // Opción 1: Ir a la página principal
+            window.location.href = '/';
+            
+            // Opción 2: Si quieres solo una animación antes de cambiar
+            // document.querySelector('.content').style.animation = 'slideUp 0.6s ease-out reverse';
+            // setTimeout(() => {
+            //     window.location.href = '/';
+            // }, 300);
+        }
+
+        // Agregar evento al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Página de confirmación cargada');
+        });
+    </script>
+</body>
+</html>

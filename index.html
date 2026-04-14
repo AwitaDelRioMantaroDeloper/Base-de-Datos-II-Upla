@@ -28,18 +28,19 @@
         html.dark-mode {
             --primary: #4FC3F7;
             --primary-light: #81D4FA;
-            --celeste: #003D7A;
-            --celeste-light: #0055A4;
-            --celeste-pale: #0D2137;
-            --white: #0F1929;
-            --bg-light: #0A1220;
-            --bg-card: #0F1929;
-            --text-dark: #E3F2FD;
-            --text-secondary: #90CAF9;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            --shadow-hover: 0 8px 40px rgba(79, 195, 247, 0.2);
+            --celeste: #00B4D8;
+            --celeste-light: #48CAE4;
+            --celeste-pale: #1A2332;
+            --white: #1A2332;
+            --bg-light: #0D1B2A;
+            --bg-card: #1B2838;
+            --text-dark: #F0F4F8;
+            --text-secondary: #B8C5D3;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 8px 40px rgba(79, 195, 247, 0.3);
         }
         html { scroll-behavior: smooth; }
+        * { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(180deg, var(--bg-light) 0%, var(--white) 100%);
@@ -56,10 +57,12 @@
             box-shadow: 0 4px 20px rgba(0, 61, 122, 0.3);
         }
         html.dark-mode header {
-            background: linear-gradient(135deg, #0A1628 0%, #102035 100%);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-            border-bottom: 1px solid rgba(79, 195, 247, 0.2);
+            background: linear-gradient(135deg, #1B3A4B 0%, #264653 100%);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            border-bottom: 2px solid rgba(79, 195, 247, 0.3);
         }
+        html.dark-mode .theme-btn svg { stroke: white; }
+        html.dark-mode .theme-btn:hover { background: rgba(255,255,255,0.2); }
         .header-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -169,12 +172,71 @@
         .user-info { 
             display: flex; 
             align-items: center; 
-            gap: 0.5rem; 
+            gap: 0.6rem; 
             color: white; 
             font-weight: 600; 
             padding: 0.5rem 1rem; 
-            background: rgba(255,255,255,0.15); 
-            border-radius: 25px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        .user-info:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.02);
+        }
+        .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--celeste);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        .user-info .name {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .user-dropdown {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .user-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: var(--shadow-hover);
+            min-width: 180px;
+            z-index: 100;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        .user-dropdown:hover .user-dropdown-content {
+            display: block;
+        }
+        .user-dropdown-content a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        .user-dropdown-content a:hover {
+            background: var(--celeste-pale);
+        }
+        .user-dropdown-content .logout-btn {
+            color: var(--danger);
+            cursor: pointer;
         }
         .hero {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--celeste) 100%);
@@ -239,6 +301,7 @@
             color: var(--celeste);
         }
         .section-title p { color: var(--text-secondary); font-size: 1.1rem; }
+        html.dark-mode .section-title p { color: #B8C5D3; }
         .units-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
         .unit-card {
             background: var(--bg-card);
@@ -251,6 +314,10 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             animation: fadeInUp 0.6s ease backwards;
+        }
+        html.dark-mode .unit-card {
+            background: #1B2838;
+            border: 1px solid rgba(79, 195, 247, 0.2);
         }
         .unit-card:nth-child(1) { animation-delay: 0.1s; }
         .unit-card:nth-child(2) { animation-delay: 0.2s; }
@@ -299,6 +366,11 @@
             box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
             transition: all 0.3s ease;
         }
+        html.dark-mode .unit-number {
+            background: linear-gradient(135deg, #4FC3F7, #00B4D8);
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.4);
+        }
         .unit-card:hover .unit-number {
             transform: scale(1.1) rotate(-3deg);
             box-shadow: 0 6px 20px rgba(79, 195, 247, 0.5);
@@ -320,10 +392,12 @@
             transform: scale(1.2) rotate(10deg);
         }
         .unit-card h4 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--primary); transition: color 0.3s ease; }
+        html.dark-mode .unit-card h4 { color: #FFFFFF; }
         .unit-card:hover h4 {
             transform: translateX(5px);
         }
         .unit-card p { color: var(--text-secondary); font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.6; transition: color 0.3s ease; }
+        html.dark-mode .unit-card p { color: #E0E0E0; }
         .trabajos-count { 
             display: flex; 
             align-items: center; 
@@ -336,13 +410,31 @@
             display: inline-flex;
             transition: all 0.3s ease;
         }
-        .unit-card:hover .trabajos-count {
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
+        html.dark-mode .trabajos-count {
+            background: #2A4A6F;
+            color: #FFFFFF;
+        }
+        .unit-card p { color: var(--text-secondary); font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.6; transition: color 0.3s ease; }
+        html.dark-mode .unit-card p { color: #B8C5D3; }
+        .trabajos-count { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+            color: var(--primary);
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: var(--celeste-pale);
+            border-radius: 20px;
+            display: inline-flex;
+            transition: all 0.3s ease;
         }
         html.dark-mode .trabajos-count {
             background: #1E3A5F;
-            color: var(--celeste);
+            color: #4FC3F7;
+        }
+        .unit-card:hover .trabajos-count {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
         }
         .lock-message { 
             color: var(--text-secondary); 
@@ -352,6 +444,7 @@
             gap: 0.5rem; 
             font-weight: 500;
         }
+        html.dark-mode .lock-message { color: #B8C5D3; }
         .modal {
             display: none;
             position: fixed;
@@ -374,6 +467,10 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
             animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(79, 195, 247, 0.2);
+        }
+        html.dark-mode .modal-content {
+            background: #1B2838;
+            border-color: rgba(79, 195, 247, 0.3);
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { 
@@ -458,8 +555,10 @@
         }
         .trabajo-info { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; min-width: 0; }
         .trabajo-nombre { font-weight: 600; color: var(--primary); font-size: 1rem; transition: color 0.3s ease; }
+        html.dark-mode .trabajo-nombre { color: #F0F4F8; }
         .trabajo-item:hover .trabajo-nombre { color: var(--celeste); }
         .trabajo-fecha { font-size: 0.85rem; color: var(--text-secondary); transition: color 0.3s ease; }
+        html.dark-mode .trabajo-fecha { color: #B8C5D3; }
         .trabajo-item:hover .trabajo-fecha { color: var(--primary); }
         .badge { 
             padding: 0.5rem 1rem; 
@@ -469,10 +568,14 @@
             text-transform: uppercase;
             transition: all 0.3s ease;
         }
+        html.dark-mode .badge { color: #F0F4F8; }
         .badge:hover { transform: scale(1.1); }
         .badge-pendiente { background: rgba(245, 124, 0, 0.15); color: var(--warning); }
+        html.dark-mode .badge-pendiente { background: rgba(245, 124, 0, 0.3); color: #FFB74D; }
         .badge-revisado { background: rgba(46, 125, 50, 0.15); color: var(--success); }
+        html.dark-mode .badge-revisado { background: rgba(46, 125, 50, 0.3); color: #81C784; }
         .badge-aprobado { background: rgba(79, 195, 247, 0.3); color: var(--primary); }
+        html.dark-mode .badge-aprobado { background: rgba(79, 195, 247, 0.4); color: #4FC3F7; }
         .btn-ver {
             padding: 0.7rem 1.4rem;
             background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
@@ -563,7 +666,7 @@
             background: linear-gradient(90deg, var(--primary), var(--celeste), var(--primary));
         }
         html.dark-mode .profile-section {
-            background: linear-gradient(180deg, var(--bg-card) 0%, #0D2137 100%);
+            background: linear-gradient(180deg, #1B2838 0%, #1A2332 100%);
         }
         .profile-card {
             max-width: 950px;
@@ -576,6 +679,10 @@
             animation: fadeInUp 0.8s ease;
             position: relative;
             overflow: hidden;
+        }
+        html.dark-mode .profile-card {
+            background: #1B2838;
+            border-color: rgba(79, 195, 247, 0.3);
         }
         .profile-card::before {
             content: '';
@@ -647,6 +754,7 @@
             align-items: center;
             gap: 0.5rem;
         }
+        html.dark-mode .profile-cycle { color: #B8C5D3; }
         .profile-cycle::before {
             content: '🏛️';
         }
@@ -663,7 +771,7 @@
         }
         html.dark-mode .about-me {
             background: #1E3A5F;
-            border-left-color: var(--celeste);
+            border-left-color: #4FC3F7;
         }
         .about-me h4 {
             font-size: 1.3rem;
@@ -796,7 +904,22 @@
                         Registrarse
                     </button>
                 </div>
-                <button class="theme-btn" id="themeBtn" title="Cambiar tema">☀️</button>
+                <button class="theme-btn" id="themeBtn" title="Cambiar tema">
+                    <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                    <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
@@ -891,8 +1014,16 @@
             { numero: 4, titulo: 'Semana 4', descripcion: 'Transacciones y Seguridad en BD' }
         ];
 
-        function getThemeIcon() {
-            return document.documentElement.classList.contains('dark-mode') ? '☀️' : '🌙';
+        function updateThemeIcon() {
+            const themeBtn = document.getElementById('themeBtn');
+            if (!themeBtn) return;
+            const isDark = document.documentElement.classList.contains('dark-mode');
+            const sunIcon = themeBtn.querySelector('.icon-sun');
+            const moonIcon = themeBtn.querySelector('.icon-moon');
+            if (sunIcon && moonIcon) {
+                sunIcon.style.display = isDark ? 'none' : 'block';
+                moonIcon.style.display = isDark ? 'block' : 'none';
+            }
         }
 
         function initTheme() {
@@ -901,13 +1032,14 @@
             if (savedTheme === 'dark') {
                 document.documentElement.classList.add('dark-mode');
             }
-            const themeBtn = document.getElementById('themeBtn');
-            if (themeBtn) themeBtn.textContent = getThemeIcon();
+            updateThemeIcon();
         }
 
         function toggleTheme() {
             const html = document.documentElement;
             const isDark = html.classList.contains('dark-mode');
+            
+            html.style.transition = 'background-color 0.5s ease, color 0.5s ease';
             
             if (isDark) {
                 html.classList.remove('dark-mode');
@@ -917,8 +1049,7 @@
                 localStorage.setItem('theme', 'dark');
             }
             
-            const themeBtn = document.getElementById('themeBtn');
-            if (themeBtn) themeBtn.textContent = getThemeIcon();
+            updateThemeIcon();
         }
 
         function actualizarMenu() {
@@ -930,12 +1061,25 @@
                 const isAdmin = window.PortafolioAuth.esAdmin();
                 
                 authButtons.innerHTML = `
-                    <div class="user-info">
-                        <span>👤</span>
-                        <span>${nombre}</span>
+                    <div class="user-dropdown">
+                        <div class="user-info">
+                            <div class="avatar">👤</div>
+                            <span class="name">${nombre.split('@')[0]}</span>
+                            <span style="font-size: 0.7rem;">▼</span>
+                        </div>
+                        <div class="user-dropdown-content">
+                            ${isAdmin ? '<a href="dashboard.html">📊 Dashboard</a>' : ''}
+                            <a href="#" onclick="handleLogout(); return false;" class="logout-btn" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                    <polyline points="16 17 21 12 16 7"/>
+                                    <line x1="21" y1="12" x2="9" y2="12"/>
+                                </svg>
+                                Cerrar Sesión
+                            </a>
+                        </div>
                     </div>
-                    ${isAdmin ? '<button class="btn btn-secondary" onclick="window.location.href=\'dashboard.html\'">Dashboard</button>' : ''}
-                    <button class="btn btn-danger" onclick="handleLogout()">Cerrar</button>
+                    ${isAdmin ? '<span style="background: var(--celeste); color: var(--primary); padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.7rem; font-weight: 700;">ADMIN</span>' : ''}
                 `;
                 
                 if (navDashboard) {
@@ -970,7 +1114,6 @@
 
         async function renderUnidades() {
             const grid = document.getElementById('unitsGrid');
-            const isAuth = window.PortafolioAuth.estaAutenticado();
             grid.innerHTML = '';
 
             const icons = ['📚', '🔍', '⚡', '🔐'];
@@ -978,32 +1121,22 @@
 
             for (const semana of SEMANAS) {
                 let trabajosCount = 0;
-                if (isAuth) {
-                    try {
-                        const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(semana.numero);
-                        trabajosCount = trabajos.length;
-                    } catch (e) { console.error(e); }
-                }
+                try {
+                    const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(semana.numero);
+                    trabajosCount = trabajos.length;
+                } catch (e) { console.error(e); }
 
-                const isLocked = !isAuth;
                 const iconIndex = semana.numero - 1;
                 grid.innerHTML += `
-                    <div class="unit-card ${isLocked ? 'locked' : ''}" onclick="${isLocked ? 'showLoginRequired()' : `abrirSemana(${semana.numero}, '${semana.titulo}')`}" 
+                    <div class="unit-card" onclick="abrirSemana(${semana.numero}, '${semana.titulo}')" 
                          onmousemove="handleCardHover(event)" onmouseleave="handleCardLeave(event)">
                         <span class="unit-icon" style="background: ${iconColors[iconIndex]}20; color: ${iconColors[iconIndex]};">${icons[iconIndex]}</span>
                         <span class="unit-number">${semana.titulo.toUpperCase()}</span>
                         <h4>${semana.descripcion}</h4>
-                        ${isLocked ? `
-                            <div class="lock-message">
-                                <span>🔒</span>
-                                <span>Inicia sesión para ver trabajos</span>
-                            </div>
-                        ` : `
-                            <div class="trabajos-count">
-                                <span>📁</span>
-                                <span>${trabajosCount} trabajo(s) subido(s)</span>
-                            </div>
-                        `}
+                        <div class="trabajos-count">
+                            <span>📁</span>
+                            <span>${trabajosCount} trabajo(s) subido(s)</span>
+                        </div>
                     </div>
                 `;
             }
@@ -1022,23 +1155,6 @@
             const card = e.currentTarget;
             card.style.setProperty('--mouse-x', '50%');
             card.style.setProperty('--mouse-y', '50%');
-        }
-
-        function showLoginRequired() {
-            document.getElementById('modalTitle').textContent = '🔒 Acceso Restringido';
-            document.getElementById('modalContent').innerHTML = `
-                <div class="login-required">
-                    <span class="icon">🔐</span>
-                    <p>Debes iniciar sesión para ver los trabajos</p>
-                    <button class="btn btn-primary" onclick="window.location.href='login.html'">
-                        Iniciar Sesión
-                    </button>
-                    <button class="btn btn-ghost" onclick="window.location.href='registro.html'">
-                        Registrarse
-                    </button>
-                </div>
-            `;
-            document.getElementById('trabajosModal').classList.add('show');
         }
 
         async function abrirSemana(numero, titulo) {

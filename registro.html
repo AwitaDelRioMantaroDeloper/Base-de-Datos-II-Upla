@@ -21,6 +21,20 @@
             --text-secondary: #546E7A;
             --bg-light: #F5F9FC;
         }
+        html.dark-mode {
+            --primary: #4FC3F7;
+            --primary-light: #81D4FA;
+            --celeste: #00B4D8;
+            --celeste-light: #48CAE4;
+            --celeste-pale: #1A2332;
+            --white: #1B2838;
+            --success: #2E7D32;
+            --danger: #D32F2F;
+            --text-dark: #F0F4F8;
+            --text-secondary: #B8C5D3;
+            --bg-light: #0D1B2A;
+        }
+        * { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--celeste) 100%);
@@ -31,6 +45,9 @@
             padding: 2rem;
             position: relative;
             overflow: hidden;
+        }
+        html.dark-mode body {
+            background: linear-gradient(135deg, #1B3A4B 0%, #264653 50%, #1B3A4B 100%);
         }
         body::before {
             content: '';
@@ -105,8 +122,22 @@
             box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.2);
             background: var(--white);
         }
+        html.dark-mode .form-group input {
+            background: #1A2332;
+            border-color: #2A3A4F;
+            color: #F0F4F8;
+        }
+        html.dark-mode .form-group input:focus {
+            border-color: var(--celeste);
+            background: #1B2838;
+        }
+        html.dark-mode .form-group label {
+            color: #B8C5D3;
+        }
         .form-group input::placeholder { color: var(--text-secondary); }
+        html.dark-mode .form-group input::placeholder { color: #7A8A9A; }
         .form-group small { color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.3rem; display: block; }
+        html.dark-mode .form-group small { color: #B8C5D3; }
         .btn {
             width: 100%;
             padding: 1rem;
