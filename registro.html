@@ -6,6 +6,7 @@
     <title>Registrarse - Portafolio BD II</title>
     <link rel="icon" type="image/svg+xml" href="file.svg">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -336,7 +337,7 @@
 
     <div class="modal-overlay" id="confirmModal">
         <div class="modal-confirm">
-            <div class="modal-icon">✉️</div>
+            <div class="modal-icon"><i class="fa fa-envelope"></i></div>
             <h2>¡Correo Enviado!</h2>
             <p>Se ha enviado un enlace de confirmación a:</p>
             <div class="email-highlight" id="confirmEmail"></div>
@@ -359,14 +360,14 @@
             const div = document.getElementById('notification');
             div.style.display = 'flex';
             div.className = 'notification ' + type;
-            div.innerHTML = '<span>' + (type === 'error' ? '❌' : '✅') + '</span> ' + message;
+            div.innerHTML = '<span><i class="fa ' + (type === 'error' ? 'fa-times-circle' : 'fa-check-circle') + '"></i></span> ' + message;
             setTimeout(() => div.style.display = 'none', 4000);
         }
 
         function setLoading(loading) {
             const btn = document.getElementById('submitBtn');
             btn.disabled = loading;
-            btn.innerHTML = loading ? '<span>⏳</span> Creando...' : '<span>✨</span> Crear Cuenta';
+            btn.innerHTML = loading ? '<span><i class="fa fa-spinner fa-spin"></i></span> Creando...' : '<span><i class="fa fa-magic"></i></span> Crear Cuenta';
         }
 
         async function handleRegister(event) {

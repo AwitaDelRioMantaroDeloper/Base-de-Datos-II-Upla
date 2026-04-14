@@ -6,6 +6,7 @@
     <title>Iniciar Sesión - Portafolio BD II</title>
     <link rel="icon" type="image/svg+xml" href="file.svg">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -276,14 +277,14 @@
             const div = document.getElementById('notification');
             div.style.display = 'flex';
             div.className = 'notification ' + type;
-            div.innerHTML = '<span>' + (type === 'error' ? '❌' : '✅') + '</span> ' + message;
+            div.innerHTML = '<span><i class="fa ' + (type === 'error' ? 'fa-times-circle' : 'fa-check-circle') + '"></i></span> ' + message;
             setTimeout(() => div.style.display = 'none', 4000);
         }
 
         function setLoading(loading) {
             const btn = document.getElementById('submitBtn');
             btn.disabled = loading;
-            btn.innerHTML = loading ? '<span>⏳</span> Cargando...' : '<span>🚀</span> Iniciar Sesión';
+            btn.innerHTML = loading ? '<span><i class="fa fa-spinner fa-spin"></i></span> Cargando...' : '<span><i class="fa fa-rocket"></i></span> Iniciar Sesión';
         }
 
         async function handleLogin(event) {
@@ -317,7 +318,7 @@
                 console.error('Error login:', error);
                 const errorMsg = error.message || '';
                 if (errorMsg.includes('email_not_confirmed') || errorMsg.includes('Email not confirmed') || errorMsg.includes('correo no confirmado')) {
-                    showNotification('⚠️ Debes confirmar tu correo. <span class="resend-link" onclick="resendConfirmation(\'' + email + '\')">Reenviar enlace</span>');
+                    showNotification('<i class="fa fa-exclamation-triangle"></i> Debes confirmar tu correo. <span class="resend-link" onclick="resendConfirmation(\'' + email + '\')">Reenviar enlace</span>');
                 } else {
                     showNotification(error.message || 'Credenciales incorrectas');
                 }
@@ -338,7 +339,7 @@
                 });
                 
                 if (response.ok) {
-                    showNotification('✅ Enlace reenviado. Revisa tu correo.');
+                    showNotification('<i class="fa fa-check-circle"></i> Enlace reenviado. Revisa tu correo.', 'success');
                 } else {
                     showNotification('Error al reenviar. Intenta más tarde.');
                 }

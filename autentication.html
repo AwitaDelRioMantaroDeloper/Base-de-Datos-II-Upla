@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmación de Email - Exitosa</title>
+    <title>Verificación Exitosa - BDII</title>
     <style>
         * {
             margin: 0;
@@ -12,8 +12,8 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -24,43 +24,42 @@
         }
 
         /* Elementos decorativos de fondo */
-        .bg-decoration {
+        body::before {
+            content: '';
             position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 123, 255, 0.1) 0%, transparent 70%);
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.15;
             pointer-events: none;
         }
 
-        .bg-decoration-1 {
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
             width: 400px;
             height: 400px;
-            background: linear-gradient(135deg, #06b6d4, #0284c7);
-            top: -100px;
-            right: -100px;
+            background: radial-gradient(circle, rgba(23, 162, 184, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
-        .bg-decoration-2 {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(135deg, #0284c7, #1e40af);
-            bottom: -50px;
-            left: -50px;
-        }
-
-        .container {
-            max-width: 500px;
+        .wrapper {
             width: 100%;
+            max-width: 500px;
             position: relative;
-            z-index: 10;
+            z-index: 1;
         }
 
-        .content {
-            background: white;
-            border-radius: 24px;
-            padding: 60px 40px;
-            box-shadow: 0 20px 60px rgba(2, 132, 199, 0.15);
-            text-align: center;
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 63, 136, 0.15);
+            overflow: hidden;
             animation: slideUp 0.6s ease-out;
         }
 
@@ -75,20 +74,54 @@
             }
         }
 
-        /* Icono de verificación */
-        .icon-wrapper {
-            margin-bottom: 40px;
-            animation: scaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .header {
+            background: linear-gradient(135deg, #00d4ff 0%, #0d6efd 50%, #0056d2 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
         }
 
-        @keyframes scaleIn {
-            from {
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 50px 35px;
+            text-align: center;
+        }
+
+        .icon-wrapper {
+            margin-bottom: 30px;
+            animation: bounce 0.6s ease-out 0.2s both;
+        }
+
+        @keyframes bounce {
+            0% {
                 opacity: 0;
-                transform: scale(0.5);
+                transform: scale(0.3) translateY(20px);
             }
-            to {
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1) translateY(0);
             }
         }
 
@@ -96,241 +129,242 @@
             width: 100px;
             height: 100px;
             margin: 0 auto;
-            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            background: linear-gradient(135deg, #00d4ff 0%, #0d6efd 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.3);
             position: relative;
-            box-shadow: 0 10px 40px rgba(2, 132, 199, 0.3);
         }
 
         .icon-circle::before {
             content: '';
             position: absolute;
-            width: 100%;
-            height: 100%;
+            inset: -4px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0d6efd 100%);
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(2, 132, 199, 0.2));
+            opacity: 0.2;
             animation: pulse 2s ease-in-out infinite;
         }
 
         @keyframes pulse {
             0%, 100% {
                 transform: scale(1);
-                opacity: 1;
+                opacity: 0.2;
             }
             50% {
-                transform: scale(1.2);
-                opacity: 0;
+                transform: scale(1.1);
+                opacity: 0.1;
             }
         }
 
-        .checkmark {
-            position: relative;
-            z-index: 2;
-            color: white;
-            font-size: 50px;
-            line-height: 1;
-            animation: checkAnimation 0.6s ease-out 0.3s both;
+        .title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #003f88;
+            margin-bottom: 15px;
+            animation: fadeIn 0.6s ease-out 0.3s both;
         }
 
-        @keyframes checkAnimation {
+        @keyframes fadeIn {
             from {
-                transform: scale(0) rotate(-45deg);
                 opacity: 0;
             }
             to {
-                transform: scale(1) rotate(0);
                 opacity: 1;
             }
-        }
-
-        /* Títulos y textos */
-        h1 {
-            font-size: 36px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1e3a8a, #0284c7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 12px;
-            animation: fadeInText 0.6s ease-out 0.2s both;
         }
 
         .subtitle {
-            font-size: 16px;
-            color: #0369a1;
-            margin-bottom: 32px;
-            animation: fadeInText 0.6s ease-out 0.3s both;
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            animation: fadeIn 0.6s ease-out 0.4s both;
         }
 
-        @keyframes fadeInText {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Caja de mensaje */
         .message-box {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            border: 1.5px solid #a5f3fc;
-            border-radius: 16px;
-            padding: 28px 24px;
-            margin-bottom: 32px;
-            animation: fadeInText 0.6s ease-out 0.4s both;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f7ff 100%);
+            border: 2px solid #00d4ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out 0.5s both;
         }
 
         .message-box p {
+            color: #0056d2;
             font-size: 14px;
             line-height: 1.6;
-            color: #164e63;
-            margin-bottom: 12px;
+            margin: 0;
         }
 
-        .message-box p:last-child {
-            margin-bottom: 0;
-            color: #0c4a6e;
-            font-weight: 500;
+        .button-container {
+            animation: fadeIn 0.6s ease-out 0.6s both;
         }
 
-        /* Botón */
-        .btn {
+        .button {
             display: inline-block;
-            width: 100%;
-            padding: 14px 32px;
-            background: linear-gradient(135deg, #0284c7, #06b6d4);
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0d6efd 100%);
             color: white;
+            text-decoration: none;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            text-decoration: none;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.35);
             transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(2, 132, 199, 0.3);
-            animation: fadeInText 0.6s ease-out 0.5s both;
-            text-align: center;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 300px;
         }
 
-        .btn:hover {
-            background: linear-gradient(135deg, #0369a1, #0891b2);
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(2, 132, 199, 0.4);
+            box-shadow: 0 12px 30px rgba(0, 212, 255, 0.45);
         }
 
-        .btn:active {
+        .button:hover::before {
+            left: 100%;
+        }
+
+        .button:active {
             transform: translateY(0);
         }
 
-        /* Texto de pie */
+        .divider {
+            margin: 35px 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+        }
+
         .footer-text {
             font-size: 13px;
-            color: #0369a1;
-            margin-top: 28px;
-            animation: fadeInText 0.6s ease-out 0.6s both;
+            color: #999;
+            line-height: 1.5;
+            animation: fadeIn 0.6s ease-out 0.7s both;
         }
 
-        .footer-text a {
-            color: #0284c7;
-            font-weight: 600;
+        .footer {
+            padding: 25px;
+            background: linear-gradient(135deg, #f8fbff 0%, #f0f7ff 100%);
+            text-align: center;
+            border-top: 1px solid #e8f0ff;
+        }
+
+        .footer p {
+            font-size: 12px;
+            color: #999;
+            margin: 5px 0;
+        }
+
+        .footer a {
+            color: #0d6efd;
             text-decoration: none;
-            transition: color 0.3s ease;
+            font-weight: 600;
+            transition: color 0.3s;
         }
 
-        .footer-text a:hover {
-            color: #06b6d4;
+        .footer a:hover {
+            color: #0056d2;
             text-decoration: underline;
         }
 
         /* Responsive */
-        @media (max-width: 600px) {
+        @media (max-width: 480px) {
             .content {
-                padding: 40px 24px;
+                padding: 40px 25px;
             }
 
-            h1 {
-                font-size: 28px;
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .title {
+                font-size: 22px;
             }
 
             .icon-circle {
                 width: 80px;
                 height: 80px;
-            }
-
-            .checkmark {
                 font-size: 40px;
             }
 
-            .message-box {
-                padding: 20px 16px;
-            }
-
-            .message-box p {
-                font-size: 13px;
+            .button {
+                padding: 14px 30px;
+                font-size: 15px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Elementos decorativos de fondo -->
-    <div class="bg-decoration bg-decoration-1"></div>
-    <div class="bg-decoration bg-decoration-2"></div>
 
-    <!-- Contenedor principal -->
-    <div class="container">
+<div class="wrapper">
+    <div class="card">
+        
+        <div class="header">
+            <h1>BDII</h1>
+        </div>
+
         <div class="content">
-            <!-- Icono de verificación -->
             <div class="icon-wrapper">
-                <div class="icon-circle">
-                    <span class="checkmark">✓</span>
-                </div>
+                <div class="icon-circle">✅</div>
             </div>
 
-            <!-- Título -->
-            <h1>¡Confirmación Exitosa!</h1>
-            <p class="subtitle">Tu email ha sido verificado correctamente</p>
+            <h2 class="title">¡Verificación Exitosa!</h2>
 
-            <!-- Mensaje -->
+            <p class="subtitle">
+                Tu correo electrónico ha sido confirmado correctamente.
+            </p>
+
             <div class="message-box">
-                <p>Gracias por confirmar tu dirección de email. Tu cuenta está totalmente activada y lista para usar.</p>
-                <p>Ahora puedes acceder a todas las características de la plataforma.</p>
+                <p>🎉 Tu cuenta está totalmente activada y lista para usar. Ahora tienes acceso a todas las características de la plataforma BDII.</p>
             </div>
 
-            <!-- Botón -->
-            <button class="btn" onclick="irAHome()">
-                Ir a la Pestaña Principal
-            </button>
+            <div class="button-container">
+                <button class="button" onclick="irAInicio()">Ir a la Página Principal</button>
+            </div>
 
-            <!-- Texto de pie -->
+            <div class="divider"></div>
+
             <p class="footer-text">
-                Si tienes alguna pregunta, no dudes en <a href="mailto:soporte@ejemplo.com">contactarnos</a>
+                ¡Gracias por ser parte de nuestra comunidad!
             </p>
         </div>
+
+        <div class="footer">
+            <p>© 2026 BDII</p>
+            <p>
+                <a href="#">Soporte</a> • <a href="#">Políticas</a>
+            </p>
+        </div>
+
     </div>
+</div>
 
-    <script>
-        function irAHome() {
-            // Puedes personalizar esta función según lo necesites
-            // Opción 1: Ir a la página principal
-            window.location.href = '/';
-            
-            // Opción 2: Si quieres solo una animación antes de cambiar
-            // document.querySelector('.content').style.animation = 'slideUp 0.6s ease-out reverse';
-            // setTimeout(() => {
-            //     window.location.href = '/';
-            // }, 300);
-        }
+<script>
+    function irAInicio() {
+        // Redirigir a la página principal
+        window.location.href = 'index.html';
+    }
+</script>
 
-        // Agregar evento al cargar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Página de confirmación cargada');
-        });
-    </script>
 </body>
 </html>

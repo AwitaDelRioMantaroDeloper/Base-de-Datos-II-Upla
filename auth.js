@@ -17,12 +17,25 @@ const supabase = {
     },
 
     async request(method, endpoint, body = null) {
-        const options = { method, headers: this.headers };
+        const accessToken = localStorage.getItem('sb_access_token');
+        const headers = {
+            ...this.headers,
+            'Authorization': accessToken ? `Bearer ${accessToken}` : `Bearer ${SUPABASE_ANON_KEY}`
+        };
+        
+        const options = { method, headers };
         if (body && method !== 'GET') options.body = JSON.stringify(body);
         
         try {
             const response = await fetch(`${this.url}/rest/v1${endpoint}`, options);
-            const data = await response.json();
+            
+            const contentType = response.headers.get('content-type');
+            let data = null;
+            
+            if (contentType && contentType.includes('application/json')) {
+                const text = await response.text();
+                data = text ? JSON.parse(text) : null;
+            }
             
             if (!response.ok) {
                 const errorMsg = data?.message || data?.error?.message || data?.msg || `Error ${response.status}`;
@@ -62,44 +75,67 @@ const supabase = {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        'apikey': SUPABASE_ANON_KEY
                     },
-                    body: JSON.stringify({ 
-                        email: email, 
-                        password: password,
-                        options: options
-                    })
+                    body: JSON.stringify({ email, password, data: options.data })
                 });
                 const data = await response.json();
-                
-                console.log('Signup response:', response.status, data);
                 
                 if (!response.ok) {
                     if (response.status === 429) {
                         throw new Error('Demasiadas solicitudes. Espera unos minutos e intenta de nuevo.');
                     }
-                    if (response.status === 400) {
-                        if (data.message?.includes('already registered') || data.msg?.includes('already')) {
-                            throw new Error('Este correo ya está registrado. Intenta iniciar sesión.');
-                        }
-                        if (data.message?.includes('password')) {
-                            throw new Error('La contraseña debe tener al menos 6 caracteres.');
-                        }
-                        throw new Error(data.message || data.error?.message || data.msg || 'Datos inválidos. Revisa tu correo y contraseña.');
-                    }
-                    throw new Error(data.message || data.error?.message || 'Error al registrarse');
+                    throw new Error(data.msg || data.error_description || 'Error al registrar');
                 }
                 
-                connectionStatus = 'connected';
+                if (data.session) {
+                    localStorage.setItem('sb_access_token', data.session.access_token);
+                    localStorage.setItem('sb_refresh_token', data.session.refresh_token);
+                }
+                
                 return data;
             } catch (error) {
-                console.error('Signup error:', error);
-                if (error.message.includes('Failed to fetch')) {
-                    connectionStatus = 'disconnected';
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
                     throw new Error('Error de conexión. Verifica tu internet.');
                 }
                 throw error;
+            }
+        },
+
+        async getSession() {
+            const accessToken = localStorage.getItem('sb_access_token');
+            const refreshToken = localStorage.getItem('sb_refresh_token');
+            
+            if (!accessToken) {
+                return { data: { session: null } };
+            }
+            
+            try {
+                const response = await fetch(`${supabase.url}/auth/v1/users/me`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    return { data: { session: null }, error: new Error('Sesión inválida') };
+                }
+                
+                const user = await response.json();
+                
+                return {
+                    data: {
+                        session: {
+                            access_token: accessToken,
+                            refresh_token: refreshToken,
+                            user: user
+                        }
+                    }
+                };
+            } catch (error) {
+                return { data: { session: null }, error };
             }
         },
 
@@ -163,28 +199,6 @@ const supabase = {
             localStorage.removeItem('user_email');
             localStorage.removeItem('user_nombre');
             localStorage.removeItem('user_is_admin');
-        },
-
-        async getSession() {
-            const accessToken = localStorage.getItem('sb_access_token');
-            if (!accessToken) return { data: { session: null } };
-            
-            try {
-                const response = await fetch(`${supabase.url}/auth/v1/users/me`, {
-                    headers: { ...supabase.headers, 'Authorization': `Bearer ${accessToken}` }
-                });
-                const data = await response.json();
-                if (!response.ok) {
-                    localStorage.removeItem('sb_access_token');
-                    connectionStatus = 'error';
-                    return { data: { session: null } };
-                }
-                connectionStatus = 'connected';
-                return { data: { session: { user: data } } };
-            } catch (error) {
-                connectionStatus = 'disconnected';
-                return { data: { session: null } };
-            }
         }
     },
 
@@ -236,26 +250,36 @@ async function verificarSesion() {
 
 async function obtenerUsuarioActual() {
     try {
-        const { data } = await supabase.auth.getSession();
-        if (!data.session) return null;
+        const userId = localStorage.getItem('user_id');
+        const userEmail = localStorage.getItem('user_email');
         
-        const user = data.session.user;
+        if (!userId) {
+            console.log('No hay usuario en localStorage');
+            return null;
+        }
+        
+        console.log('Usuario desde localStorage:', userId, userEmail);
+        
         let profile = null;
         
         try {
-            const profiles = await supabase.request('GET', `/profiles?id=eq.${user.id}&select=*`);
+            const profiles = await supabase.request('GET', `/profiles?id=eq.${userId}&select=*`);
             profile = profiles.length > 0 ? profiles[0] : null;
+            console.log('Profile:', profile);
         } catch (e) {
             console.warn('No se pudo obtener perfil');
         }
         
         return {
-            id: user.id,
-            email: user.email,
-            nombreCompleto: profile?.nombre_completo || user.email,
+            id: userId,
+            email: userEmail,
+            nombreCompleto: profile?.nombre_completo || userEmail,
             isAdmin: profile?.is_admin === true || profile?.is_admin === 'true' || false
         };
-    } catch { return null; }
+    } catch (error) {
+        console.error('Error en obtenerUsuarioActual:', error);
+        return null;
+    }
 }
 
 async function registrar(email, password, nombreCompleto) {
@@ -288,12 +312,31 @@ async function login(email, password) {
         throw new Error('No se pudo iniciar sesión. Verifica tus credenciales.');
     }
     
-    const user = result.user || { id: '', email: email };
+    let userId = '';
+    let userEmail = email;
+    
+    if (result.user) {
+        userId = result.user.id || '';
+        userEmail = result.user.email || email;
+    } else if (result.access_token) {
+        try {
+            const tokenParts = result.access_token.split('.');
+            if (tokenParts.length === 3) {
+                const tokenData = JSON.parse(atob(tokenParts[1]));
+                userId = tokenData.sub || '';
+                userEmail = tokenData.email || email;
+            }
+        } catch (e) {
+            console.warn('No se pudo decodificar el token');
+        }
+    }
+    
+    console.log('Guardando usuario:', userId, userEmail);
     
     localStorage.setItem('sb_access_token', result.access_token);
-    localStorage.setItem('sb_refresh_token', result.refresh_token);
-    localStorage.setItem('user_email', user.email || email);
-    localStorage.setItem('user_id', user.id);
+    localStorage.setItem('sb_refresh_token', result.refresh_token || '');
+    localStorage.setItem('user_email', userEmail);
+    localStorage.setItem('user_id', userId);
     
     return result;
 }
@@ -359,19 +402,35 @@ async function obtenerTrabajosPorSemana(numeroSemana) {
 
 async function subirTrabajo(archivo, numeroSemana, descripcion = '') {
     const accessToken = localStorage.getItem('sb_access_token');
-    if (!accessToken) throw new Error('No hay sesión activa');
+    if (!accessToken) throw new Error('No hay sesión activa. Inicia sesión primero.');
+    
+    console.log('Iniciando subida de archivo...');
     
     const user = await obtenerUsuarioActual();
-    if (!user) throw new Error('Usuario no encontrado');
+    if (!user) throw new Error('Usuario no encontrado. Inicia sesión nuevamente.');
+    
+    console.log('Usuario:', user);
 
     const extension = archivo.name.split('.').pop();
     const nombreArchivo = `${user.id}_semana${numeroSemana}_${Date.now()}.${extension}`;
     const rutaArchivo = `${user.id}/${nombreArchivo}`;
 
-    await supabase.storage.upload(rutaArchivo, archivo, accessToken);
-    const { publicUrl } = await supabase.storage.getPublicUrl(rutaArchivo);
+    console.log('Subiendo archivo a storage:', rutaArchivo);
+    
+    try {
+        const uploadResult = await supabase.storage.upload(rutaArchivo, archivo, accessToken);
+        console.log('Archivo subido:', uploadResult);
+    } catch (uploadError) {
+        console.error('Error al subir archivo:', uploadError);
+        throw new Error('Error al subir archivo: ' + uploadError.message);
+    }
 
-    return await supabase.request('POST', '/trabajos', {
+    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${rutaArchivo}`;
+    console.log('URL pública:', publicUrl);
+
+    console.log('Guardando en base de datos...');
+    
+    const result = await supabase.request('POST', '/trabajos', {
         usuario_id: user.id,
         numero_semana: numeroSemana,
         nombre_archivo: archivo.name,
@@ -379,6 +438,10 @@ async function subirTrabajo(archivo, numeroSemana, descripcion = '') {
         descripcion: descripcion,
         estado: 'pendiente'
     });
+    
+    console.log('Trabajo guardado:', result);
+    
+    return result;
 }
 
 async function eliminarTrabajo(trabajoId) {

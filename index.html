@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafolio - Base de Datos II</title>
-    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="icon" type="image/svg+xml" href="file.svg">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        i { display: inline-flex; align-items: center; justify-content: center; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #003D7A;
@@ -599,7 +601,7 @@
             padding: 4rem; 
             color: var(--text-secondary);
         }
-        .no-trabajos .icon { font-size: 4rem; margin-bottom: 1rem; display: block; animation: bounce 2s ease infinite; }
+        .no-trabajos i { font-size: 3rem; margin-bottom: 1rem; display: block; animation: bounce 2s ease infinite; color: var(--celeste); }
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -731,6 +733,9 @@
             font-size: 4rem;
             color: white;
         }
+        .profile-avatar .avatar-placeholder i {
+            font-size: 4rem;
+        }
         .profile-info h3 {
             font-size: 1.8rem;
             font-weight: 700;
@@ -743,9 +748,11 @@
         html.dark-mode .profile-info h3 {
             color: var(--celeste);
         }
-        .profile-info h3::before {
-            content: '🎓';
+        .profile-info h3 i {
+            color: var(--celeste);
+            font-size: 1.5rem;
         }
+        html.dark-mode .profile-info h3 i { color: var(--celeste); }
         .profile-cycle {
             color: var(--text-secondary);
             font-size: 1.1rem;
@@ -755,8 +762,9 @@
             gap: 0.5rem;
         }
         html.dark-mode .profile-cycle { color: #B8C5D3; }
-        .profile-cycle::before {
-            content: '🏛️';
+        .profile-cycle i {
+            color: var(--celeste);
+            font-size: 1rem;
         }
         .profile-content {
             display: grid;
@@ -785,8 +793,9 @@
         html.dark-mode .about-me h4 {
             color: var(--celeste);
         }
-        .about-me h4::before {
-            content: '👨‍🎓';
+        .about-me h4 i {
+            color: var(--celeste);
+            margin-right: 0.5rem;
         }
         .about-me p {
             color: var(--text-dark);
@@ -939,16 +948,16 @@
             <div class="profile-card">
                 <div class="profile-header">
                     <div class="profile-avatar">
-                        <img src="foto.png" alt="Foto de perfil" onerror="this.parentElement.innerHTML='<span class=\'avatar-placeholder\'>👨‍💻</span>'">
+                        <img src="foto.png" alt="Foto de perfil" onerror="this.parentElement.innerHTML='<span class=\'avatar-placeholder\'><i class=\'fas fa-user\'></i></span>'">
                     </div>
                     <div class="profile-info">
-                        <h3>Andy Junior Mendoza Villanueva</h3>
-                        <p class="profile-cycle">V Ciclo - Ingeniería de Sistemas y Computación</p>
+                        <h3><i class="fas fa-graduation-cap"></i> Andy Junior Mendoza Villanueva</h3>
+                        <p class="profile-cycle"><i class="fas fa-university"></i> V Ciclo - Ingeniería de Sistemas y Computación</p>
                     </div>
                 </div>
                 <div class="profile-content">
                     <div class="about-me">
-                        <h4>Sobre Mí</h4>
+                        <h4><i class="fas fa-user-graduate"></i> Sobre Mí</h4>
                         <p>¡Hola! Soy estudiante de <strong>Ingeniería de Sistemas y Computación</strong> en la Universidad Peruana Los Andes, actualmente cursando el <strong>V ciclo</strong> de mi formación académica. Me caracterizo por ser una persona <strong>responsable, proactiva</strong> y con una fuerte orientación al aprendizaje continuo. Mi objetivo es crecer profesionalmente en el área de desarrollo de software.</p>
                     </div>
                     <div class="skills-grid">
@@ -992,8 +1001,8 @@
     <div id="trabajosModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modalTitle">Trabajos de la Semana</h3>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
+                <h3 id="modalTitle"><i class="fa-solid fa-folder-open"></i> Trabajos de la Semana</h3>
+                <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="modalContent">
                 <div class="no-trabajos">Cargando...</div>
@@ -1002,7 +1011,7 @@
     </div>
 
     <footer>
-        <p>Universidad Peruana Los Andes - Base de Datos II</p>
+        <p><i class="fa-solid fa-graduation-cap"></i> Universidad Peruana Los Andes - Base de Datos II</p>
     </footer>
 
     <script src="auth.js"></script>
@@ -1116,7 +1125,7 @@
             const grid = document.getElementById('unitsGrid');
             grid.innerHTML = '';
 
-            const icons = ['📚', '🔍', '⚡', '🔐'];
+            const icons = ['fa-solid fa-database', 'fa-solid fa-magnifying-glass-chart', 'fa-solid fa-bolt', 'fa-solid fa-shield-halved'];
             const iconColors = ['#4FC3F7', '#81D4FA', '#4DD0E1', '#26C6DA'];
 
             for (const semana of SEMANAS) {
@@ -1130,11 +1139,11 @@
                 grid.innerHTML += `
                     <div class="unit-card" onclick="abrirSemana(${semana.numero}, '${semana.titulo}')" 
                          onmousemove="handleCardHover(event)" onmouseleave="handleCardLeave(event)">
-                        <span class="unit-icon" style="background: ${iconColors[iconIndex]}20; color: ${iconColors[iconIndex]};">${icons[iconIndex]}</span>
+                        <span class="unit-icon" style="background: ${iconColors[iconIndex]}20; color: ${iconColors[iconIndex]};"><i class="${icons[iconIndex]}"></i></span>
                         <span class="unit-number">${semana.titulo.toUpperCase()}</span>
                         <h4>${semana.descripcion}</h4>
                         <div class="trabajos-count">
-                            <span>📁</span>
+                            <span><i class="fa-solid fa-file-lines"></i></span>
                             <span>${trabajosCount} trabajo(s) subido(s)</span>
                         </div>
                     </div>
@@ -1158,15 +1167,15 @@
         }
 
         async function abrirSemana(numero, titulo) {
-            document.getElementById('modalTitle').textContent = '📚 ' + titulo;
+            document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-database"></i> ' + titulo;
             document.getElementById('trabajosModal').classList.add('show');
             const content = document.getElementById('modalContent');
-            content.innerHTML = '<div class="no-trabajos"><span class="icon">⏳</span>Cargando trabajos...</div>';
+            content.innerHTML = '<div class="no-trabajos"><i class="fa-solid fa-spinner fa-spin"></i> Cargando trabajos...</div>';
 
             try {
                 const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(numero);
                 if (trabajos.length === 0) {
-                    content.innerHTML = '<div class="no-trabajos"><span class="icon">📭</span><p>No hay trabajos subidos en esta semana</p></div>';
+                    content.innerHTML = '<div class="no-trabajos"><i class="fa-regular fa-folder-open"></i><p>No hay trabajos subidos en esta semana</p></div>';
                     return;
                 }
                 content.innerHTML = trabajos.map((t, index) => `
