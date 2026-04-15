@@ -183,15 +183,6 @@ const supabase = {
         },
 
         async signOut() {
-            const accessToken = localStorage.getItem('sb_access_token');
-            if (accessToken) {
-                try {
-                    await fetch(`${supabase.url}/auth/v1/logout`, {
-                        method: 'POST',
-                        headers: { ...supabase.headers, 'Authorization': `Bearer ${accessToken}` }
-                    });
-                } catch (e) { /* Ignore logout errors */ }
-            }
             localStorage.removeItem('sb_access_token');
             localStorage.removeItem('sb_refresh_token');
             localStorage.removeItem('supabase_auth_token');
@@ -210,14 +201,25 @@ const supabase = {
             try {
                 const response = await fetch(`${supabase.url}/storage/v1/object/${STORAGE_BUCKET}/${path}`, {
                     method: 'POST',
-                    headers: { 'Authorization': `Bearer ${accessToken}` },
+                    headers: { 
+                        'Authorization': `Bearer ${accessToken || SUPABASE_ANON_KEY}`,
+                        'apikey': SUPABASE_ANON_KEY,
+                        'x-upsert': 'true'
+                    },
                     body: formData
                 });
+                
+                if (!response.ok) {
+                    const text = await response.text();
+                    console.error('Error upload:', response.status, text);
+                    throw new Error(`Error al subir archivo: ${response.status}`);
+                }
+                
                 const data = await response.json();
-                if (!response.ok) throw new Error(data.error || 'Error al subir archivo');
                 connectionStatus = 'connected';
                 return data;
             } catch (error) {
+                console.error('Upload error:', error);
                 throw new Error(error.message || 'Error al subir archivo');
             }
         },
@@ -263,19 +265,15 @@ async function obtenerUsuarioActual() {
             return null;
         }
         
-        console.log('Usuario desde localStorage:', userId, userEmail);
+        const isAdminEmail = ADMIN_EMAILS.includes(userEmail?.toLowerCase());
         
         let profile = null;
-        
         try {
             const profiles = await supabase.request('GET', `/profiles?id=eq.${userId}&select=*`);
             profile = profiles.length > 0 ? profiles[0] : null;
-            console.log('Profile:', profile);
         } catch (e) {
-            console.warn('No se pudo obtener perfil');
+            console.warn('No se pudo obtener perfil, usando datos basicos');
         }
-        
-        const isAdminEmail = ADMIN_EMAILS.includes(userEmail?.toLowerCase());
         
         return {
             id: userId,
@@ -285,6 +283,11 @@ async function obtenerUsuarioActual() {
         };
     } catch (error) {
         console.error('Error en obtenerUsuarioActual:', error);
+        const userId = localStorage.getItem('user_id');
+        const userEmail = localStorage.getItem('user_email');
+        if (userId) {
+            return { id: userId, email: userEmail, isAdmin: false };
+        }
         return null;
     }
 }
@@ -409,33 +412,30 @@ async function obtenerTrabajosPorSemana(numeroSemana) {
 
 async function subirTrabajo(archivo, numeroSemana, descripcion = '') {
     const accessToken = localStorage.getItem('sb_access_token');
-    if (!accessToken) throw new Error('No hay sesión activa. Inicia sesión primero.');
+    if (!accessToken) throw new Error('No hay sesion activa. Inicia sesion primero.');
     
-    console.log('Iniciando subida de archivo...');
+    const userId = localStorage.getItem('user_id');
+    const userEmail = localStorage.getItem('user_email');
+    if (!userId) throw new Error('Usuario no encontrado. Inicia sesion nuevamente.');
     
-    const user = await obtenerUsuarioActual();
-    if (!user) throw new Error('Usuario no encontrado. Inicia sesión nuevamente.');
-    
-    console.log('Usuario:', user);
+    const user = { id: userId, email: userEmail };
 
     const extension = archivo.name.split('.').pop();
     const nombreArchivo = `${user.id}_semana${numeroSemana}_${Date.now()}.${extension}`;
     const rutaArchivo = `${user.id}/${nombreArchivo}`;
 
-    console.log('Subiendo archivo a storage:', rutaArchivo);
-    
     try {
-        const uploadResult = await supabase.storage.upload(rutaArchivo, archivo, accessToken);
-        console.log('Archivo subido:', uploadResult);
+        await supabase.storage.upload(rutaArchivo, archivo, accessToken);
     } catch (uploadError) {
         console.error('Error al subir archivo:', uploadError);
-        throw new Error('Error al subir archivo: ' + uploadError.message);
+        const errorMsg = uploadError.message || 'Error al subir archivo';
+        if (errorMsg.includes('401') || errorMsg.includes('Unauthorized')) {
+            throw new Error('No tienes permiso para subir. Verifica que las politicas RLS del bucket esten configuradas.');
+        }
+        throw new Error(errorMsg);
     }
 
     const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${rutaArchivo}`;
-    console.log('URL pública:', publicUrl);
-
-    console.log('Guardando en base de datos...');
     
     const result = await supabase.request('POST', '/trabajos', {
         usuario_id: user.id,
@@ -445,8 +445,6 @@ async function subirTrabajo(archivo, numeroSemana, descripcion = '') {
         descripcion: descripcion,
         estado: 'pendiente'
     });
-    
-    console.log('Trabajo guardado:', result);
     
     return result;
 }
