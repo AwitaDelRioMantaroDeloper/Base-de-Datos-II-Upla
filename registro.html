@@ -397,8 +397,14 @@
                 const result = await window.PortafolioAuth.registrar(email, password, nombre);
                 console.log('Registro exitoso:', result);
                 
+<<<<<<< HEAD
+                localStorage.setItem('pending_confirmation_email', email);
+                
+                window.location.href = 'authentication.html';
+=======
                 document.getElementById('confirmEmail').textContent = email;
                 document.getElementById('confirmModal').classList.add('show');
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                 
             } catch (error) {
                 console.error('Error registro:', error);

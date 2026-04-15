@@ -230,6 +230,14 @@ const supabase = {
 
 // ===== FUNCIONES DE AUTENTICACIÓN =====
 
+<<<<<<< HEAD
+const ADMIN_EMAILS = [
+    'admin@ms.upla.edu.pe',
+    'andymendozavillanueva@gmail.com'
+];
+
+=======
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
 function getConnectionStatus() {
     return connectionStatus;
 }
@@ -270,11 +278,20 @@ async function obtenerUsuarioActual() {
             console.warn('No se pudo obtener perfil');
         }
         
+<<<<<<< HEAD
+        const isAdminEmail = ADMIN_EMAILS.includes(userEmail?.toLowerCase());
+        
+=======
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         return {
             id: userId,
             email: userEmail,
             nombreCompleto: profile?.nombre_completo || userEmail,
+<<<<<<< HEAD
+            isAdmin: profile?.is_admin === true || profile?.is_admin === 'true' || isAdminEmail
+=======
             isAdmin: profile?.is_admin === true || profile?.is_admin === 'true' || false
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         };
     } catch (error) {
         console.error('Error en obtenerUsuarioActual:', error);
@@ -497,6 +514,10 @@ if (typeof window !== 'undefined') {
         SUPABASE_URL,
         SUPABASE_ANON_KEY,
         STORAGE_BUCKET,
+<<<<<<< HEAD
+        ADMIN_EMAILS,
+=======
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         getConnectionStatus,
         verificarConexion,
         verificarSesion,

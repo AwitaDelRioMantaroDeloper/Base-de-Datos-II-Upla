@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación Completada - BDII</title>
+    <link rel="icon" type="image/svg+xml" href="file.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--celeste) 100%);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='40' cy='40' r='30' fill='%23ffffff' fill-opacity='0.03'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: floatBg 30s linear infinite;
+        }
+
+        @keyframes floatBg {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-80px, -80px); }
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 63, 122, 0.3);
+            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+            border-radius: 50% 50% 0 0;
+        }
+
+        .header-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255,255,255,0); }
+        }
+
+        .header-logo i {
+            font-size: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .content {
+            padding: 60px 35px 40px;
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 80px;
+            margin-bottom: 25px;
+            display: inline-block;
+            animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            width: 120px;
+            height: 120px;
+            line-height: 120px;
+            border-radius: 50%;
+        }
+
+        .icon i {
+            color: #2E7D32;
+            font-size: 50px;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #2E7D32;
+            margin-bottom: 15px;
+            animation: fadeIn 0.6s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out 0.4s both;
+        }
+
+        .text strong {
+            color: #2E7D32;
+            font-weight: 600;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #2E7D32, #388E3C);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            animation: fadeIn 0.6s ease-out 0.5s both;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(46, 125, 50, 0.5);
+            background: linear-gradient(135deg, #388E3C, #43A047);
+        }
+
+        .button:active {
+            transform: translateY(-1px);
+        }
+
+        .button-secondary {
+            background: transparent;
+            color: #003D7A;
+            border: 2px solid #4FC3F7;
+            box-shadow: none;
+            margin-left: 10px;
+        }
+
+        .button-secondary:hover {
+            background: #E1F5FE;
+            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
+        }
+
+        .footer {
+            padding: 25px;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            background: linear-gradient(135deg, #F8FBFF 0%, #F3F8FF 100%);
+            border-top: 1px solid #E8EEF7;
+        }
+
+        .footer a {
+            color: #4FC3F7;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #003D7A;
+            text-decoration: underline;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 35px 20px;
+            }
+
+            .title {
+                font-size: 22px;
+            }
+
+            .icon {
+                font-size: 60px;
+                width: 100px;
+                height: 100px;
+                line-height: 100px;
+            }
+
+            .icon i {
+                font-size: 40px;
+            }
+
+            .text {
+                font-size: 14px;
+            }
+
+            .button {
+                padding: 14px 25px;
+                font-size: 15px;
+                display: block;
+                margin: 10px auto;
+            }
+
+            .button-secondary {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="card">
+
+        <div class="header">
+            <div class="header-logo">
+                <i class="fas fa-check"></i>
+            </div>
+            <h1>BDII</h1>
+        </div>
+
+        <div class="content">
+            <div class="icon">
+                <i class="fas fa-circle-check"></i>
+            </div>
+
+            <div class="title">¡Cuenta Verificada!</div>
+
+            <div class="text">
+                Tu cuenta ha sido confirmada exitosamente.<br>
+                Ahora puedes <strong>iniciar sesión</strong> y comenzar a usar la plataforma de portafolio.
+            </div>
+
+            <a href="login.html" class="button">
+                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+            </a>
+
+            <a href="index.html" class="button button-secondary">
+                <i class="fas fa-home"></i> Ir al Inicio
+            </a>
+        </div>
+
+        <div class="footer">
+            <i class="fas fa-graduation-cap"></i> Universidad Peruana Los Andes - Base de Datos II
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        createConfetti();
+    });
+
+    function createConfetti() {
+        const colors = ['#4FC3F7', '#81D4FA', '#2E7D32', '#4CAF50', '#FFC107', '#FF5722'];
+        const body = document.body;
+        
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }, i * 100);
+        }
+    }
+</script>
+
+</body>
+</html>

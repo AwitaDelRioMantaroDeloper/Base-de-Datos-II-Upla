@@ -761,6 +761,25 @@
             align-items: center;
             gap: 0.5rem;
         }
+<<<<<<< HEAD
+        html.dark-mode .profile-cycle { color: #90CAF9; }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .logout-btn-header {
+            background: rgba(211, 47, 47, 0.9);
+            color: white;
+            border: 2px solid rgba(211, 47, 47, 0.5);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+=======
         html.dark-mode .profile-cycle { color: #B8C5D3; }
         .profile-cycle i {
             color: var(--celeste);
@@ -786,10 +805,24 @@
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 1rem;
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
+<<<<<<< HEAD
+        .logout-btn-header:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+        }
+        html.dark-mode .logout-btn-header {
+            background: rgba(211, 47, 47, 0.8);
+        }
+        html.dark-mode .logout-btn-header:hover {
+            background: var(--danger);
+=======
         html.dark-mode .about-me h4 {
             color: var(--celeste);
         }
@@ -823,12 +856,182 @@
         }
         html.dark-mode .profile-cycle {
             color: #90CAF9;
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         }
         .skills-grid {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
+<<<<<<< HEAD
+        
+        .aprendizaje-section {
+            margin-top: 2rem;
+        }
+        .units-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 900px) {
+            .units-container { grid-template-columns: 1fr; }
+        }
+        .learning-unit {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(79, 195, 247, 0.1);
+            transition: all 0.4s ease;
+        }
+        html.dark-mode .learning-unit {
+            background: #1B2838;
+            border-color: rgba(79, 195, 247, 0.2);
+        }
+        .learning-unit:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .unit-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        html.dark-mode .unit-header {
+            background: linear-gradient(135deg, #1B3A4B 0%, #264653 100%);
+        }
+        .unit-header:hover {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--celeste) 100%);
+        }
+        .unit-header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .unit-header-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .unit-header h3 {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .unit-header p {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.85rem;
+        }
+        .unit-toggle {
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .learning-unit.expanded .unit-toggle {
+            transform: rotate(180deg);
+        }
+        .unit-weeks {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .learning-unit.expanded .unit-weeks {
+            max-height: 600px;
+        }
+        .weeks-list {
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+        @media (max-width: 600px) {
+            .weeks-list { grid-template-columns: 1fr; }
+        }
+        .week-card {
+            background: var(--celeste-pale);
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        html.dark-mode .week-card {
+            background: #1E3A5F;
+        }
+        .week-card:hover {
+            background: var(--white);
+            border-color: var(--celeste);
+            transform: translateX(5px);
+            box-shadow: var(--shadow);
+        }
+        html.dark-mode .week-card:hover {
+            background: #234B6E;
+        }
+        .week-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .week-number {
+            background: var(--celeste);
+            color: var(--primary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        html.dark-mode .week-number {
+            background: var(--celeste);
+            color: white;
+        }
+        .week-trabajos {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .week-card h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+        html.dark-mode .week-card h4 { color: var(--celeste); }
+        .week-card p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .week-icon {
+            color: var(--celeste);
+            font-size: 1.2rem;
+        }
+        .week-arrow {
+            color: var(--celeste);
+            transition: transform 0.3s ease;
+        }
+        .week-card:hover .week-arrow {
+            transform: translateX(5px);
+        }
+=======
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         .skill-item {
             display: flex;
             align-items: center;
@@ -848,7 +1051,11 @@
             box-shadow: var(--shadow-hover);
         }
         .skill-icon {
+<<<<<<< HEAD
+            font-size: 1.5rem;
+=======
             font-size: 1.8rem;
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
             width: 50px;
             height: 50px;
             display: flex;
@@ -857,6 +1064,10 @@
             background: linear-gradient(135deg, var(--celeste), var(--primary));
             border-radius: 12px;
             flex-shrink: 0;
+<<<<<<< HEAD
+            color: white;
+=======
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         }
         .skill-info h4 {
             font-size: 1rem;
@@ -962,21 +1173,33 @@
                     </div>
                     <div class="skills-grid">
                         <div class="skill-item">
+<<<<<<< HEAD
+                            <span class="skill-icon"><i class="fa-solid fa-laptop-code"></i></span>
+=======
                             <span class="skill-icon">💻</span>
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                             <div class="skill-info">
                                 <h4>Programación</h4>
                                 <p>Java y C# nivel básico-intermedio</p>
                             </div>
                         </div>
                         <div class="skill-item">
+<<<<<<< HEAD
+                            <span class="skill-icon"><i class="fa-solid fa-users"></i></span>
+=======
                             <span class="skill-icon">👥</span>
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                             <div class="skill-info">
                                 <h4>Liderazgo</h4>
                                 <p>Trabajo en equipo y organización</p>
                             </div>
                         </div>
                         <div class="skill-item">
+<<<<<<< HEAD
+                            <span class="skill-icon"><i class="fa-solid fa-bullseye"></i></span>
+=======
                             <span class="skill-icon">🎯</span>
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                             <div class="skill-info">
                                 <h4>Objetivo</h4>
                                 <p>Desarrollo de software</p>
@@ -990,11 +1213,19 @@
 
     <div class="container">
         <div class="section-title">
+<<<<<<< HEAD
+            <h3><i class="fa-solid fa-book-open"></i> Unidades de Aprendizaje</h3>
+            <p>Explora las 4 unidades del curso, cada una con 4 semanas de contenido</p>
+        </div>
+        <div class="units-container" id="aprendizajeContainer">
+            <div class="loading" style="grid-column: 1/-1;">Cargando unidades...</div>
+=======
             <h3>Semanas de Aprendizaje</h3>
             <p>Selecciona una semana para ver los trabajos subidos</p>
         </div>
         <div class="units-grid" id="unitsGrid">
             <div class="no-trabajos">Cargando unidades...</div>
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         </div>
     </div>
 
@@ -1016,11 +1247,63 @@
 
     <script src="auth.js"></script>
     <script>
+<<<<<<< HEAD
+        const UNIDADES = [
+            {
+                numero: 1,
+                titulo: 'Fundamentos de BD',
+                descripcion: 'Conceptos básicos y modelado',
+                icono: 'fa-solid fa-database',
+                semanas: [
+                    { numero: 1, titulo: 'Introducción a SQL', descripcion: 'Conceptos básicos de bases de datos' },
+                    { numero: 2, titulo: 'Consultas Básicas', descripcion: 'SELECT, WHERE y filtros' },
+                    { numero: 3, titulo: 'Funciones SQL', descripcion: 'COUNT, SUM, AVG, MAX, MIN' },
+                    { numero: 4, titulo: 'Agrupación', descripcion: 'GROUP BY y HAVING' }
+                ]
+            },
+            {
+                numero: 2,
+                titulo: 'Consultas Avanzadas',
+                descripcion: 'JOINs y subconsultas',
+                icono: 'fa-solid fa-link',
+                semanas: [
+                    { numero: 5, titulo: 'JOINs Internos', descripcion: 'INNER JOIN y relaciones' },
+                    { numero: 6, titulo: 'JOINs Externos', descripcion: 'LEFT, RIGHT y FULL JOIN' },
+                    { numero: 7, titulo: 'Subconsultas', descripcion: 'Consultas anidadas' },
+                    { numero: 8, titulo: 'Vistas', descripcion: 'Creación y uso de vistas' }
+                ]
+            },
+            {
+                numero: 3,
+                titulo: 'Optimización',
+                descripcion: 'Índices y rendimiento',
+                icono: 'fa-solid fa-bolt',
+                semanas: [
+                    { numero: 9, titulo: 'Índices', descripcion: 'Creación y tipos de índices' },
+                    { numero: 10, titulo: 'Optimización', descripcion: 'Análisis de rendimiento' },
+                    { numero: 11, titulo: 'Transacciones', descripcion: 'BEGIN, COMMIT, ROLLBACK' },
+                    { numero: 12, titulo: 'Procedimientos', descripcion: 'Stored Procedures' }
+                ]
+            },
+            {
+                numero: 4,
+                titulo: 'Administración',
+                descripcion: 'Seguridad y respaldo',
+                icono: 'fa-solid fa-shield-halved',
+                semanas: [
+                    { numero: 13, titulo: 'Seguridad', descripcion: 'Usuarios y permisos' },
+                    { numero: 14, titulo: 'Respaldo', descripcion: 'Backup y restore' },
+                    { numero: 15, titulo: 'Normalización', descripcion: 'Formas normales' },
+                    { numero: 16, titulo: 'Proyecto Final', descripcion: 'Caso práctico integrador' }
+                ]
+            }
+=======
         const SEMANAS = [
             { numero: 1, titulo: 'Semana 1', descripcion: 'Introducción a SQL y Bases de Datos' },
             { numero: 2, titulo: 'Semana 2', descripcion: 'Consultas Avanzadas y JOINs' },
             { numero: 3, titulo: 'Semana 3', descripcion: 'Índices y Optimización de Consultas' },
             { numero: 4, titulo: 'Semana 4', descripcion: 'Transacciones y Seguridad en BD' }
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         ];
 
         function updateThemeIcon() {
@@ -1072,6 +1355,21 @@
                 authButtons.innerHTML = `
                     <div class="user-dropdown">
                         <div class="user-info">
+<<<<<<< HEAD
+                            <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                            <span class="name">${nombre.split('@')[0]}</span>
+                            <span style="font-size: 0.7rem;"><i class="fa-solid fa-chevron-down"></i></span>
+                        </div>
+                        <div class="user-dropdown-content">
+                            ${isAdmin ? '<a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>' : ''}
+                        </div>
+                    </div>
+                    ${isAdmin ? '<span style="background: var(--celeste); color: var(--primary); padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.7rem; font-weight: 700;">ADMIN</span>' : ''}
+                    <button class="logout-btn-header" onclick="handleLogout()" title="Cerrar Sesión">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span style="display: none;" class="logout-text">Salir</span>
+                    </button>
+=======
                             <div class="avatar">👤</div>
                             <span class="name">${nombre.split('@')[0]}</span>
                             <span style="font-size: 0.7rem;">▼</span>
@@ -1089,6 +1387,7 @@
                         </div>
                     </div>
                     ${isAdmin ? '<span style="background: var(--celeste); color: var(--primary); padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.7rem; font-weight: 700;">ADMIN</span>' : ''}
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                 `;
                 
                 if (navDashboard) {
@@ -1111,8 +1410,17 @@
         }
 
         async function handleLogout() {
+<<<<<<< HEAD
+            try {
+                await window.PortafolioAuth.logout();
+            } catch (e) {
+                console.error('Error al cerrar sesión:', e);
+            }
+            window.location.href = 'index.html';
+=======
             await window.PortafolioAuth.logout();
             window.location.reload();
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         }
 
         function formatDate(dateString) {
@@ -1122,6 +1430,80 @@
         }
 
         async function renderUnidades() {
+<<<<<<< HEAD
+            const container = document.getElementById('aprendizajeContainer');
+            container.innerHTML = '';
+
+            const trabajosCache = {};
+            for (let i = 1; i <= 4; i++) {
+                try {
+                    const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(i);
+                    trabajosCache[i] = trabajos.length;
+                } catch (e) {
+                    trabajosCache[i] = 0;
+                }
+            }
+
+            const unitIcons = ['fa-solid fa-database', 'fa-solid fa-link', 'fa-solid fa-bolt', 'fa-solid fa-shield-halved'];
+
+            UNIDADES.forEach((unidad, index) => {
+                const unitEl = document.createElement('div');
+                unitEl.className = 'learning-unit';
+                unitEl.id = 'unit-' + unidad.numero;
+
+                const semanasHTML = unidad.semanas.map(semana => {
+                    const numBackend = semana.numero <= 4 ? semana.numero : 1;
+                    const count = trabajosCache[numBackend] || 0;
+                    return `
+                        <div class="week-card" onclick="abrirSemana(${semana.numero}, 'Semana ${semana.numero}')">
+                            <div class="week-card-header">
+                                <span class="week-number">Semana ${semana.numero}</span>
+                                <span class="week-trabajos"><i class="fa-solid fa-file-lines"></i> ${count}</span>
+                            </div>
+                            <h4>${semana.titulo}</h4>
+                            <p>${semana.descripcion}</p>
+                            <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+                                <span class="week-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                unitEl.innerHTML = `
+                    <div class="unit-header" onclick="toggleUnit(${unidad.numero})">
+                        <div class="unit-header-left">
+                            <div class="unit-header-icon">
+                                <i class="${unitIcons[index]}"></i>
+                            </div>
+                            <div>
+                                <h3>Unidad ${romanianNumber(unidad.numero)}</h3>
+                                <p>${unidad.titulo} - ${unidad.descripcion}</p>
+                            </div>
+                        </div>
+                        <div class="unit-toggle">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="unit-weeks">
+                        <div class="weeks-list">
+                            ${semanasHTML}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(unitEl);
+            });
+        }
+
+        function romanianNumber(num) {
+            const numbers = ['I', 'II', 'III', 'IV'];
+            return numbers[num - 1] || num;
+        }
+
+        function toggleUnit(num) {
+            const unit = document.getElementById('unit-' + num);
+            unit.classList.toggle('expanded');
+=======
             const grid = document.getElementById('unitsGrid');
             grid.innerHTML = '';
 
@@ -1149,6 +1531,7 @@
                     </div>
                 `;
             }
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         }
 
         function handleCardHover(e) {
@@ -1167,13 +1550,22 @@
         }
 
         async function abrirSemana(numero, titulo) {
+<<<<<<< HEAD
+            document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-calendar-week"></i> ' + titulo;
+=======
             document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-database"></i> ' + titulo;
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
             document.getElementById('trabajosModal').classList.add('show');
             const content = document.getElementById('modalContent');
             content.innerHTML = '<div class="no-trabajos"><i class="fa-solid fa-spinner fa-spin"></i> Cargando trabajos...</div>';
 
             try {
+<<<<<<< HEAD
+                const numBackend = numero <= 4 ? numero : (numero % 4 || 4);
+                const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(numBackend);
+=======
                 const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(numero);
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                 if (trabajos.length === 0) {
                     content.innerHTML = '<div class="no-trabajos"><i class="fa-regular fa-folder-open"></i><p>No hay trabajos subidos en esta semana</p></div>';
                     return;
@@ -1182,8 +1574,13 @@
                     <div class="trabajo-item" style="animation-delay: ${index * 0.1}s">
                         <div class="trabajo-info">
                             <span class="trabajo-nombre">${t.nombre_archivo}</span>
+<<<<<<< HEAD
+                            <span class="trabajo-fecha"><i class="fa-solid fa-clock"></i> ${formatDate(t.created_at)}</span>
+                            ${t.descripcion ? '<span class="trabajo-fecha"><i class="fa-solid fa-note-sticky"></i> ' + t.descripcion + '</span>' : ''}
+=======
                             <span class="trabajo-fecha">📅 ${formatDate(t.created_at)}</span>
                             ${t.descripcion ? '<span class="trabajo-fecha">📝 ' + t.descripcion + '</span>' : ''}
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.8rem;">
                             <span class="badge badge-${t.estado}">${t.estado}</span>
@@ -1192,7 +1589,11 @@
                     </div>
                 `).join('');
             } catch (error) {
+<<<<<<< HEAD
+                content.innerHTML = '<div class="no-trabajos"><i class="fa-solid fa-circle-exclamation"></i><p>Error al cargar trabajos</p></div>';
+=======
                 content.innerHTML = '<div class="no-trabajos"><span class="icon">❌</span><p>Error al cargar trabajos</p></div>';
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
             }
         }
 
@@ -1212,6 +1613,13 @@
             document.getElementById('trabajosModal').addEventListener('click', (e) => {
                 if (e.target.id === 'trabajosModal') closeModal();
             });
+<<<<<<< HEAD
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
+            });
+=======
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         });
     </script>
 </body>

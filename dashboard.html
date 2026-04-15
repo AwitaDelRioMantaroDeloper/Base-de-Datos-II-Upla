@@ -365,6 +365,135 @@
         }
         .btn-upload:disabled { opacity: 0.6; cursor: not-allowed; }
         
+<<<<<<< HEAD
+        .week-selector {
+            background: var(--celeste-pale);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 2px solid var(--celeste);
+        }
+        html.dark-mode .week-selector {
+            background: #1E3A5F;
+            border-color: rgba(79, 195, 247, 0.3);
+        }
+        .week-selector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 500px) {
+            .week-selector-grid { grid-template-columns: 1fr; }
+        }
+        .week-selector-unit {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        html.dark-mode .week-selector-unit {
+            background: #1B2838;
+        }
+        .week-selector-unit:hover {
+            border-color: var(--celeste);
+        }
+        .week-selector-unit.active {
+            border-color: var(--celeste);
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
+        }
+        .week-selector-unit-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        html.dark-mode .week-selector-unit-header {
+            background: linear-gradient(135deg, #1B3A4B, #264653);
+        }
+        .week-selector-unit-header .fa-chevron-down {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+            font-size: 0.75rem;
+        }
+        .week-selector-unit.expanded .week-selector-unit-header .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        .week-selector-options {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .week-selector-unit.expanded .week-selector-options {
+            max-height: 200px;
+        }
+        .week-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--celeste-pale);
+        }
+        html.dark-mode .week-option {
+            border-bottom-color: rgba(79, 195, 247, 0.1);
+            color: #F0F4F8;
+        }
+        .week-option:hover {
+            background: var(--celeste-pale);
+        }
+        html.dark-mode .week-option:hover {
+            background: #2A4A6F;
+        }
+        .week-option input[type="radio"] {
+            accent-color: var(--celeste);
+            transform: scale(1.2);
+        }
+        .week-option.selected {
+            background: rgba(79, 195, 247, 0.2);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        html.dark-mode .week-option.selected {
+            background: rgba(79, 195, 247, 0.3);
+            color: var(--celeste);
+        }
+        .selected-semana {
+            background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
+            color: var(--primary);
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+            justify-content: center;
+        }
+        html.dark-mode .selected-semana {
+            background: linear-gradient(135deg, var(--celeste), #00B4D8);
+            color: white;
+        }
+        .selected-semana i {
+            font-size: 1.1rem;
+        }
+        .upload-card .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+=======
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         /* FILTERS */
         .filters-card {
             background: var(--bg-card);
@@ -596,12 +725,83 @@
         </div>
 
         <div class="dashboard-grid">
+<<<<<<< HEAD
+            <div class="card upload-card">
+=======
             <div class="card">
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                 <div class="card-header">
                     <i class="fa-solid fa-cloud-upload-alt"></i>
                     <h3>Subir Trabajo</h3>
                 </div>
                 <form onsubmit="handleUpload(event)">
+<<<<<<< HEAD
+                    <div class="week-selector">
+                        <div class="section-header" style="margin-bottom: 1rem;">
+                            <h4 style="font-size: 1rem; color: var(--text-dark);"><i class="fa-solid fa-layer-group"></i> Selecciona una Unidad</h4>
+                        </div>
+                        <div class="week-selector-grid">
+                            <div class="week-selector-unit" onclick="toggleUnitSelector(1)" id="unitSelector1">
+                                <div class="week-selector-unit-header">
+                                    <i class="fa-solid fa-database"></i>
+                                    <span>Unidad I</span>
+                                    <i class="fa-solid fa-chevron-down unit-selector-arrow"></i>
+                                </div>
+                                <div class="week-selector-options" id="unitOptions1">
+                                    <label class="week-option"><input type="radio" name="semana" value="1" onchange="selectSemana(1)"> <i class="fa-solid fa-1"></i> Semana 1</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="2" onchange="selectSemana(2)"> <i class="fa-solid fa-2"></i> Semana 2</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="3" onchange="selectSemana(3)"> <i class="fa-solid fa-3"></i> Semana 3</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="4" onchange="selectSemana(4)"> <i class="fa-solid fa-4"></i> Semana 4</label>
+                                </div>
+                            </div>
+                            <div class="week-selector-unit" onclick="toggleUnitSelector(2)" id="unitSelector2">
+                                <div class="week-selector-unit-header">
+                                    <i class="fa-solid fa-link"></i>
+                                    <span>Unidad II</span>
+                                    <i class="fa-solid fa-chevron-down unit-selector-arrow"></i>
+                                </div>
+                                <div class="week-selector-options" id="unitOptions2">
+                                    <label class="week-option"><input type="radio" name="semana" value="5" onchange="selectSemana(5)"> <i class="fa-solid fa-5"></i> Semana 5</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="6" onchange="selectSemana(6)"> <i class="fa-solid fa-6"></i> Semana 6</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="7" onchange="selectSemana(7)"> <i class="fa-solid fa-7"></i> Semana 7</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="8" onchange="selectSemana(8)"> <i class="fa-solid fa-8"></i> Semana 8</label>
+                                </div>
+                            </div>
+                            <div class="week-selector-unit" onclick="toggleUnitSelector(3)" id="unitSelector3">
+                                <div class="week-selector-unit-header">
+                                    <i class="fa-solid fa-bolt"></i>
+                                    <span>Unidad III</span>
+                                    <i class="fa-solid fa-chevron-down unit-selector-arrow"></i>
+                                </div>
+                                <div class="week-selector-options" id="unitOptions3">
+                                    <label class="week-option"><input type="radio" name="semana" value="9" onchange="selectSemana(9)"> <i class="fa-solid fa-9"></i> Semana 9</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="10" onchange="selectSemana(10)"> <i class="fa-solid fa-1"></i><i class="fa-solid fa-0"></i> Semana 10</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="11" onchange="selectSemana(11)"> <i class="fa-solid fa-1"></i><i class="fa-solid fa-1"></i> Semana 11</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="12" onchange="selectSemana(12)"> <i class="fa-solid fa-1"></i><i class="fa-solid fa-2"></i> Semana 12</label>
+                                </div>
+                            </div>
+                            <div class="week-selector-unit" onclick="toggleUnitSelector(4)" id="unitSelector4">
+                                <div class="week-selector-unit-header">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    <span>Unidad IV</span>
+                                    <i class="fa-solid fa-chevron-down unit-selector-arrow"></i>
+                                </div>
+                                <div class="week-selector-options" id="unitOptions4">
+                                    <label class="week-option"><input type="radio" name="semana" value="13" onchange="selectSemana(13)"> <i class="fa-solid fa-1"></i><i class="fa-solid fa-3"></i> Semana 13</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="14" onchange="selectSemana(14)"> <i class="fa-solid fa-1"></i><i class="fa-solid fa-4"></i> Semana 14</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="15" onchange="selectSemana(15)"> <i class="fa-solid fa-1"></i><i class="fa-solid fa-5"></i> Semana 15</label>
+                                    <label class="week-option"><input type="radio" name="semana" value="16" onchange="selectSemana(16)"> <i class="fa-solid fa-1"></i><i class="fa-solid fa-6"></i> Semana 16</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selected-semana" id="selectedSemanaDisplay">
+                            <i class="fa-solid fa-check-circle"></i> Semana: <span id="selectedSemanaText">Ninguna</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="numeroSemana" value="">
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label><i class="fa-solid fa-note-sticky"></i> Descripción (opcional)</label>
+=======
                     <div class="form-group">
                         <label>Semana</label>
                         <select id="numeroSemana" required>
@@ -614,6 +814,7 @@
                     </div>
                     <div class="form-group">
                         <label>Descripción (opcional)</label>
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                         <input type="text" id="descripcion" placeholder="Descripción del trabajo">
                     </div>
                     <div class="upload-area" onclick="document.getElementById('archivo').click()">
@@ -657,6 +858,36 @@
 
         <div class="filters-card">
             <span style="font-weight: 600; color: var(--text-dark);"><i class="fa-solid fa-filter"></i> Filtros:</span>
+<<<<<<< HEAD
+            <div class="filter-group" style="flex: 1;">
+                <label>Semana:</label>
+                <select id="filterSemana" onchange="filtrarTrabajos()" style="min-width: 150px;">
+                    <option value="">Todas</option>
+                    <optgroup label="Unidad I">
+                        <option value="1">Semana 1</option>
+                        <option value="2">Semana 2</option>
+                        <option value="3">Semana 3</option>
+                        <option value="4">Semana 4</option>
+                    </optgroup>
+                    <optgroup label="Unidad II">
+                        <option value="5">Semana 5</option>
+                        <option value="6">Semana 6</option>
+                        <option value="7">Semana 7</option>
+                        <option value="8">Semana 8</option>
+                    </optgroup>
+                    <optgroup label="Unidad III">
+                        <option value="9">Semana 9</option>
+                        <option value="10">Semana 10</option>
+                        <option value="11">Semana 11</option>
+                        <option value="12">Semana 12</option>
+                    </optgroup>
+                    <optgroup label="Unidad IV">
+                        <option value="13">Semana 13</option>
+                        <option value="14">Semana 14</option>
+                        <option value="15">Semana 15</option>
+                        <option value="16">Semana 16</option>
+                    </optgroup>
+=======
             <div class="filter-group">
                 <label>Semana:</label>
                 <select id="filterSemana" onchange="filtrarTrabajos()">
@@ -665,6 +896,7 @@
                     <option value="2">Semana 2</option>
                     <option value="3">Semana 3</option>
                     <option value="4">Semana 4</option>
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                 </select>
             </div>
             <div class="filter-group">
@@ -690,7 +922,11 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
+<<<<<<< HEAD
+                    <tr><td colspan="5" class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Cargando...</td></tr>
+=======
                     <tr><td colspan="5" class="loading">⏳ Cargando trabajos...</td></tr>
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                 </tbody>
             </table>
         </div>
@@ -787,6 +1023,41 @@
             document.getElementById('filePreview').style.display = 'none';
         }
 
+<<<<<<< HEAD
+        let selectedSemanaValue = null;
+
+        function toggleUnitSelector(unitNum) {
+            const unit = document.getElementById('unitSelector' + unitNum);
+            const wasExpanded = unit.classList.contains('expanded');
+            
+            document.querySelectorAll('.week-selector-unit').forEach(u => {
+                u.classList.remove('expanded');
+            });
+            
+            if (!wasExpanded) {
+                unit.classList.add('expanded');
+            }
+        }
+
+        function selectSemana(num) {
+            selectedSemanaValue = num;
+            
+            document.querySelectorAll('.week-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            const radio = document.querySelector(`input[name="semana"][value="${num}"]`);
+            if (radio) {
+                radio.closest('.week-option').classList.add('selected');
+            }
+            
+            document.getElementById('selectedSemanaText').textContent = 'Semana ' + num;
+            
+            document.getElementById('numeroSemana').value = num;
+        }
+
+=======
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         async function handleUpload(event) {
             event.preventDefault();
             const archivo = document.getElementById('archivo').files[0];
@@ -795,7 +1066,11 @@
             const submitBtn = document.getElementById('submitBtn');
 
             if (!archivo || !semana) {
+<<<<<<< HEAD
+                showNotification('Selecciona una semana y un archivo', 'error');
+=======
                 showNotification('Completa todos los campos', 'error');
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                 return;
             }
 
@@ -807,13 +1082,23 @@
                 showNotification('¡Trabajo subido exitosamente!');
                 document.getElementById('numeroSemana').value = '';
                 document.getElementById('descripcion').value = '';
+<<<<<<< HEAD
+                document.getElementById('selectedSemanaText').textContent = 'Ninguna';
+                selectedSemanaValue = null;
+                document.querySelectorAll('.week-option').forEach(opt => opt.classList.remove('selected'));
+=======
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                 clearFile();
                 cargarDatos();
             } catch (error) {
                 showNotification(error.message || 'Error al subir', 'error');
             } finally {
                 submitBtn.disabled = false;
+<<<<<<< HEAD
+                submitBtn.innerHTML = '<i class="fa-solid fa-upload"></i> Subir Trabajo';
+=======
                 submitBtn.innerHTML = '🚀 Subir Trabajo';
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
             }
         }
 
@@ -831,7 +1116,11 @@
                 renderTable(todosLosTrabajos);
             } catch (error) {
                 console.error('Error:', error);
+<<<<<<< HEAD
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="5" class="loading"><i class="fa-solid fa-circle-exclamation"></i> Error al cargar datos</td></tr>';
+=======
                 document.getElementById('tableBody').innerHTML = '<tr><td colspan="5" class="loading">❌ Error al cargar datos</td></tr>';
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
             }
         }
 
@@ -859,9 +1148,20 @@
                 return;
             }
             
+<<<<<<< HEAD
+            tbody.innerHTML = trabajos.map(t => {
+                const unidad = Math.ceil(t.numero_semana / 4);
+                return `
+                <tr>
+                    <td>
+                        <strong>Semana ${t.numero_semana}</strong>
+                        <div style="font-size: 0.7rem; color: var(--text-secondary);">Unidad ${['I','II','III','IV'][unidad-1]}</div>
+                    </td>
+=======
             tbody.innerHTML = trabajos.map(t => `
                 <tr>
                     <td><strong>Semana ${t.numero_semana}</strong></td>
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                     <td><i class="fa-solid fa-file-lines"></i> ${t.nombre_archivo || 'Archivo'}</td>
                     <td>${formatDate(t.created_at)}</td>
                     <td><span class="badge badge-${t.estado}">${t.estado}</span></td>
@@ -871,7 +1171,11 @@
                         <button class="btn-action status" onclick="cambiarEstado('${t.id}')"><i class="fa-solid fa-check"></i></button>
                     </td>
                 </tr>
+<<<<<<< HEAD
+            `}).join('');
+=======
             `).join('');
+>>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         }
 
         async function eliminarTrabajo(trabajoId) {
