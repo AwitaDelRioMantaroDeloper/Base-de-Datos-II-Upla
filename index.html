@@ -196,6 +196,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1rem;
+            color: var(--primary);
         }
         .user-info .name {
             max-width: 150px;
@@ -236,9 +237,30 @@
         .user-dropdown-content a:hover {
             background: var(--celeste-pale);
         }
-        .user-dropdown-content .logout-btn {
-            color: var(--danger);
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .logout-btn-header {
+            background: rgba(211, 47, 47, 0.9);
+            color: white;
+            border: 2px solid rgba(211, 47, 47, 0.5);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.85rem;
             cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logout-btn-header:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
         }
         .hero {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--celeste) 100%);
@@ -303,356 +325,6 @@
             color: var(--celeste);
         }
         .section-title p { color: var(--text-secondary); font-size: 1.1rem; }
-        html.dark-mode .section-title p { color: #B8C5D3; }
-        .units-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
-        .unit-card {
-            background: var(--bg-card);
-            border: none;
-            border-radius: 20px;
-            padding: 2.5rem;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            animation: fadeInUp 0.6s ease backwards;
-        }
-        html.dark-mode .unit-card {
-            background: #1B2838;
-            border: 1px solid rgba(79, 195, 247, 0.2);
-        }
-        .unit-card:nth-child(1) { animation-delay: 0.1s; }
-        .unit-card:nth-child(2) { animation-delay: 0.2s; }
-        .unit-card:nth-child(3) { animation-delay: 0.3s; }
-        .unit-card:nth-child(4) { animation-delay: 0.4s; }
-        .unit-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--celeste));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-        }
-        .unit-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(79, 195, 247, 0.15) 0%, transparent 50%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-        .unit-card:hover::before { transform: scaleX(1); }
-        .unit-card:hover::after { opacity: 1; }
-        .unit-card:hover { 
-            transform: translateY(-12px) scale(1.02); 
-            box-shadow: var(--shadow-hover);
-        }
-        .unit-card.locked { opacity: 0.8; }
-        .unit-card.locked:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
-        .unit-card.locked::before { display: none; }
-        .unit-number {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
-            color: var(--primary);
-            padding: 0.6rem 1.2rem;
-            border-radius: 25px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
-            transition: all 0.3s ease;
-        }
-        html.dark-mode .unit-number {
-            background: linear-gradient(135deg, #4FC3F7, #00B4D8);
-            color: #FFFFFF;
-            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.4);
-        }
-        .unit-card:hover .unit-number {
-            transform: scale(1.1) rotate(-3deg);
-            box-shadow: 0 6px 20px rgba(79, 195, 247, 0.5);
-        }
-        .unit-card.locked .unit-number { 
-            background: var(--text-secondary);
-            color: white;
-            box-shadow: none;
-        }
-        .unit-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: inline-block;
-            padding: 1rem;
-            border-radius: 15px;
-            transition: all 0.4s ease;
-        }
-        .unit-card:hover .unit-icon {
-            transform: scale(1.2) rotate(10deg);
-        }
-        .unit-card h4 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--primary); transition: color 0.3s ease; }
-        html.dark-mode .unit-card h4 { color: #FFFFFF; }
-        .unit-card:hover h4 {
-            transform: translateX(5px);
-        }
-        .unit-card p { color: var(--text-secondary); font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.6; transition: color 0.3s ease; }
-        html.dark-mode .unit-card p { color: #E0E0E0; }
-        .trabajos-count { 
-            display: flex; 
-            align-items: center; 
-            gap: 0.5rem; 
-            color: var(--primary);
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            background: var(--celeste-pale);
-            border-radius: 20px;
-            display: inline-flex;
-            transition: all 0.3s ease;
-        }
-        html.dark-mode .trabajos-count {
-            background: #2A4A6F;
-            color: #FFFFFF;
-        }
-        .unit-card p { color: var(--text-secondary); font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.6; transition: color 0.3s ease; }
-        html.dark-mode .unit-card p { color: #B8C5D3; }
-        .trabajos-count { 
-            display: flex; 
-            align-items: center; 
-            gap: 0.5rem; 
-            color: var(--primary);
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            background: var(--celeste-pale);
-            border-radius: 20px;
-            display: inline-flex;
-            transition: all 0.3s ease;
-        }
-        html.dark-mode .trabajos-count {
-            background: #1E3A5F;
-            color: #4FC3F7;
-        }
-        .unit-card:hover .trabajos-count {
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
-        }
-        .lock-message { 
-            color: var(--text-secondary); 
-            font-size: 0.95rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 0.5rem; 
-            font-weight: 500;
-        }
-        html.dark-mode .lock-message { color: #B8C5D3; }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            padding: 2rem;
-        }
-        .modal.show { display: flex; align-items: center; justify-content: center; }
-        .modal-content {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 2.5rem;
-            width: 100%;
-            max-width: 650px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(79, 195, 247, 0.2);
-        }
-        html.dark-mode .modal-content {
-            background: #1B2838;
-            border-color: rgba(79, 195, 247, 0.3);
-        }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { 
-            from { opacity: 0; transform: translateY(50px) scale(0.95); } 
-            to { opacity: 1; transform: translateY(0) scale(1); } 
-        }
-        .modal-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 2rem; 
-            padding-bottom: 1rem; 
-            border-bottom: 2px solid var(--celeste-pale);
-        }
-        html.dark-mode .modal-header {
-            border-bottom-color: #2A4A6F;
-        }
-        .modal-header h3 { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
-        html.dark-mode .modal-header h3 {
-            color: var(--celeste);
-        }
-        .close-btn {
-            background: var(--celeste-pale);
-            border: none;
-            width: 45px; height: 45px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            color: var(--primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        html.dark-mode .close-btn {
-            background: #1E3A5F;
-            color: var(--celeste);
-        }
-        .close-btn:hover { 
-            background: var(--celeste); 
-            color: white; 
-            transform: rotate(90deg);
-        }
-        .trabajo-item {
-            background: var(--celeste-pale);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        html.dark-mode .trabajo-item {
-            background: #1E3A5F;
-            border: 1px solid rgba(79, 195, 247, 0.1);
-        }
-        .trabajo-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
-            background: linear-gradient(180deg, var(--celeste), var(--primary));
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-        .trabajo-item:hover::before { transform: scaleY(1); }
-        .trabajo-item:hover { 
-            background: var(--white);
-            box-shadow: var(--shadow-hover);
-            transform: translateX(10px) scale(1.02);
-        }
-        html.dark-mode .trabajo-item:hover {
-            background: #234B6E;
-            border-color: rgba(79, 195, 247, 0.3);
-        }
-        .trabajo-info { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; min-width: 0; }
-        .trabajo-nombre { font-weight: 600; color: var(--primary); font-size: 1rem; transition: color 0.3s ease; }
-        html.dark-mode .trabajo-nombre { color: #F0F4F8; }
-        .trabajo-item:hover .trabajo-nombre { color: var(--celeste); }
-        .trabajo-fecha { font-size: 0.85rem; color: var(--text-secondary); transition: color 0.3s ease; }
-        html.dark-mode .trabajo-fecha { color: #B8C5D3; }
-        .trabajo-item:hover .trabajo-fecha { color: var(--primary); }
-        .badge { 
-            padding: 0.5rem 1rem; 
-            border-radius: 20px; 
-            font-size: 0.8rem; 
-            font-weight: 600; 
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-        }
-        html.dark-mode .badge { color: #F0F4F8; }
-        .badge:hover { transform: scale(1.1); }
-        .badge-pendiente { background: rgba(245, 124, 0, 0.15); color: var(--warning); }
-        html.dark-mode .badge-pendiente { background: rgba(245, 124, 0, 0.3); color: #FFB74D; }
-        .badge-revisado { background: rgba(46, 125, 50, 0.15); color: var(--success); }
-        html.dark-mode .badge-revisado { background: rgba(46, 125, 50, 0.3); color: #81C784; }
-        .badge-aprobado { background: rgba(79, 195, 247, 0.3); color: var(--primary); }
-        html.dark-mode .badge-aprobado { background: rgba(79, 195, 247, 0.4); color: #4FC3F7; }
-        .btn-ver {
-            padding: 0.7rem 1.4rem;
-            background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
-            color: var(--primary);
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            white-space: nowrap;
-            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
-        }
-        .btn-ver:hover { 
-            transform: scale(1.1) translateY(-3px); 
-            box-shadow: 0 8px 25px rgba(79, 195, 247, 0.5);
-        }
-        .no-trabajos { 
-            text-align: center; 
-            padding: 4rem; 
-            color: var(--text-secondary);
-        }
-        .no-trabajos i { font-size: 3rem; margin-bottom: 1rem; display: block; animation: bounce 2s ease infinite; color: var(--celeste); }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .login-required { 
-            text-align: center; 
-            padding: 3rem; 
-            background: var(--celeste-pale);
-            border-radius: 20px;
-        }
-        html.dark-mode .login-required {
-            background: #1E3A5F;
-        }
-        .login-required p { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.1rem; }
-        .login-required .btn { margin: 0.5rem; }
-        .btn-ghost { 
-            background: transparent; 
-            color: var(--primary); 
-            border: 2px solid var(--celeste);
-        }
-        .btn-ghost:hover { 
-            background: var(--celeste-pale);
-        }
-        footer {
-            background: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-        }
-        html.dark-mode footer {
-            background: linear-gradient(135deg, #0A1628 0%, #102035 100%);
-            border-top: 1px solid rgba(79, 195, 247, 0.2);
-        }
-        footer p { opacity: 0.9; font-size: 0.9rem; }
-        @media (max-width: 768px) {
-            .header-container { flex-direction: column; gap: 1rem; }
-            nav { flex-wrap: wrap; justify-content: center; }
-            .hero { padding: 4rem 1rem; }
-            .hero h2 { font-size: 2.2rem; }
-            .hero-logo { width: 80px; height: 80px; }
-            .units-grid { grid-template-columns: 1fr; }
-            .container { padding: 3rem 1rem; }
-        }
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--celeste-pale); }
-        ::-webkit-scrollbar-thumb { background: var(--celeste); border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
-        html.dark-mode ::-webkit-scrollbar-track { background: #1A1A2E; }
-        html.dark-mode ::-webkit-scrollbar-thumb { background: var(--primary); }
-        
         .profile-section {
             padding: 4rem 2rem;
             background: linear-gradient(180deg, var(--white) 0%, var(--celeste-pale) 100%);
@@ -752,7 +424,6 @@
             color: var(--celeste);
             font-size: 1.5rem;
         }
-        html.dark-mode .profile-info h3 i { color: var(--celeste); }
         .profile-cycle {
             color: var(--text-secondary);
             font-size: 1.1rem;
@@ -761,30 +432,8 @@
             align-items: center;
             gap: 0.5rem;
         }
-<<<<<<< HEAD
         html.dark-mode .profile-cycle { color: #90CAF9; }
-        
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        .logout-btn-header {
-            background: rgba(211, 47, 47, 0.9);
-            color: white;
-            border: 2px solid rgba(211, 47, 47, 0.5);
-            padding: 0.6rem 1.2rem;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-=======
-        html.dark-mode .profile-cycle { color: #B8C5D3; }
-        .profile-cycle i {
-            color: var(--celeste);
-            font-size: 1rem;
-        }
+        .profile-cycle i { color: var(--celeste); font-size: 1rem; }
         .profile-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -805,69 +454,65 @@
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 1rem;
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-<<<<<<< HEAD
-        .logout-btn-header:hover {
-            background: var(--danger);
-            border-color: var(--danger);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
-        }
-        html.dark-mode .logout-btn-header {
-            background: rgba(211, 47, 47, 0.8);
-        }
-        html.dark-mode .logout-btn-header:hover {
-            background: var(--danger);
-=======
-        html.dark-mode .about-me h4 {
-            color: var(--celeste);
-        }
-        .about-me h4 i {
-            color: var(--celeste);
-            margin-right: 0.5rem;
-        }
+        html.dark-mode .about-me h4 { color: var(--celeste); }
         .about-me p {
             color: var(--text-dark);
             font-size: 1rem;
             line-height: 1.7;
         }
-        html.dark-mode .about-me p {
-            color: #E3F2FD;
-        }
-        .about-me strong {
-            color: var(--primary);
-            font-weight: 700;
-        }
-        html.dark-mode .about-me strong {
-            color: #4FC3F7;
-            font-weight: 700;
-        }
-        .profile-cycle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        html.dark-mode .profile-cycle {
-            color: #90CAF9;
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
-        }
+        html.dark-mode .about-me p { color: #E3F2FD; }
+        .about-me strong { color: var(--primary); font-weight: 700; }
+        html.dark-mode .about-me strong { color: #4FC3F7; }
         .skills-grid {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
-<<<<<<< HEAD
-        
-        .aprendizaje-section {
-            margin-top: 2rem;
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            background: var(--celeste-pale);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
+        html.dark-mode .skill-item { background: #1E3A5F; }
+        .skill-item:hover {
+            transform: translateX(10px);
+            border-color: var(--celeste);
+            box-shadow: var(--shadow-hover);
+        }
+        .skill-icon {
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--celeste), var(--primary));
+            border-radius: 12px;
+            flex-shrink: 0;
+            color: white;
+        }
+        .skill-info h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.2rem;
+        }
+        html.dark-mode .skill-info h4 { color: var(--celeste); }
+        .skill-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0;
+        }
+        .aprendizaje-section { margin-top: 2rem; }
         .units-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -908,11 +553,7 @@
         .unit-header:hover {
             background: linear-gradient(135deg, var(--primary-light) 0%, var(--celeste) 100%);
         }
-        .unit-header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+        .unit-header-left { display: flex; align-items: center; gap: 1rem; }
         .unit-header-icon {
             width: 50px;
             height: 50px;
@@ -922,16 +563,10 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-        }
-        .unit-header h3 {
             color: white;
-            font-size: 1.2rem;
-            font-weight: 700;
         }
-        .unit-header p {
-            color: rgba(255,255,255,0.85);
-            font-size: 0.85rem;
-        }
+        .unit-header h3 { color: white; font-size: 1.2rem; font-weight: 700; }
+        .unit-header p { color: rgba(255,255,255,0.85); font-size: 0.85rem; }
         .unit-toggle {
             width: 35px;
             height: 35px;
@@ -943,17 +578,13 @@
             color: white;
             transition: all 0.3s ease;
         }
-        .learning-unit.expanded .unit-toggle {
-            transform: rotate(180deg);
-        }
+        .learning-unit.expanded .unit-toggle { transform: rotate(180deg); }
         .unit-weeks {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .learning-unit.expanded .unit-weeks {
-            max-height: 600px;
-        }
+        .learning-unit.expanded .unit-weeks { max-height: 600px; }
         .weeks-list {
             padding: 1rem;
             display: grid;
@@ -971,18 +602,14 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
         }
-        html.dark-mode .week-card {
-            background: #1E3A5F;
-        }
+        html.dark-mode .week-card { background: #1E3A5F; }
         .week-card:hover {
             background: var(--white);
             border-color: var(--celeste);
             transform: translateX(5px);
             box-shadow: var(--shadow);
         }
-        html.dark-mode .week-card:hover {
-            background: #234B6E;
-        }
+        html.dark-mode .week-card:hover { background: #234B6E; }
         .week-card-header {
             display: flex;
             align-items: center;
@@ -997,10 +624,7 @@
             font-size: 0.75rem;
             font-weight: 700;
         }
-        html.dark-mode .week-number {
-            background: var(--celeste);
-            color: white;
-        }
+        html.dark-mode .week-number { background: var(--celeste); color: white; }
         .week-trabajos {
             font-size: 0.7rem;
             color: var(--text-secondary);
@@ -1015,88 +639,183 @@
             margin-bottom: 0.3rem;
         }
         html.dark-mode .week-card h4 { color: var(--celeste); }
-        .week-card p {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        .week-icon {
-            color: var(--celeste);
-            font-size: 1.2rem;
-        }
+        .week-card p { font-size: 0.8rem; color: var(--text-secondary); }
         .week-arrow {
             color: var(--celeste);
             transition: transform 0.3s ease;
-        }
-        .week-card:hover .week-arrow {
-            transform: translateX(5px);
-        }
-=======
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
-        .skill-item {
             display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.2rem;
+            justify-content: flex-end;
+            margin-top: 0.5rem;
+        }
+        .week-card:hover .week-arrow { transform: translateX(5px); }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            padding: 2rem;
+        }
+        .modal.show { display: flex; align-items: center; justify-content: center; }
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 650px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(79, 195, 247, 0.2);
+        }
+        html.dark-mode .modal-content { background: #1B2838; border-color: rgba(79, 195, 247, 0.3); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(50px) scale(0.95); } 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
+        }
+        .modal-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 2rem; 
+            padding-bottom: 1rem; 
+            border-bottom: 2px solid var(--celeste-pale);
+        }
+        html.dark-mode .modal-header { border-bottom-color: #2A4A6F; }
+        .modal-header h3 { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+        html.dark-mode .modal-header h3 { color: var(--celeste); }
+        .close-btn {
             background: var(--celeste-pale);
-            border-radius: 16px;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        html.dark-mode .skill-item {
-            background: #1E3A5F;
-        }
-        .skill-item:hover {
-            transform: translateX(10px);
-            border-color: var(--celeste);
-            box-shadow: var(--shadow-hover);
-        }
-        .skill-icon {
-<<<<<<< HEAD
+            border: none;
+            width: 45px; height: 45px;
+            border-radius: 50%;
             font-size: 1.5rem;
-=======
-            font-size: 1.8rem;
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
-            width: 50px;
-            height: 50px;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--celeste), var(--primary));
-            border-radius: 12px;
-            flex-shrink: 0;
-<<<<<<< HEAD
-            color: white;
-=======
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         }
-        .skill-info h4 {
-            font-size: 1rem;
-            font-weight: 700;
+        html.dark-mode .close-btn { background: #1E3A5F; color: var(--celeste); }
+        .close-btn:hover { background: var(--celeste); color: white; transform: rotate(90deg); }
+        .trabajo-item {
+            background: var(--celeste-pale);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        html.dark-mode .trabajo-item { background: #1E3A5F; border: 1px solid rgba(79, 195, 247, 0.1); }
+        .trabajo-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(180deg, var(--celeste), var(--primary));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        .trabajo-item:hover::before { transform: scaleY(1); }
+        .trabajo-item:hover { 
+            background: var(--white);
+            box-shadow: var(--shadow-hover);
+            transform: translateX(10px) scale(1.02);
+        }
+        html.dark-mode .trabajo-item:hover { background: #234B6E; border-color: rgba(79, 195, 247, 0.3); }
+        .trabajo-info { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; min-width: 0; }
+        .trabajo-nombre { font-weight: 600; color: var(--primary); font-size: 1rem; transition: color 0.3s ease; }
+        html.dark-mode .trabajo-nombre { color: #F0F4F8; }
+        .trabajo-item:hover .trabajo-nombre { color: var(--celeste); }
+        .trabajo-fecha { font-size: 0.85rem; color: var(--text-secondary); transition: color 0.3s ease; }
+        html.dark-mode .trabajo-fecha { color: #B8C5D3; }
+        .trabajo-item:hover .trabajo-fecha { color: var(--primary); }
+        .badge { 
+            padding: 0.5rem 1rem; 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+            font-weight: 600; 
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        .badge:hover { transform: scale(1.1); }
+        .badge-pendiente { background: rgba(245, 124, 0, 0.15); color: var(--warning); }
+        html.dark-mode .badge-pendiente { background: rgba(245, 124, 0, 0.3); color: #FFB74D; }
+        .badge-revisado { background: rgba(46, 125, 50, 0.15); color: var(--success); }
+        html.dark-mode .badge-revisado { background: rgba(46, 125, 50, 0.3); color: #81C784; }
+        .badge-aprobado { background: rgba(79, 195, 247, 0.3); color: var(--primary); }
+        html.dark-mode .badge-aprobado { background: rgba(79, 195, 247, 0.4); color: #4FC3F7; }
+        .btn-ver {
+            padding: 0.7rem 1.4rem;
+            background: linear-gradient(135deg, var(--celeste), var(--celeste-light));
             color: var(--primary);
-            margin-bottom: 0.2rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
         }
-        html.dark-mode .skill-info h4 {
-            color: var(--celeste);
+        .btn-ver:hover { 
+            transform: scale(1.1) translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(79, 195, 247, 0.5);
         }
-        .skill-info p {
-            font-size: 0.85rem;
+        .no-trabajos { 
+            text-align: center; 
+            padding: 4rem; 
             color: var(--text-secondary);
-            margin-bottom: 0;
         }
-        
+        .no-trabajos i { font-size: 3rem; margin-bottom: 1rem; display: block; animation: bounce 2s ease infinite; color: var(--celeste); }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+        html.dark-mode footer {
+            background: linear-gradient(135deg, #0A1628 0%, #102035 100%);
+            border-top: 1px solid rgba(79, 195, 247, 0.2);
+        }
+        footer p { opacity: 0.9; font-size: 0.9rem; }
         @media (max-width: 768px) {
             .header-container { flex-direction: column; gap: 1rem; }
             nav { flex-wrap: wrap; justify-content: center; }
             .hero { padding: 4rem 1rem; }
             .hero h2 { font-size: 2.2rem; }
             .hero-logo { width: 80px; height: 80px; }
-            .units-grid { grid-template-columns: 1fr; }
             .container { padding: 3rem 1rem; }
             .profile-header { flex-direction: column; text-align: center; }
             .profile-content { grid-template-columns: 1fr; }
             .skills-grid { flex-direction: column; }
             .profile-card { padding: 2rem; }
         }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--celeste-pale); }
+        ::-webkit-scrollbar-thumb { background: var(--celeste); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+        html.dark-mode ::-webkit-scrollbar-track { background: #1A1A2E; }
+        html.dark-mode ::-webkit-scrollbar-thumb { background: var(--primary); }
     </style>
 </head>
 <body>
@@ -1173,33 +892,21 @@
                     </div>
                     <div class="skills-grid">
                         <div class="skill-item">
-<<<<<<< HEAD
                             <span class="skill-icon"><i class="fa-solid fa-laptop-code"></i></span>
-=======
-                            <span class="skill-icon">💻</span>
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                             <div class="skill-info">
                                 <h4>Programación</h4>
                                 <p>Java y C# nivel básico-intermedio</p>
                             </div>
                         </div>
                         <div class="skill-item">
-<<<<<<< HEAD
                             <span class="skill-icon"><i class="fa-solid fa-users"></i></span>
-=======
-                            <span class="skill-icon">👥</span>
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                             <div class="skill-info">
                                 <h4>Liderazgo</h4>
                                 <p>Trabajo en equipo y organización</p>
                             </div>
                         </div>
                         <div class="skill-item">
-<<<<<<< HEAD
                             <span class="skill-icon"><i class="fa-solid fa-bullseye"></i></span>
-=======
-                            <span class="skill-icon">🎯</span>
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                             <div class="skill-info">
                                 <h4>Objetivo</h4>
                                 <p>Desarrollo de software</p>
@@ -1213,19 +920,11 @@
 
     <div class="container">
         <div class="section-title">
-<<<<<<< HEAD
             <h3><i class="fa-solid fa-book-open"></i> Unidades de Aprendizaje</h3>
             <p>Explora las 4 unidades del curso, cada una con 4 semanas de contenido</p>
         </div>
         <div class="units-container" id="aprendizajeContainer">
-            <div class="loading" style="grid-column: 1/-1;">Cargando unidades...</div>
-=======
-            <h3>Semanas de Aprendizaje</h3>
-            <p>Selecciona una semana para ver los trabajos subidos</p>
-        </div>
-        <div class="units-grid" id="unitsGrid">
-            <div class="no-trabajos">Cargando unidades...</div>
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
+            <div class="loading" style="grid-column: 1/-1; text-align: center; padding: 2rem;">Cargando unidades...</div>
         </div>
     </div>
 
@@ -1236,7 +935,7 @@
                 <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="modalContent">
-                <div class="no-trabajos">Cargando...</div>
+                <div class="no-trabajos"><i class="fa-solid fa-spinner fa-spin"></i> Cargando...</div>
             </div>
         </div>
     </div>
@@ -1247,7 +946,6 @@
 
     <script src="auth.js"></script>
     <script>
-<<<<<<< HEAD
         const UNIDADES = [
             {
                 numero: 1,
@@ -1297,13 +995,6 @@
                     { numero: 16, titulo: 'Proyecto Final', descripcion: 'Caso práctico integrador' }
                 ]
             }
-=======
-        const SEMANAS = [
-            { numero: 1, titulo: 'Semana 1', descripcion: 'Introducción a SQL y Bases de Datos' },
-            { numero: 2, titulo: 'Semana 2', descripcion: 'Consultas Avanzadas y JOINs' },
-            { numero: 3, titulo: 'Semana 3', descripcion: 'Índices y Optimización de Consultas' },
-            { numero: 4, titulo: 'Semana 4', descripcion: 'Transacciones y Seguridad en BD' }
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         ];
 
         function updateThemeIcon() {
@@ -1330,9 +1021,7 @@
         function toggleTheme() {
             const html = document.documentElement;
             const isDark = html.classList.contains('dark-mode');
-            
             html.style.transition = 'background-color 0.5s ease, color 0.5s ease';
-            
             if (isDark) {
                 html.classList.remove('dark-mode');
                 localStorage.setItem('theme', 'light');
@@ -1340,7 +1029,6 @@
                 html.classList.add('dark-mode');
                 localStorage.setItem('theme', 'dark');
             }
-            
             updateThemeIcon();
         }
 
@@ -1355,7 +1043,6 @@
                 authButtons.innerHTML = `
                     <div class="user-dropdown">
                         <div class="user-info">
-<<<<<<< HEAD
                             <div class="avatar"><i class="fa-solid fa-user"></i></div>
                             <span class="name">${nombre.split('@')[0]}</span>
                             <span style="font-size: 0.7rem;"><i class="fa-solid fa-chevron-down"></i></span>
@@ -1366,61 +1053,27 @@
                     </div>
                     ${isAdmin ? '<span style="background: var(--celeste); color: var(--primary); padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.7rem; font-weight: 700;">ADMIN</span>' : ''}
                     <button class="logout-btn-header" onclick="handleLogout()" title="Cerrar Sesión">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span style="display: none;" class="logout-text">Salir</span>
+                        <i class="fa-solid fa-right-from-bracket"></i> Salir
                     </button>
-=======
-                            <div class="avatar">👤</div>
-                            <span class="name">${nombre.split('@')[0]}</span>
-                            <span style="font-size: 0.7rem;">▼</span>
-                        </div>
-                        <div class="user-dropdown-content">
-                            ${isAdmin ? '<a href="dashboard.html">📊 Dashboard</a>' : ''}
-                            <a href="#" onclick="handleLogout(); return false;" class="logout-btn" style="display: flex; align-items: center; gap: 0.5rem;">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                                    <polyline points="16 17 21 12 16 7"/>
-                                    <line x1="21" y1="12" x2="9" y2="12"/>
-                                </svg>
-                                Cerrar Sesión
-                            </a>
-                        </div>
-                    </div>
-                    ${isAdmin ? '<span style="background: var(--celeste); color: var(--primary); padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.7rem; font-weight: 700;">ADMIN</span>' : ''}
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                 `;
                 
-                if (navDashboard) {
-                    navDashboard.classList.remove('disabled');
-                }
+                if (navDashboard) navDashboard.classList.remove('disabled');
             } else {
                 authButtons.innerHTML = `
-                    <button class="btn btn-primary" onclick="window.location.href='login.html'">
-                        Iniciar Sesión
-                    </button>
-                    <button class="btn btn-secondary" onclick="window.location.href='registro.html'">
-                        Registrarse
-                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='login.html'">Iniciar Sesión</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='registro.html'">Registrarse</button>
                 `;
-                
-                if (navDashboard) {
-                    navDashboard.classList.add('disabled');
-                }
+                if (navDashboard) navDashboard.classList.add('disabled');
             }
         }
 
         async function handleLogout() {
-<<<<<<< HEAD
             try {
                 await window.PortafolioAuth.logout();
             } catch (e) {
                 console.error('Error al cerrar sesión:', e);
             }
             window.location.href = 'index.html';
-=======
-            await window.PortafolioAuth.logout();
-            window.location.reload();
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         }
 
         function formatDate(dateString) {
@@ -1430,7 +1083,6 @@
         }
 
         async function renderUnidades() {
-<<<<<<< HEAD
             const container = document.getElementById('aprendizajeContainer');
             container.innerHTML = '';
 
@@ -1462,9 +1114,7 @@
                             </div>
                             <h4>${semana.titulo}</h4>
                             <p>${semana.descripcion}</p>
-                            <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
-                                <span class="week-arrow"><i class="fa-solid fa-arrow-right"></i></span>
-                            </div>
+                            <div class="week-arrow"><i class="fa-solid fa-arrow-right"></i></div>
                         </div>
                     `;
                 }).join('');
@@ -1472,22 +1122,16 @@
                 unitEl.innerHTML = `
                     <div class="unit-header" onclick="toggleUnit(${unidad.numero})">
                         <div class="unit-header-left">
-                            <div class="unit-header-icon">
-                                <i class="${unitIcons[index]}"></i>
-                            </div>
+                            <div class="unit-header-icon"><i class="${unitIcons[index]}"></i></div>
                             <div>
                                 <h3>Unidad ${romanianNumber(unidad.numero)}</h3>
                                 <p>${unidad.titulo} - ${unidad.descripcion}</p>
                             </div>
                         </div>
-                        <div class="unit-toggle">
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </div>
+                        <div class="unit-toggle"><i class="fa-solid fa-chevron-down"></i></div>
                     </div>
                     <div class="unit-weeks">
-                        <div class="weeks-list">
-                            ${semanasHTML}
-                        </div>
+                        <div class="weeks-list">${semanasHTML}</div>
                     </div>
                 `;
 
@@ -1503,69 +1147,17 @@
         function toggleUnit(num) {
             const unit = document.getElementById('unit-' + num);
             unit.classList.toggle('expanded');
-=======
-            const grid = document.getElementById('unitsGrid');
-            grid.innerHTML = '';
-
-            const icons = ['fa-solid fa-database', 'fa-solid fa-magnifying-glass-chart', 'fa-solid fa-bolt', 'fa-solid fa-shield-halved'];
-            const iconColors = ['#4FC3F7', '#81D4FA', '#4DD0E1', '#26C6DA'];
-
-            for (const semana of SEMANAS) {
-                let trabajosCount = 0;
-                try {
-                    const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(semana.numero);
-                    trabajosCount = trabajos.length;
-                } catch (e) { console.error(e); }
-
-                const iconIndex = semana.numero - 1;
-                grid.innerHTML += `
-                    <div class="unit-card" onclick="abrirSemana(${semana.numero}, '${semana.titulo}')" 
-                         onmousemove="handleCardHover(event)" onmouseleave="handleCardLeave(event)">
-                        <span class="unit-icon" style="background: ${iconColors[iconIndex]}20; color: ${iconColors[iconIndex]};"><i class="${icons[iconIndex]}"></i></span>
-                        <span class="unit-number">${semana.titulo.toUpperCase()}</span>
-                        <h4>${semana.descripcion}</h4>
-                        <div class="trabajos-count">
-                            <span><i class="fa-solid fa-file-lines"></i></span>
-                            <span>${trabajosCount} trabajo(s) subido(s)</span>
-                        </div>
-                    </div>
-                `;
-            }
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
-        }
-
-        function handleCardHover(e) {
-            const card = e.currentTarget;
-            const rect = card.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            card.style.setProperty('--mouse-x', x + '%');
-            card.style.setProperty('--mouse-y', y + '%');
-        }
-
-        function handleCardLeave(e) {
-            const card = e.currentTarget;
-            card.style.setProperty('--mouse-x', '50%');
-            card.style.setProperty('--mouse-y', '50%');
         }
 
         async function abrirSemana(numero, titulo) {
-<<<<<<< HEAD
             document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-calendar-week"></i> ' + titulo;
-=======
-            document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-database"></i> ' + titulo;
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
             document.getElementById('trabajosModal').classList.add('show');
             const content = document.getElementById('modalContent');
             content.innerHTML = '<div class="no-trabajos"><i class="fa-solid fa-spinner fa-spin"></i> Cargando trabajos...</div>';
 
             try {
-<<<<<<< HEAD
                 const numBackend = numero <= 4 ? numero : (numero % 4 || 4);
                 const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(numBackend);
-=======
-                const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(numero);
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                 if (trabajos.length === 0) {
                     content.innerHTML = '<div class="no-trabajos"><i class="fa-regular fa-folder-open"></i><p>No hay trabajos subidos en esta semana</p></div>';
                     return;
@@ -1574,13 +1166,8 @@
                     <div class="trabajo-item" style="animation-delay: ${index * 0.1}s">
                         <div class="trabajo-info">
                             <span class="trabajo-nombre">${t.nombre_archivo}</span>
-<<<<<<< HEAD
                             <span class="trabajo-fecha"><i class="fa-solid fa-clock"></i> ${formatDate(t.created_at)}</span>
                             ${t.descripcion ? '<span class="trabajo-fecha"><i class="fa-solid fa-note-sticky"></i> ' + t.descripcion + '</span>' : ''}
-=======
-                            <span class="trabajo-fecha">📅 ${formatDate(t.created_at)}</span>
-                            ${t.descripcion ? '<span class="trabajo-fecha">📝 ' + t.descripcion + '</span>' : ''}
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.8rem;">
                             <span class="badge badge-${t.estado}">${t.estado}</span>
@@ -1589,11 +1176,7 @@
                     </div>
                 `).join('');
             } catch (error) {
-<<<<<<< HEAD
                 content.innerHTML = '<div class="no-trabajos"><i class="fa-solid fa-circle-exclamation"></i><p>Error al cargar trabajos</p></div>';
-=======
-                content.innerHTML = '<div class="no-trabajos"><span class="icon">❌</span><p>Error al cargar trabajos</p></div>';
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
             }
         }
 
@@ -1613,13 +1196,10 @@
             document.getElementById('trabajosModal').addEventListener('click', (e) => {
                 if (e.target.id === 'trabajosModal') closeModal();
             });
-<<<<<<< HEAD
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') closeModal();
             });
-=======
->>>>>>> 1e6b437598559097613182f23035e88a7a1b7675
         });
     </script>
 </body>
