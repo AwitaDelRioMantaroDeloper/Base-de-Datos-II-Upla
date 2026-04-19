@@ -353,7 +353,28 @@ async function login(email, password) {
 
 function estaAutenticado() {
     const token = localStorage.getItem('sb_access_token');
-    return token !== null && token !== undefined && token !== '';
+    if (!token || token === 'null' || token === 'undefined') {
+        return false;
+    }
+    
+    try {
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            return false;
+        }
+        const payload = JSON.parse(atob(parts[1]));
+        const exp = payload.exp * 1000;
+        const now = Date.now();
+        
+        if (exp < now) {
+            console.log('Token expirado');
+            return false;
+        }
+        return true;
+    } catch (e) {
+        console.warn('Error al verificar token:', e);
+        return false;
+    }
 }
 
 function esAdmin() {
@@ -449,6 +470,35 @@ async function subirTrabajo(archivo, numeroSemana, descripcion = '') {
     return result;
 }
 
+async function subirEnlace(enlace, numeroSemana, descripcion = '', plataforma = '') {
+    const accessToken = localStorage.getItem('sb_access_token');
+    if (!accessToken) throw new Error('No hay sesion activa. Inicia sesion primero.');
+    
+    const userId = localStorage.getItem('user_id');
+    const userEmail = localStorage.getItem('user_email');
+    if (!userId) throw new Error('Usuario no encontrado. Inicia sesion nuevamente.');
+    
+    let plataformaNombre = '';
+    if (plataforma === 'genially') {
+        plataformaNombre = 'Genially';
+    } else if (plataforma === 'canva') {
+        plataformaNombre = 'Canva';
+    }
+    
+    const nombreArchivo = `${plataformaNombre}: ${enlace}`;
+    
+    const result = await supabase.request('POST', '/trabajos', {
+        usuario_id: userId,
+        numero_semana: numeroSemana,
+        nombre_archivo: nombreArchivo,
+        ruta_storage: enlace,
+        descripcion: descripcion,
+        estado: 'pendiente'
+    });
+    
+    return result;
+}
+
 async function eliminarTrabajo(trabajoId) {
     return await supabase.request('DELETE', `/trabajos?id=eq.${trabajoId}`);
 }
@@ -516,6 +566,7 @@ if (typeof window !== 'undefined') {
         obtenerTrabajos,
         obtenerTrabajosPorSemana,
         subirTrabajo,
+        subirEnlace,
         eliminarTrabajo,
         cambiarEstado,
         obtenerEstadisticas,

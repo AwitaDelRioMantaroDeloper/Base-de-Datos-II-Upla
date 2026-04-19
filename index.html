@@ -233,13 +233,77 @@
             font-weight: 500;
             transition: background 0.3s ease;
         }
-        .user-dropdown-content a:hover {
+.user-dropdown-content a:hover {
             background: var(--celeste-pale);
+            color: var(--primary);
         }
         .user-dropdown-content .logout-btn {
             color: var(--danger);
             cursor: pointer;
         }
+        
+        .user-logged-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .user-logged-row .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .user-logged-row .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--celeste);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .user-logged-row .user-info .name {
+            color: white;
+            font-weight: 600;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .user-logged-row .admin-badge {
+            background: var(--celeste);
+            color: var(--primary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .btn-logout-inline {
+            background: rgba(211,47,47,0.9);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-logout-inline:hover {
+            background: var(--danger);
+            transform: translateY(-2px);
+        }
+        html.dark-mode .user-logged-row .user-info {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(79,195,247,0.2);
+        }
+        
         .hero {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--celeste) 100%);
             padding: 6rem 2rem;
@@ -1255,21 +1319,17 @@
                 const isAdmin = window.PortafolioAuth.esAdmin();
                 
                 authButtons.innerHTML = `
-                    <div class="user-dropdown">
+                    <div class="user-logged-row">
                         <div class="user-info">
                             <div class="avatar"><i class="fa-solid fa-user"></i></div>
                             <span class="name">${nombre.split('@')[0]}</span>
-                            <span style="font-size: 0.7rem;"><i class="fa-solid fa-chevron-down"></i></span>
+                            ${isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
                         </div>
-                        <div class="user-dropdown-content">
-                            ${isAdmin ? '<a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>' : ''}
-                            <a href="#" onclick="handleLogout(); return false;" class="logout-btn" style="display: flex; align-items: center; gap: 0.5rem; color: var(--danger);">
-                                <i class="fa-solid fa-right-from-bracket"></i>
-                                Cerrar Sesion
-                            </a>
-                        </div>
+                        <button class="btn-logout-inline" onclick="handleLogout()">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            Cerrar Sesion
+                        </button>
                     </div>
-                    ${isAdmin ? '<span style="background: var(--celeste); color: var(--primary); padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.7rem; font-weight: 700;">ADMIN</span>' : ''}
                 `;
                 if (navDashboard) {
                     navDashboard.classList.remove('disabled');

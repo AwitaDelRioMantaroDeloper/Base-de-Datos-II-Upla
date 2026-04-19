@@ -470,6 +470,109 @@
         html.dark-mode ::-webkit-scrollbar-track { background: #1A1A2E; }
         html.dark-mode ::-webkit-scrollbar-thumb { background: var(--primary); }
         
+        .upload-type-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .upload-tab {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--celeste);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .upload-tab:hover {
+            background: var(--celeste-pale);
+            color: var(--primary);
+        }
+        .upload-tab.active {
+            background: linear-gradient(135deg, var(--celeste),var(--celeste-light));
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(79,195,247,0.3);
+        }
+        html.dark-mode .upload-tab {
+            border-color: rgba(79,195,247,0.3);
+            color: var(--text-secondary);
+        }
+        html.dark-mode .upload-tab.active {
+            background: linear-gradient(135deg,var(--celeste),#00B4D8);
+            color: #1A2332;
+        }
+        
+        .enlace-form {
+            display: none;
+        }
+        .enlace-form.active {
+            display: block;
+        }
+        .archivo-form.hidden {
+            display: none;
+        }
+        .platform-select {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .platform-btn {
+            padding: 1.5rem;
+            border: 2px solid var(--celeste-pale);
+            background: var(--white);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .platform-btn:hover {
+            border-color: var(--celeste);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(79,195,247,0.2);
+        }
+        .platform-btn.selected {
+            border-color: var(--celeste);
+            background: var(--celeste-pale);
+        }
+        .platform-btn i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .platform-btn span {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        html.dark-mode .platform-btn {
+            background: #1A2332;
+            border-color: rgba(79,195,247,0.2);
+        }
+        html.dark-mode .platform-btn span {
+            color: #F0F4F8;
+        }
+        .url-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--celeste-pale);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Poppins',sans-serif;
+            transition: all 0.3s ease;
+        }
+        .url-input:focus {
+            border-color: var(--celeste);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(79,195,247,0.15);
+        }
+        
         .week-selector {
             background: var(--celeste-pale);
             border-radius: 16px;
@@ -639,6 +742,14 @@
                     <i class="fa-solid fa-cloud-upload-alt"></i>
                     <h3>Subir Trabajo</h3>
                 </div>
+                <div class="upload-type-tabs">
+                    <button type="button" class="upload-tab active" onclick="switchUploadType('archivo')" id="tabArchivo">
+                        <i class="fa-solid fa-file-arrow-up"></i> Archivo
+                    </button>
+                    <button type="button" class="upload-tab" onclick="switchUploadType('enlace')" id="tabEnlace">
+                        <i class="fa-solid fa-link"></i> Enlace
+                    </button>
+                </div>
                 <form onsubmit="handleUpload(event)">
                     <div class="week-selector">
                         <div class="week-selector-grid">
@@ -704,16 +815,40 @@
                         <label><i class="fa-solid fa-note-sticky"></i> Descripcion (opcional)</label>
                         <input type="text" id="descripcion" placeholder="Describe brevemente el trabajo...">
                     </div>
-                    <div class="upload-area" onclick="document.getElementById('archivo').click()">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <p>Arrastra archivos aqui o haz clic</p>
-                        <small>PDF, DOC, ZIP, SQL - Max 10MB</small>
-                        <input type="file" id="archivo" class="file-input" accept=".pdf,.doc,.docx,.zip,.sql" required>
+                    
+                    <!-- Formulario de archivo -->
+                    <div class="archivo-form" id="archivoForm">
+                        <div class="upload-area" onclick="document.getElementById('archivo').click()">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <p>Arrastra archivos aqui o haz clic</p>
+                            <small>PDF, DOC, ZIP, SQL - Max 10MB</small>
+                            <input type="file" id="archivo" class="file-input" accept=".pdf,.doc,.docx,.zip,.sql">
+                        </div>
+                        <div id="filePreview" class="file-preview" style="display: none;">
+                            <span class="file-name"><i class="fa-solid fa-file-pdf"></i> <span id="fileName"></span></span>
+                            <button type="button" class="remove-btn" onclick="clearFile()"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
                     </div>
-                    <div id="filePreview" class="file-preview" style="display: none;">
-                        <span class="file-name"><i class="fa-solid fa-file-pdf"></i> <span id="fileName"></span></span>
-                        <button type="button" class="remove-btn" onclick="clearFile()"><i class="fa-solid fa-xmark"></i></button>
+                    
+                    <!-- Formulario de enlace -->
+                    <div class="enlace-form" id="enlaceForm">
+                        <div class="platform-select">
+                            <div class="platform-btn" onclick="selectPlatform('genially')" id="platformGenially">
+                                <i class="fa-solid fa-puzzle-piece" style="color: #FF6B6B;"></i>
+                                <span>Genially</span>
+                            </div>
+                            <div class="platform-btn" onclick="selectPlatform('canva')" id="platformCanva">
+                                <i class="fa-solid fa-palette" style="color: #00C4CC;"></i>
+                                <span>Canva</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="enlacePlataforma" value="">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-link"></i> Enlace</label>
+                            <input type="url" id="enlaceUrl" class="url-input" placeholder="https://www.genially.com/...">
+                        </div>
                     </div>
+                    
                     <button type="submit" class="btn-upload" id="submitBtn">
                         <i class="fa-solid fa-upload"></i> Subir Trabajo
                     </button>
@@ -809,9 +944,16 @@
         let todosLosTrabajos = [];
 
         async function initPage() {
-            await window.PortafolioAuth.inicializarAuth();
+            console.log('Inicializando dashboard...');
+            
+            try {
+                await window.PortafolioAuth.inicializarAuth();
+            } catch (e) {
+                console.warn('Error en inicializarAuth:', e);
+            }
             
             if (!window.PortafolioAuth.estaAutenticado()) {
+                console.log('No autenticado, redireccionando...');
                 window.location.href = 'login.html';
                 return;
             }
@@ -821,6 +963,7 @@
             
             initTheme();
             cargarDatos();
+            console.log('Dashboard inicializado correctamente');
         }
 
         function updateThemeIcon() {
@@ -917,15 +1060,32 @@
             document.getElementById('selectedSemanaDisplay').classList.add('active');
         }
 
+let uploadType = 'archivo';
+
+        function switchUploadType(type) {
+            uploadType = type;
+            document.getElementById('tabArchivo').classList.toggle('active', type === 'archivo');
+            document.getElementById('tabEnlace').classList.toggle('active', type === 'enlace');
+            document.getElementById('archivoForm').classList.toggle('hidden', type !== 'archivo');
+            document.getElementById('enlaceForm').classList.toggle('active', type === 'enlace');
+        }
+
+        function selectPlatform(platform) {
+            document.getElementById('enlacePlataforma').value = platform;
+            document.getElementById('platformGenially').classList.toggle('selected', platform === 'genially');
+            document.getElementById('platformCanva').classList.toggle('selected', platform === 'canva');
+        }
+
         async function handleUpload(event) {
             event.preventDefault();
-            const archivo = document.getElementById('archivo').files[0];
             const semana = document.getElementById('numeroSemana').value;
             const descripcion = document.getElementById('descripcion').value;
             const submitBtn = document.getElementById('submitBtn');
 
-            if (!archivo || !semana) {
-                showNotification('Completa todos los campos', 'error');
+            console.log('Datos del formulario:', { semana, descripcion, uploadType });
+
+            if (!semana) {
+                showNotification('Selecciona una semana', 'error');
                 return;
             }
 
@@ -933,17 +1093,48 @@
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo...';
 
             try {
-                await window.PortafolioAuth.subirTrabajo(archivo, parseInt(semana), descripcion);
-                showNotification('Trabajo subido exitosamente!');
+                if (uploadType === 'archivo') {
+                    const archivo = document.getElementById('archivo').files[0];
+                    if (!archivo) {
+                        showNotification('Selecciona un archivo', 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fa-solid fa-upload"></i> Subir Trabajo';
+                        return;
+                    }
+                    const result = await window.PortafolioAuth.subirTrabajo(archivo, parseInt(semana), descripcion);
+                    showNotification('¡Archivo subido exitosamente!');
+                    clearFile();
+                } else {
+                    const plataforma = document.getElementById('enlacePlataforma').value;
+                    const enlace = document.getElementById('enlaceUrl').value;
+                    
+                    if (!plataforma) {
+                        showNotification('Selecciona Genially o Canva', 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fa-solid fa-upload"></i> Subir Trabajo';
+                        return;
+                    }
+                    if (!enlace) {
+                        showNotification('Ingresa el enlace', 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fa-solid fa-upload"></i> Subir Trabajo';
+                        return;
+                    }
+                    
+                    const descripcionEnlace = plataforma.toUpperCase() + ' - ' + descripcion;
+                    const result = await window.PortafolioAuth.subirEnlace(enlace, parseInt(semana), descripcionEnlace, plataforma);
+                    showNotification('¡Enlace subido exitosamente!');
+                    document.getElementById('enlaceUrl').value = '';
+                    document.getElementById('enlacePlataforma').value = '';
+                    document.querySelectorAll('.platform-btn').forEach(btn => btn.classList.remove('selected'));
+                }
+                
                 document.getElementById('numeroSemana').value = '';
                 document.getElementById('descripcion').value = '';
                 document.getElementById('selectedSemanaText').textContent = 'Ninguna';
-                document.getElementById('selectedSemanaDisplay').classList.remove('active');
-                selectedSemanaValue = null;
-                document.querySelectorAll('.week-option').forEach(opt => opt.classList.remove('selected'));
-                clearFile();
                 cargarDatos();
             } catch (error) {
+                console.error('Error completo:', error);
                 showNotification(error.message || 'Error al subir', 'error');
             } finally {
                 submitBtn.disabled = false;
