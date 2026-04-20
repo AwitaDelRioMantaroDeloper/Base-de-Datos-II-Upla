@@ -16,14 +16,12 @@ const supabase = {
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
     },
 
-    async request(method, endpoint, body = null) {
-        const accessToken = localStorage.getItem('sb_access_token');
-        const headers = {
-            ...this.headers,
-            'Authorization': accessToken ? `Bearer ${accessToken}` : `Bearer ${SUPABASE_ANON_KEY}`
-        };
+async request(method, endpoint, body = null) {
+        let accessToken = localStorage.getItem('sb_access_token');
         
-        const options = { method, headers };
+        let authHeader = accessToken ? `Bearer ${accessToken}` : `Bearer ${SUPABASE_ANON_KEY}`;
+        
+        const options = { method, headers: { ...this.headers, 'Authorization': authHeader } };
         if (body && method !== 'GET') options.body = JSON.stringify(body);
         
         try {
@@ -37,6 +35,21 @@ const supabase = {
                 data = text ? JSON.parse(text) : null;
             }
             
+            if (response.status === 401 && method === 'GET') {
+                const errorMsg = data?.message || data?.error?.message || '';
+                if (errorMsg.includes('JWT') || errorMsg.includes('expired') || errorMsg.includes('Invalid JWT')) {
+                    console.log('Token expirado, usando clave anonima...');
+                    options.headers['Authorization'] = `Bearer ${SUPABASE_ANON_KEY}`;
+                    const retryResponse = await fetch(`${this.url}/rest/v1${endpoint}`, options);
+                    if (retryResponse.ok) {
+                        const retryText = await retryResponse.text();
+                        return retryText ? JSON.parse(retryText) : null;
+                    }
+                }
+                const errorMsgNew = data?.message || data?.error?.message || data?.msg || `Error ${response.status}`;
+                throw new Error(errorMsgNew);
+            }
+            
             if (!response.ok) {
                 const errorMsg = data?.message || data?.error?.message || data?.msg || `Error ${response.status}`;
                 throw new Error(errorMsg);
@@ -45,11 +58,10 @@ const supabase = {
             connectionStatus = 'connected';
             return data;
         } catch (error) {
-            if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.message.includes('Network request failed')) {
+            if (error.message === 'Failed to fetch' || error.message.includes('network')) {
                 connectionStatus = 'disconnected';
-                throw new Error('Error de conexión. Verifica tu internet.');
+                throw new Error('Sin conexion a internet');
             }
-            connectionStatus = 'error';
             throw error;
         }
     },
