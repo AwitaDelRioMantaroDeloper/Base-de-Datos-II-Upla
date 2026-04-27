@@ -17,9 +17,8 @@ const supabase = {
     },
 
 async request(method, endpoint, body = null) {
-        let accessToken = localStorage.getItem('sb_access_token');
-        
-        let authHeader = accessToken ? `Bearer ${accessToken}` : `Bearer ${SUPABASE_ANON_KEY}`;
+        let useAnonKey = method === 'GET';
+        let authHeader = useAnonKey ? `Bearer ${SUPABASE_ANON_KEY}` : `Bearer ${localStorage.getItem('sb_access_token') || SUPABASE_ANON_KEY}`;
         
         const options = { method, headers: { ...this.headers, 'Authorization': authHeader } };
         if (body && method !== 'GET') options.body = JSON.stringify(body);
@@ -36,18 +35,13 @@ async request(method, endpoint, body = null) {
             }
             
             if (response.status === 401 && method === 'GET') {
-                const errorMsg = data?.message || data?.error?.message || '';
-                if (errorMsg.includes('JWT') || errorMsg.includes('expired') || errorMsg.includes('Invalid JWT')) {
-                    console.log('Token expirado, usando clave anonima...');
-                    options.headers['Authorization'] = `Bearer ${SUPABASE_ANON_KEY}`;
-                    const retryResponse = await fetch(`${this.url}/rest/v1${endpoint}`, options);
-                    if (retryResponse.ok) {
-                        const retryText = await retryResponse.text();
-                        return retryText ? JSON.parse(retryText) : null;
-                    }
+                options.headers['Authorization'] = `Bearer ${SUPABASE_ANON_KEY}`;
+                const retryResponse = await fetch(`${this.url}/rest/v1${endpoint}`, options);
+                if (retryResponse.ok) {
+                    const retryText = await retryResponse.text();
+                    return retryText ? JSON.parse(retryText) : null;
                 }
-                const errorMsgNew = data?.message || data?.error?.message || data?.msg || `Error ${response.status}`;
-                throw new Error(errorMsgNew);
+                throw new Error('No se pudo obtener datos');
             }
             
             if (!response.ok) {
@@ -273,7 +267,6 @@ async function obtenerUsuarioActual() {
         const userEmail = localStorage.getItem('user_email');
         
         if (!userId) {
-            console.log('No hay usuario en localStorage');
             return null;
         }
         
@@ -325,53 +318,72 @@ async function registrar(email, password, nombreCompleto) {
 }
 
 async function login(email, password) {
-    console.log('Llamando signInWithPassword...');
-    const result = await supabase.auth.signInWithPassword(email, password);
-    console.log('Resultado login:', result);
-    
-    if (!result || !result.access_token) {
-        console.log('No hay access_token en result:', result);
-        throw new Error('No se pudo iniciar sesión. Verifica tus credenciales.');
-    }
-    
-    let userId = '';
-    let userEmail = email;
-    
-    if (result.user) {
-        userId = result.user.id || '';
-        userEmail = result.user.email || email;
-    } else if (result.access_token) {
-        try {
-            const tokenParts = result.access_token.split('.');
-            if (tokenParts.length === 3) {
-                const tokenData = JSON.parse(atob(tokenParts[1]));
-                userId = tokenData.sub || '';
-                userEmail = tokenData.email || email;
+    try {
+        const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            },
+            body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            if (response.status === 400) {
+                throw new Error(data.msg || 'Correo o contraseña incorrectos');
             }
-        } catch (e) {
-            console.warn('No se pudo decodificar el token');
+            throw new Error(data.msg || 'Error al iniciar sesión');
         }
+        
+        if (!data.access_token) {
+            throw new Error('No se pudo iniciar sesión');
+        }
+        
+        let userId = '';
+        let userEmail = email;
+        
+        if (data.user) {
+            userId = data.user.id || '';
+            userEmail = data.user.email || email;
+        }
+        
+        localStorage.setItem('sb_access_token', data.access_token);
+        localStorage.setItem('sb_refresh_token', data.refresh_token || '');
+        localStorage.setItem('user_email', userEmail);
+        localStorage.setItem('user_id', userId);
+        
+        return data;
+    } catch (error) {
+        throw new Error(error.message || 'Error al iniciar sesión');
     }
-    
-    console.log('Guardando usuario:', userId, userEmail);
-    
-    localStorage.setItem('sb_access_token', result.access_token);
-    localStorage.setItem('sb_refresh_token', result.refresh_token || '');
-    localStorage.setItem('user_email', userEmail);
-    localStorage.setItem('user_id', userId);
-    
-    return result;
+}
+
+function logout() {
+    localStorage.removeItem('sb_access_token');
+    localStorage.removeItem('sb_refresh_token');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('user_nombre');
+    localStorage.removeItem('user_is_admin');
+}
+
+function esAdmin() {
+    return localStorage.getItem('user_is_admin') === '1';
 }
 
 function estaAutenticado() {
     const token = localStorage.getItem('sb_access_token');
-    if (!token || token === 'null' || token === 'undefined') {
+    if (!token || token === 'null' || token === 'undefined' || token.length < 10) {
         return false;
     }
     
     try {
         const parts = token.split('.');
         if (parts.length !== 3) {
+            localStorage.removeItem('sb_access_token');
             return false;
         }
         const payload = JSON.parse(atob(parts[1]));
@@ -379,29 +391,19 @@ function estaAutenticado() {
         const now = Date.now();
         
         if (exp < now) {
-            console.log('Token expirado');
+            localStorage.removeItem('sb_access_token');
+            localStorage.removeItem('sb_refresh_token');
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('user_email');
+            localStorage.removeItem('user_nombre');
+            localStorage.removeItem('user_is_admin');
             return false;
         }
         return true;
     } catch (e) {
-        console.warn('Error al verificar token:', e);
+        localStorage.removeItem('sb_access_token');
         return false;
-    }
 }
-
-function esAdmin() {
-    return localStorage.getItem('user_is_admin') === '1';
-}
-
-async function logout() {
-    await supabase.auth.signOut();
-    localStorage.removeItem('sb_access_token');
-    localStorage.removeItem('sb_refresh_token');
-    localStorage.removeItem('user_id');
-    localStorage.removeItem('user_email');
-    localStorage.removeItem('user_nombre');
-    localStorage.removeItem('user_is_admin');
-    window.location.href = 'index.html';
 }
 
 async function inicializarAuth() {
@@ -516,7 +518,26 @@ async function eliminarTrabajo(trabajoId) {
 }
 
 async function cambiarEstado(trabajoId, estado) {
-    return await supabase.request('PATCH', `/trabajos?id=eq.${trabajoId}`, { estado });
+    const accessToken = localStorage.getItem('sb_access_token');
+    if (!accessToken) {
+        throw new Error('No hay sesión activa');
+    }
+    
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/trabajos?id=eq.${trabajoId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({ estado })
+    });
+    
+    if (!response.ok) {
+        throw new Error('Error al actualizar estado');
+    }
+    
+    return { success: true };
 }
 
 async function obtenerEstadisticas() {

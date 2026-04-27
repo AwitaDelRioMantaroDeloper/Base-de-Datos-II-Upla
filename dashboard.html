@@ -1220,19 +1220,22 @@ let uploadType = 'archivo';
         }
 
         async function cambiarEstado(trabajoId) {
-            const trabajo = todosLosTrabajos.find(t => t.id === trabajoId);
+            const trabajo = todosLosTrabajos.find(t => t.id == trabajoId || t.id === trabajoId || String(t.id) === String(trabajoId));
             if (!trabajo) return;
             
-            const estados = ['pendiente', 'revisado', 'aprobado'];
-            const actualIndex = estados.indexOf(trabajo.estado);
-            const nuevoEstado = estados[(actualIndex + 1) % estados.length];
+            if (trabajo.estado === 'revisado') {
+                showNotification('Este trabajo ya está revisado');
+                return;
+            }
+            
+            const nuevoEstado = 'revisado';
             
             try {
                 await window.PortafolioAuth.cambiarEstado(trabajoId, nuevoEstado);
-                showNotification('Estado actualizado a ' + nuevoEstado);
+                showNotification('Trabajo marcado como revisado');
                 cargarDatos();
             } catch (error) {
-                showNotification('Error al cambiar estado', 'error');
+                showNotification('Error al cambiar estado: ' + error.message, 'error');
             }
         }
 
