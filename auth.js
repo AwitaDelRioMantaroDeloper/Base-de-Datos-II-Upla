@@ -374,6 +374,30 @@ function esAdmin() {
     return localStorage.getItem('user_is_admin') === '1';
 }
 
+function esHorarioVisualizacion() {
+    const overrideEnabled = localStorage.getItem('visualizacion_activada') === 'true';
+    if (overrideEnabled) return true;
+    
+    const ahora = new Date();
+    const dia = ahora.getDay();
+    const hora = ahora.getHours();
+    
+    const esMiercoles = dia === 3;
+    const esJueves = dia === 4;
+    
+    const dentroDelHorario = hora >= 15 && hora < 20;
+    
+    return (esMiercoles || esJueves) && dentroDelHorario;
+}
+
+function activarVisualizacion() {
+    localStorage.setItem('visualizacion_activada', 'true');
+}
+
+function desactivarVisualizacion() {
+    localStorage.removeItem('visualizacion_activada');
+}
+
 function estaAutenticado() {
     const token = localStorage.getItem('sb_access_token');
     if (!token || token === 'null' || token === 'undefined' || token.length < 10) {
@@ -604,7 +628,10 @@ if (typeof window !== 'undefined') {
         cambiarEstado,
         obtenerEstadisticas,
         requireAuth,
-        requireGuest
+        requireGuest,
+        esHorarioVisualizacion,
+        activarVisualizacion,
+        desactivarVisualizacion
     };
     
     console.log('[PortafolioAuth] Sistema inicializado');

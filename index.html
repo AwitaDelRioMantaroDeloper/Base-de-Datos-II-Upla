@@ -49,6 +49,7 @@
             color: var(--text-dark);
             min-height: 100vh;
             transition: background 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
         }
         header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
@@ -120,7 +121,7 @@
         nav a:hover { color: var(--celeste); }
         nav a.active { background: rgba(255,255,255,0.15); color: white; }
         nav a.disabled { opacity: 0.4; pointer-events: none; }
-        .header-right { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+        .header-right { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
         .btn {
             padding: 0.6rem 1.4rem;
             border: none;
@@ -706,13 +707,65 @@
         }
         footer p { opacity: 0.9; font-size: 0.9rem; }
         @media (max-width: 768px) {
-            .header-container { flex-direction: column; gap: 1rem; }
+            .header-container { flex-direction: column; gap: 0.8rem; }
             nav { flex-wrap: wrap; justify-content: center; }
-            .hero { padding: 4rem 1rem; }
-            .hero h2 { font-size: 2.2rem; }
+            nav a { padding: 0.5rem 1rem; font-size: 0.85rem; }
+            .hero { padding: 3rem 1rem; }
+            .hero h2 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
             .hero-logo { width: 80px; height: 80px; }
-            .units-grid { grid-template-columns: 1fr; }
             .container { padding: 3rem 1rem; }
+            .section-title h3 { font-size: 2rem; }
+            
+            .profile-section { padding: 2rem 1rem; }
+            .profile-card { padding: 1.5rem; }
+            .profile-header { flex-direction: column; text-align: center; gap: 1rem; }
+            .profile-avatar { width: 100px; height: 100px; }
+            .profile-info h3 { font-size: 1.3rem; justify-content: center; }
+            .profile-cycle { justify-content: center; }
+            .profile-content { grid-template-columns: 1fr; }
+            
+            .week-card { padding: 1.5rem; }
+            .week-card h4 { font-size: 1.2rem; }
+            
+            .user-logged-row { flex-direction: row; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: center; }
+            .user-logged-row .user-info .name { max-width: 80px; font-size: 0.8rem; }
+            .btn-logout-inline { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+            
+            .modal-content { padding: 1.5rem; max-width: 95%; }
+            .modal-header h3 { font-size: 1.3rem; }
+            .trabajo-item { flex-direction: column; align-items: flex-start; }
+            .trabajo-item > div:last-child { align-self: flex-end; }
+        }
+        @media (max-width: 480px) {
+            header { padding: 0.8rem 1rem; }
+            .logo { width: 45px; height: 45px; }
+            .header-title h1 { font-size: 1rem; }
+            .header-title p { font-size: 0.7rem; }
+            .hero h2 { font-size: 1.6rem; }
+            .hero p { font-size: 0.9rem; }
+            .hero-logo { width: 60px; height: 60px; }
+            .section-title h3 { font-size: 1.6rem; }
+            .section-title p { font-size: 0.9rem; }
+            .profile-avatar { width: 80px; height: 80px; }
+            .profile-avatar .avatar-placeholder i { font-size: 2.5rem; }
+            .profile-info h3 { font-size: 1.1rem; }
+            .about-me { padding: 1rem; }
+            .about-me h4 { font-size: 1.1rem; }
+            .about-me p { font-size: 0.9rem; }
+            .skill-item { padding: 1rem; }
+            .skill-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+            .skill-info h4 { font-size: 0.9rem; }
+            .skill-info p { font-size: 0.8rem; }
+            .week-card { padding: 1.2rem; }
+            .week-card h4 { font-size: 1.1rem; }
+            .week-card p { font-size: 0.85rem; }
+            .btn-ver { padding: 0.5rem 1rem; font-size: 0.85rem; }
+            .user-logged-row .user-info { padding: 0.4rem 0.8rem; }
+            .btn-logout-inline { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+            .modal-content { padding: 1rem; }
+            .modal-header h3 { font-size: 1.1rem; }
+            .close-btn { width: 35px; height: 35px; font-size: 1.2rem; }
         }
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: var(--celeste-pale); }
@@ -1076,20 +1129,6 @@
             font-size: 0.85rem;
             color: var(--text-secondary);
             margin-bottom: 0;
-        }
-        
-        @media (max-width: 768px) {
-            .header-container { flex-direction: column; gap: 1rem; }
-            nav { flex-wrap: wrap; justify-content: center; }
-            .hero { padding: 4rem 1rem; }
-            .hero h2 { font-size: 2.2rem; }
-            .hero-logo { width: 80px; height: 80px; }
-            .units-grid { grid-template-columns: 1fr; }
-            .container { padding: 3rem 1rem; }
-            .profile-header { flex-direction: column; text-align: center; }
-            .profile-content { grid-template-columns: 1fr; }
-            .skills-grid { flex-direction: column; }
-            .profile-card { padding: 2rem; }
         }
     </style>
 </head>
@@ -1459,6 +1498,24 @@
         }
 
         async function abrirSemana(numero, titulo) {
+            if (!window.PortafolioAuth.esHorarioVisualizacion() && !window.PortafolioAuth.estaAutenticado()) {
+                document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-clock"></i> Fuera de Horario';
+                document.getElementById('trabajosModal').classList.add('show');
+                const content = document.getElementById('modalContent');
+                const ahora = new Date();
+                const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+                content.innerHTML = `
+                    <div class="login-required">
+                        <i class="fa-solid fa-clock" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
+                        <p><strong>Los trabajos solo están disponibles:</strong></p>
+                        <p style="font-size: 1.1rem; font-weight: 600;">Miércoles y Jueves</p>
+                        <p style="font-size: 1.1rem; font-weight: 600;">3:00 PM - 8:00 PM</p>
+                        <p style="margin-top: 1rem; color: var(--text-secondary);">Hoy es ${dias[ahora.getDay()]} y son las ${ahora.getHours()}:${String(ahora.getMinutes()).padStart(2, '0')}</p>
+                    </div>
+                `;
+                return;
+            }
+
             document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-calendar-week"></i> ' + titulo;
             document.getElementById('trabajosModal').classList.add('show');
             const content = document.getElementById('modalContent');

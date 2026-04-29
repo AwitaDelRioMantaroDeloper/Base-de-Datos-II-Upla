@@ -49,6 +49,7 @@
             color: var(--text-dark);
             min-height: 100vh;
             transition: background 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
         }
         header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
@@ -598,6 +599,62 @@
             margin-bottom: 1rem;
         }
         @media (max-width: 500px) { .week-selector-grid { grid-template-columns: 1fr; } }
+        .visualizacion-control {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        html.dark-mode .visualizacion-control { background: #1B2838; border: 1px solid rgba(79, 195, 247, 0.2); }
+        .visualizacion-info h4 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.3rem; }
+        html.dark-mode .visualizacion-info h4 { color: var(--celeste); }
+        .visualizacion-info p { font-size: 0.85rem; color: var(--text-secondary); }
+        html.dark-mode .visualizacion-info p { color: #B8C5D3; }
+        .visualizacion-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .toggle-label { font-weight: 600; font-size: 0.9rem; }
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #ccc;
+            border-radius: 26px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .toggle-switch.active { background: var(--success); }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        .toggle-switch.active::after { transform: translateX(24px); }
+        .horario-badge {
+            background: var(--celeste-pale);
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        html.dark-mode .horario-badge { background: rgba(79, 195, 247, 0.15); color: var(--celeste); }
+        .horario-badge.activo { background: rgba(46, 125, 50, 0.15); color: var(--success); }
+        html.dark-mode .horario-badge.activo { background: rgba(46, 125, 50, 0.3); color: #81C784; }
         .week-selector-unit {
             background: var(--white);
             border-radius: 12px;
@@ -660,12 +717,59 @@
         #selectedSemanaDisplay.active { display: flex; }
         
         @media (max-width: 768px) {
-            .header-container { flex-direction: column; gap: 1rem; }
+            .header-container { flex-direction: column; gap: 0.8rem; }
             .header-left { width: 100%; justify-content: center; }
-            main { padding: 2rem 1rem; }
+            .header-right { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+            main { padding: 1.5rem 0.8rem; }
             .section-header h2 { font-size: 1.5rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+            .stat-card { padding: 1.2rem 0.8rem; }
+            .stat-number { font-size: 1.8rem; }
+            .stat-label { font-size: 0.8rem; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .card { padding: 1.2rem; }
+            .card-header { padding: 1rem 1.2rem; }
             .filters-card { flex-direction: column; align-items: stretch; }
-            .stat-number { font-size: 2.5rem; }
+            .filter-group { flex-direction: column; align-items: flex-start; }
+            .filter-group select { width: 100%; }
+            .table-container { overflow-x: auto; }
+            table { min-width: 600px; }
+            .actions { flex-direction: column; gap: 0.5rem; }
+            
+            .visualizacion-control { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+            .visualizacion-info h4 { font-size: 1rem; }
+            .visualizacion-info p { font-size: 0.8rem; }
+            .upload-type-tabs { flex-direction: column; }
+            .platform-select { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            header { padding: 0.8rem 1rem; }
+            .logo { width: 40px; height: 40px; font-size: 1rem; }
+            .header-title h1 { font-size: 0.95rem; }
+            .header-title p { font-size: 0.7rem; }
+            .user-info { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+            .btn { padding: 0.5rem 0.8rem; font-size: 0.75rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+            .stat-card { padding: 1rem 0.6rem; }
+            .stat-icon { font-size: 1.2rem; }
+            .stat-number { font-size: 1.5rem; }
+            .stat-label { font-size: 0.7rem; }
+            .card-header h3 { font-size: 1rem; }
+            .section-header h2 { font-size: 1.3rem; }
+            .week-selector { padding: 1rem; }
+            .week-selector-unit-header { padding: 0.6rem 0.8rem; font-size: 0.8rem; }
+            .upload-area { padding: 1.5rem; }
+            .upload-area p { font-size: 0.9rem; }
+            .upload-area small { font-size: 0.75rem; }
+            .btn-upload { padding: 0.8rem; font-size: 0.9rem; }
+            .filter-group label { font-size: 0.8rem; }
+            .badge { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+            .btn-action { width: 35px; height: 35px; }
+            .btn-action i { font-size: 0.8rem; }
+            .visualizacion-control { padding: 1rem; }
+            .horario-badge { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+            .toggle-switch { width: 45px; height: 24px; }
+            .toggle-switch::after { width: 18px; height: 18px; }
         }
     </style>
 </head>
@@ -721,6 +825,18 @@
         <div class="section-header">
             <h2><i class="fa-solid fa-chart-line"></i> Dashboard</h2>
             <div class="line"></div>
+        </div>
+
+        <div class="visualizacion-control" id="visualizacionControl">
+            <div class="visualizacion-info">
+                <h4><i class="fa-solid fa-eye"></i> Visualización de Trabajos</h4>
+                <p>Los alumnos pueden ver trabajos: Miércoles y Jueves 3:00 PM - 8:00 PM</p>
+                <span class="horario-badge" id="horarioBadge">Verificando horario...</span>
+            </div>
+            <div class="visualizacion-toggle">
+                <span class="toggle-label">Activado:</span>
+                <div class="toggle-switch" id="toggleVisualizacion" onclick="toggleVisualizacionManual()"></div>
+            </div>
         </div>
 
         <div class="stats-grid">
@@ -972,6 +1088,8 @@
             document.getElementById('userInfo').innerHTML = '<i class="fa-solid fa-user"></i><span>' + usuario + '</span>';
             
             initTheme();
+            actualizarEstadoVisualizacion();
+            setInterval(actualizarEstadoVisualizacion, 60000);
             cargarDatos();
             console.log('Dashboard inicializado correctamente');
         }
@@ -1012,6 +1130,45 @@
             }
             
             updateThemeIcon();
+        }
+
+        function toggleVisualizacionManual() {
+            const overrideActive = localStorage.getItem('visualizacion_activada') === 'true';
+            const toggle = document.getElementById('toggleVisualizacion');
+            const badge = document.getElementById('horarioBadge');
+            
+            if (overrideActive) {
+                window.PortafolioAuth.desactivarVisualizacion();
+                actualizarEstadoVisualizacion();
+                showNotification('Visualización desactivada');
+            } else {
+                window.PortafolioAuth.activarVisualizacion();
+                actualizarEstadoVisualizacion();
+                showNotification('Visualización activada manualmente');
+            }
+        }
+
+        function actualizarEstadoVisualizacion() {
+            const esHorario = window.PortafolioAuth.esHorarioVisualizacion();
+            const toggle = document.getElementById('toggleVisualizacion');
+            const badge = document.getElementById('horarioBadge');
+            const overrideActive = localStorage.getItem('visualizacion_activada') === 'true';
+            
+            if (overrideActive) {
+                toggle.classList.add('active');
+                badge.classList.add('activo');
+                badge.textContent = 'Activado Manualmente';
+            } else if (esHorario) {
+                toggle.classList.add('active');
+                badge.classList.add('activo');
+                badge.textContent = 'Horario Activo (Automático)';
+            } else {
+                toggle.classList.remove('active');
+                badge.classList.remove('activo');
+                const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+                const ahora = new Date();
+                badge.textContent = `Fuera de horario (${dias[ahora.getDay()]} ${ahora.getHours()}:00)`;
+            }
         }
 
         async function handleLogout() {
