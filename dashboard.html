@@ -437,6 +437,8 @@
         .btn-action.view:hover { background: var(--celeste-light); }
         .btn-action.status { background: var(--primary); color: white; }
         .btn-action.status:hover { background: var(--primary-light); }
+        .btn-action.status-pending { background: var(--warning); color: white; }
+        .btn-action.status-pending:hover { background: #F57C00; transform: scale(1.1); }
         .btn-action.delete { background: var(--danger); color: white; }
         .btn-action.delete:hover { background: #B71C1C; transform: scale(1.1); }
         .notification {
@@ -1201,7 +1203,8 @@ let uploadType = 'archivo';
                     <td class="acciones">
                         <a href="${t.ruta_storage}" target="_blank" class="btn-action view"><i class="fa-solid fa-eye"></i></a>
                         <button class="btn-action delete" onclick="eliminarTrabajo('${t.id}')" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                        <button class="btn-action status" onclick="cambiarEstado('${t.id}')"><i class="fa-solid fa-check"></i></button>
+                        <button class="btn-action status" onclick="cambiarEstado('${t.id}')" title="Marcar como revisado"><i class="fa-solid fa-check"></i></button>
+                        <button class="btn-action status-pending" onclick="marcarPendiente('${t.id}')" title="Marcar como pendiente"><i class="fa-solid fa-rotate-left"></i></button>
                     </td>
                 </tr>
             `).join('');
@@ -1228,11 +1231,27 @@ let uploadType = 'archivo';
                 return;
             }
             
-            const nuevoEstado = 'revisado';
+            try {
+                await window.PortafolioAuth.cambiarEstado(trabajoId, 'revisado');
+                showNotification('Trabajo marcado como revisado');
+                cargarDatos();
+            } catch (error) {
+                showNotification('Error al cambiar estado: ' + error.message, 'error');
+            }
+        }
+
+        async function marcarPendiente(trabajoId) {
+            const trabajo = todosLosTrabajos.find(t => t.id == trabajoId || t.id === trabajoId || String(t.id) === String(trabajoId));
+            if (!trabajo) return;
+            
+            if (trabajo.estado === 'pendiente') {
+                showNotification('Este trabajo ya está pendiente');
+                return;
+            }
             
             try {
-                await window.PortafolioAuth.cambiarEstado(trabajoId, nuevoEstado);
-                showNotification('Trabajo marcado como revisado');
+                await window.PortafolioAuth.cambiarEstado(trabajoId, 'pendiente');
+                showNotification('Trabajo marcado como pendiente');
                 cargarDatos();
             } catch (error) {
                 showNotification('Error al cambiar estado: ' + error.message, 'error');
