@@ -599,20 +599,26 @@
             margin-bottom: 1rem;
         }
         @media (max-width: 500px) { .week-selector-grid { grid-template-columns: 1fr; } }
+        .visualizacion-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (max-width: 768px) {
+            .visualizacion-cards { grid-template-columns: 1fr; gap: 1rem; }
+        }
         .visualizacion-control {
             background: var(--bg-card);
             border-radius: 16px;
             padding: 1.5rem;
             box-shadow: var(--shadow);
-            margin-bottom: 1.5rem;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 1rem;
         }
         html.dark-mode .visualizacion-control { background: #1B2838; border: 1px solid rgba(79, 195, 247, 0.2); }
-        .visualizacion-info h4 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.3rem; }
+        .visualizacion-info h4 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.5rem; }
         html.dark-mode .visualizacion-info h4 { color: var(--celeste); }
         .visualizacion-info p { font-size: 0.85rem; color: var(--text-secondary); }
         html.dark-mode .visualizacion-info p { color: #B8C5D3; }
@@ -651,10 +657,19 @@
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--primary);
+            display: inline-block;
         }
         html.dark-mode .horario-badge { background: rgba(79, 195, 247, 0.15); color: var(--celeste); }
         .horario-badge.activo { background: rgba(46, 125, 50, 0.15); color: var(--success); }
         html.dark-mode .horario-badge.activo { background: rgba(46, 125, 50, 0.3); color: #81C784; }
+        .manual-status-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        html.dark-mode .manual-status-text { color: #B8C5D3; }
+        .manual-status-text.activado { color: var(--success); }
+        html.dark-mode .manual-status-text.activado { color: #81C784; }
         .week-selector-unit {
             background: var(--white);
             border-radius: 12px;
@@ -716,60 +731,208 @@
         #selectedSemanaDisplay { display: none; }
         #selectedSemanaDisplay.active { display: flex; }
         
-        @media (max-width: 768px) {
-            .header-container { flex-direction: column; gap: 0.8rem; }
-            .header-left { width: 100%; justify-content: center; }
-            .header-right { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
-            main { padding: 1.5rem 0.8rem; }
-            .section-header h2 { font-size: 1.5rem; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-            .stat-card { padding: 1.2rem 0.8rem; }
-            .stat-number { font-size: 1.8rem; }
-            .stat-label { font-size: 0.8rem; }
+@media (max-width: 1024px) {
             .dashboard-grid { grid-template-columns: 1fr; }
-            .card { padding: 1.2rem; }
-            .card-header { padding: 1rem 1.2rem; }
-            .filters-card { flex-direction: column; align-items: stretch; }
-            .filter-group { flex-direction: column; align-items: flex-start; }
-            .filter-group select { width: 100%; }
-            .table-container { overflow-x: auto; }
-            table { min-width: 600px; }
-            .actions { flex-direction: column; gap: 0.5rem; }
-            
-            .visualizacion-control { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
-            .visualizacion-info h4 { font-size: 1rem; }
-            .visualizacion-info p { font-size: 0.8rem; }
-            .upload-type-tabs { flex-direction: column; }
-            .platform-select { grid-template-columns: 1fr; }
+            main { padding: 2rem 1.5rem; }
         }
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
             header { padding: 0.8rem 1rem; }
-            .logo { width: 40px; height: 40px; font-size: 1rem; }
-            .header-title h1 { font-size: 0.95rem; }
-            .header-title p { font-size: 0.7rem; }
+            .header-container { gap: 0.8rem; }
+            .header-left { width: 100%; justify-content: center; gap: 0.8rem; }
+            .logo { width: 42px; height: 42px; font-size: 1rem; }
+            .header-title h1 { font-size: 1.1rem; }
+            .header-title p { font-size: 0.75rem; }
+            .header-right { width: 100%; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
             .user-info { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-            .btn { padding: 0.5rem 0.8rem; font-size: 0.75rem; }
-            .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-            .stat-card { padding: 1rem 0.6rem; }
-            .stat-icon { font-size: 1.2rem; }
-            .stat-number { font-size: 1.5rem; }
-            .stat-label { font-size: 0.7rem; }
-            .card-header h3 { font-size: 1rem; }
-            .section-header h2 { font-size: 1.3rem; }
-            .week-selector { padding: 1rem; }
-            .week-selector-unit-header { padding: 0.6rem 0.8rem; font-size: 0.8rem; }
-            .upload-area { padding: 1.5rem; }
+            .header-right .btn { padding: 0.45rem 0.8rem; font-size: 0.8rem; }
+            .admin-badge { padding: 0.3rem 0.6rem; font-size: 0.7rem; }
+            
+            main { padding: 1.5rem 1rem; }
+            .section-header { margin-bottom: 1.2rem; gap: 0.8rem; }
+            .section-header h2 { font-size: 1.4rem; }
+            .section-header .line { height: 2px; }
+            
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 2rem; }
+            .stat-card { padding: 1.2rem 0.8rem; border-radius: 16px; }
+            .stat-card::before { height: 3px; }
+            .stat-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+            .stat-number { font-size: 1.8rem; }
+            .stat-label { font-size: 0.75rem; }
+            
+            .visualizacion-cards { grid-template-columns: 1fr; gap: 0.8rem; margin-bottom: 1.5rem; }
+            .visualizacion-control { padding: 1rem; border-radius: 14px; gap: 0.8rem; }
+            .visualizacion-info h4 { font-size: 0.95rem; }
+            .visualizacion-info p { font-size: 0.75rem; }
+            .toggle-switch { width: 46px; height: 24px; }
+            .toggle-switch::after { width: 18px; height: 18px; top: 3px; left: 3px; }
+            .toggle-switch.active::after { transform: translateX(22px); }
+            .toggle-label { font-size: 0.85rem; }
+            .horario-badge { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+            .manual-status-text { font-size: 0.8rem; }
+            
+            .dashboard-grid { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 2rem; }
+            .card { border-radius: 16px; padding: 1.2rem; }
+            .card-header { padding: 0.8rem 0; margin-bottom: 1rem; }
+            .card-header h3 { font-size: 1.05rem; }
+            
+            .upload-type-tabs { gap: 0.4rem; }
+            .upload-tab { padding: 0.7rem; font-size: 0.85rem; border-radius: 10px; }
+            
+            .week-selector { padding: 1rem; border-radius: 14px; margin-bottom: 0.8rem; }
+            .week-selector-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+            .week-selector-unit { border-radius: 10px; }
+            .week-selector-unit-header { padding: 0.7rem 0.8rem; font-size: 0.8rem; }
+            .week-option { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
+            .selected-semana { padding: 0.6rem; font-size: 0.8rem; border-radius: 8px; }
+            
+            .form-group { margin-bottom: 0.8rem; }
+            .form-group label { font-size: 0.8rem; margin-bottom: 0.3rem; }
+            .form-group input, .form-group select { padding: 0.75rem 0.8rem; font-size: 0.85rem; border-radius: 10px; }
+            .upload-area { padding: 1.5rem; border-radius: 14px; }
+            .upload-area i { font-size: 2rem; }
             .upload-area p { font-size: 0.9rem; }
             .upload-area small { font-size: 0.75rem; }
-            .btn-upload { padding: 0.8rem; font-size: 0.9rem; }
+            .platform-select { grid-template-columns: 1fr; gap: 0.6rem; }
+            .platform-btn { padding: 1rem; border-radius: 12px; }
+            .platform-btn i { font-size: 1.5rem; }
+            .platform-btn span { font-size: 0.9rem; }
+            .url-input { padding: 0.75rem; font-size: 0.85rem; border-radius: 10px; }
+            .btn-upload { padding: 0.85rem; font-size: 0.9rem; border-radius: 10px; }
+            .file-preview { padding: 0.8rem; border-radius: 10px; }
+            .file-preview .file-name { font-size: 0.8rem; }
+            
+            .filters-card { padding: 1rem; border-radius: 14px; gap: 0.8rem; flex-direction: column; align-items: stretch; }
+            .filter-group { flex-direction: column; align-items: stretch; gap: 0.3rem; }
             .filter-group label { font-size: 0.8rem; }
+            .filter-group select { width: 100%; padding: 0.7rem; font-size: 0.85rem; border-radius: 10px; }
+            
+            .table-container { border-radius: 14px; overflow-x: auto; }
+            table { min-width: 580px; }
+            thead th { padding: 1rem; font-size: 0.75rem; }
+            tbody td { padding: 0.9rem 1rem; font-size: 0.85rem; }
             .badge { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
-            .btn-action { width: 35px; height: 35px; }
+            .btn-action { padding: 0.5rem; border-radius: 8px; }
+            .btn-action i { font-size: 0.85rem; }
+            
+            .notification { top: 80px; right: 10px; left: 10px; padding: 0.8rem 1rem; font-size: 0.85rem; border-radius: 10px; }
+            .notification i { font-size: 1rem; }
+        }
+        @media (max-width: 480px) {
+            header { padding: 0.6rem 0.8rem; }
+            .header-container { gap: 0.6rem; }
+            .header-left { gap: 0.6rem; }
+            .logo { width: 36px; height: 36px; font-size: 0.85rem; border-radius: 10px; }
+            .header-title h1 { font-size: 0.95rem; }
+            .header-title p { font-size: 0.7rem; }
+            .header-right { gap: 0.4rem; }
+            .header-right .btn { padding: 0.4rem 0.6rem; font-size: 0.75rem; border-radius: 18px; }
+            .header-right .btn i, .header-right .btn svg { font-size: 0.8rem; width: 14px; height: 14px; }
+            .user-info { padding: 0.35rem 0.6rem; font-size: 0.75rem; border-radius: 18px; }
+            .user-info i { font-size: 0.85rem; }
+            .admin-badge { padding: 0.25rem 0.5rem; font-size: 0.65rem; border-radius: 14px; }
+            .theme-btn { width: 36px; height: 36px; }
+            .theme-btn svg { width: 16px; height: 16px; }
+            
+            main { padding: 1rem 0.7rem; }
+            .section-header { margin-bottom: 1rem; gap: 0.6rem; }
+            .section-header h2 { font-size: 1.15rem; }
+            .section-header .line { height: 2px; }
+            
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-bottom: 1.5rem; }
+            .stat-card { padding: 1rem 0.6rem; border-radius: 14px; }
+            .stat-icon { font-size: 1.2rem; margin-bottom: 0.3rem; }
+            .stat-number { font-size: 1.5rem; }
+            .stat-label { font-size: 0.7rem; }
+            
+            .visualizacion-cards { gap: 0.6rem; margin-bottom: 1.2rem; }
+            .visualizacion-control { padding: 0.8rem; border-radius: 12px; gap: 0.6rem; }
+            .visualizacion-info h4 { font-size: 0.85rem; }
+            .visualizacion-info p { font-size: 0.7rem; }
+            .toggle-switch { width: 42px; height: 22px; }
+            .toggle-switch::after { width: 16px; height: 16px; }
+            .toggle-switch.active::after { transform: translateX(20px); }
+            .toggle-label { font-size: 0.8rem; }
+            .horario-badge { font-size: 0.7rem; padding: 0.25rem 0.5rem; }
+            .manual-status-text { font-size: 0.75rem; }
+            
+            .dashboard-grid { gap: 0.8rem; margin-bottom: 1.5rem; }
+            .card { padding: 1rem; border-radius: 14px; }
+            .card-header { padding: 0.7rem 0; margin-bottom: 0.8rem; }
+            .card-header h3 { font-size: 0.95rem; }
+            .card-header i { font-size: 0.95rem; }
+            
+            .upload-type-tabs { gap: 0.3rem; }
+            .upload-tab { padding: 0.6rem; font-size: 0.8rem; border-radius: 8px; gap: 0.3rem; }
+            
+            .week-selector { padding: 0.8rem; border-radius: 12px; margin-bottom: 0.7rem; }
+            .week-selector-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+            .week-selector-unit { border-radius: 8px; }
+            .week-selector-unit-header { padding: 0.6rem 0.7rem; font-size: 0.75rem; border-radius: 8px; }
+            .week-option { padding: 0.45rem 0.7rem; font-size: 0.75rem; }
+            .selected-semana { padding: 0.5rem; font-size: 0.75rem; border-radius: 8px; }
+            
+            .form-group { margin-bottom: 0.7rem; }
+            .form-group label { font-size: 0.75rem; margin-bottom: 0.25rem; }
+            .form-group input, .form-group select { padding: 0.65rem 0.7rem; font-size: 0.8rem; border-radius: 8px; }
+            .upload-area { padding: 1.2rem; border-radius: 12px; }
+            .upload-area i { font-size: 1.5rem; }
+            .upload-area p { font-size: 0.8rem; }
+            .upload-area small { font-size: 0.7rem; }
+            .platform-btn { padding: 0.8rem; border-radius: 10px; }
+            .platform-btn i { font-size: 1.3rem; }
+            .platform-btn span { font-size: 0.85rem; }
+            .url-input { padding: 0.65rem; font-size: 0.8rem; border-radius: 8px; }
+            .btn-upload { padding: 0.75rem; font-size: 0.85rem; border-radius: 8px; }
+            .file-preview { padding: 0.6rem; border-radius: 8px; flex-wrap: wrap; }
+            .file-preview .file-name { font-size: 0.75rem; }
+            .file-preview .remove-btn { width: 28px; height: 28px; font-size: 0.8rem; }
+            
+            .filters-card { padding: 0.8rem; border-radius: 12px; gap: 0.6rem; }
+            .filter-group label { font-size: 0.75rem; }
+            .filter-group select { padding: 0.6rem; font-size: 0.8rem; border-radius: 8px; }
+            
+            .table-container { border-radius: 12px; }
+            table { min-width: 520px; }
+            thead th { padding: 0.8rem 0.8rem; font-size: 0.7rem; }
+            tbody td { padding: 0.7rem 0.8rem; font-size: 0.8rem; }
+            .badge { font-size: 0.65rem; padding: 0.25rem 0.5rem; }
+            .btn-action { padding: 0.4rem; border-radius: 6px; }
             .btn-action i { font-size: 0.8rem; }
-            .visualizacion-control { padding: 1rem; }
-            .horario-badge { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
-            .toggle-switch { width: 45px; height: 24px; }
-            .toggle-switch::after { width: 18px; height: 18px; }
+            
+            .notification { top: 70px; right: 8px; left: 8px; padding: 0.7rem 0.8rem; font-size: 0.8rem; border-radius: 8px; }
+        }
+        @media (max-width: 360px) {
+            header { padding: 0.5rem 0.6rem; }
+            .logo { width: 32px; height: 32px; font-size: 0.8rem; }
+            .header-title h1 { font-size: 0.85rem; }
+            .header-title p { font-size: 0.65rem; }
+            .header-right { gap: 0.3rem; }
+            .header-right .btn { padding: 0.35rem 0.5rem; font-size: 0.7rem; }
+            .user-info { padding: 0.3rem 0.5rem; font-size: 0.7rem; }
+            .admin-badge { padding: 0.2rem 0.4rem; font-size: 0.6rem; }
+            .theme-btn { width: 32px; height: 32px; }
+            
+            main { padding: 0.8rem 0.5rem; }
+            .section-header h2 { font-size: 1.05rem; }
+            .stats-grid { gap: 0.4rem; }
+            .stat-card { padding: 0.8rem 0.5rem; }
+            .stat-icon { font-size: 1rem; }
+            .stat-number { font-size: 1.3rem; }
+            .stat-label { font-size: 0.65rem; }
+            .visualizacion-control { padding: 0.7rem; }
+            .visualizacion-info h4 { font-size: 0.8rem; }
+            .visualizacion-info p { font-size: 0.65rem; }
+            .card { padding: 0.8rem; }
+            .card-header h3 { font-size: 0.9rem; }
+            .upload-tab { padding: 0.5rem; font-size: 0.75rem; }
+            .week-selector-unit-header { padding: 0.5rem 0.6rem; font-size: 0.7rem; }
+            .week-option { padding: 0.4rem 0.6rem; font-size: 0.7rem; }
+            .form-group input, .form-group select { padding: 0.6rem; font-size: 0.75rem; }
+            .upload-area { padding: 1rem; }
+            .btn-upload { padding: 0.7rem; font-size: 0.8rem; }
+            table { min-width: 480px; }
+            thead th { padding: 0.7rem 0.6rem; font-size: 0.65rem; }
+            tbody td { padding: 0.6rem 0.7rem; font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -827,15 +990,33 @@
             <div class="line"></div>
         </div>
 
-        <div class="visualizacion-control" id="visualizacionControl">
-            <div class="visualizacion-info">
-                <h4><i class="fa-solid fa-eye"></i> Visualización de Trabajos</h4>
-                <p>Los alumnos pueden ver trabajos: Miércoles y Jueves 3:00 PM - 8:00 PM</p>
-                <span class="horario-badge" id="horarioBadge">Verificando horario...</span>
+        <div class="visualizacion-cards">
+            <div class="visualizacion-control" id="visualizacionAutomatica">
+                <div class="visualizacion-info">
+                    <h4><i class="fa-solid fa-clock"></i> Visualización Automática</h4>
+                    <p>Miércoles y Jueves de 3:00 PM a 8:00 PM</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;">
+                    <div class="visualizacion-toggle">
+                        <span class="toggle-label">Estado:</span>
+                        <div class="toggle-switch" id="toggleAutomatica" onclick="toggleVisualizacionAutomatica()"></div>
+                    </div>
+                    <span class="horario-badge" id="horarioBadge">Verificando horario...</span>
+                </div>
             </div>
-            <div class="visualizacion-toggle">
-                <span class="toggle-label">Activado:</span>
-                <div class="toggle-switch" id="toggleVisualizacion" onclick="toggleVisualizacionManual()"></div>
+
+            <div class="visualizacion-control" id="visualizacionManual">
+                <div class="visualizacion-info">
+                    <h4><i class="fa-solid fa-hand-pointer"></i> Activación Manual</h4>
+                    <p>Control independiente del horario automático</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;">
+                    <div class="visualizacion-toggle">
+                        <span class="toggle-label">Estado:</span>
+                        <div class="toggle-switch" id="toggleVisualizacion" onclick="toggleVisualizacionManual()"></div>
+                    </div>
+                    <span class="manual-status-text" id="manualStatusText">Desactivado</span>
+                </div>
             </div>
         </div>
 
@@ -1132,42 +1313,67 @@
             updateThemeIcon();
         }
 
+        function toggleVisualizacionAutomatica() {
+            const autoActive = window.PortafolioAuth.isVisualizacionAutomaticaActivada();
+            
+            if (autoActive) {
+                window.PortafolioAuth.desactivarVisualizacionAutomatica();
+                showNotification('Visualización automática desactivada');
+            } else {
+                window.PortafolioAuth.activarVisualizacionAutomatica();
+                showNotification('Visualización automática activada');
+            }
+            actualizarEstadoVisualizacion();
+        }
+
         function toggleVisualizacionManual() {
             const overrideActive = localStorage.getItem('visualizacion_activada') === 'true';
-            const toggle = document.getElementById('toggleVisualizacion');
-            const badge = document.getElementById('horarioBadge');
             
             if (overrideActive) {
                 window.PortafolioAuth.desactivarVisualizacion();
-                actualizarEstadoVisualizacion();
-                showNotification('Visualización desactivada');
+                showNotification('Visualización manual desactivada');
             } else {
                 window.PortafolioAuth.activarVisualizacion();
-                actualizarEstadoVisualizacion();
                 showNotification('Visualización activada manualmente');
             }
+            actualizarEstadoVisualizacion();
         }
 
         function actualizarEstadoVisualizacion() {
             const esHorario = window.PortafolioAuth.esHorarioVisualizacion();
-            const toggle = document.getElementById('toggleVisualizacion');
-            const badge = document.getElementById('horarioBadge');
             const overrideActive = localStorage.getItem('visualizacion_activada') === 'true';
+            const autoActive = window.PortafolioAuth.isVisualizacionAutomaticaActivada();
+            
+            const toggleAuto = document.getElementById('toggleAutomatica');
+            const autoBadge = document.getElementById('horarioBadge');
+            const toggleManual = document.getElementById('toggleVisualizacion');
+            const manualStatus = document.getElementById('manualStatusText');
+            
+            if (autoActive) {
+                toggleAuto.classList.add('active');
+                if (esHorario) {
+                    autoBadge.classList.add('activo');
+                    autoBadge.textContent = 'Horario Activo';
+                } else {
+                    autoBadge.classList.remove('activo');
+                    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+                    const ahora = new Date();
+                    autoBadge.textContent = `Fuera de horario (${dias[ahora.getDay()]} ${ahora.getHours()}:00)`;
+                }
+            } else {
+                toggleAuto.classList.remove('active');
+                autoBadge.classList.remove('activo');
+                autoBadge.textContent = 'Automático Desactivado';
+            }
             
             if (overrideActive) {
-                toggle.classList.add('active');
-                badge.classList.add('activo');
-                badge.textContent = 'Activado Manualmente';
-            } else if (esHorario) {
-                toggle.classList.add('active');
-                badge.classList.add('activo');
-                badge.textContent = 'Horario Activo (Automático)';
+                toggleManual.classList.add('active');
+                manualStatus.textContent = 'Activado';
+                manualStatus.classList.add('activado');
             } else {
-                toggle.classList.remove('active');
-                badge.classList.remove('activo');
-                const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-                const ahora = new Date();
-                badge.textContent = `Fuera de horario (${dias[ahora.getDay()]} ${ahora.getHours()}:00)`;
+                toggleManual.classList.remove('active');
+                manualStatus.textContent = 'Desactivado';
+                manualStatus.classList.remove('activado');
             }
         }
 

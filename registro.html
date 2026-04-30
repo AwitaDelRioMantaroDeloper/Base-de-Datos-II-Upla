@@ -290,9 +290,60 @@
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(79, 195, 247, 0.5);
         }
-        @media (max-width: 480px) { 
-            .register-container { padding: 2rem; } 
-            h1 { font-size: 1.6rem; } 
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .register-container { padding: 2rem 1.5rem; border-radius: 24px; max-width: 90%; }
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 0.85rem; margin-bottom: 1.5rem; }
+            .logo { width: 75px; height: 75px; border-radius: 16px; margin-bottom: 1.2rem; }
+            .logo-fallback { font-size: 2rem; }
+            .form-group { margin-bottom: 1rem; }
+            .form-group label { font-size: 0.85rem; }
+            .form-group input { padding: 0.9rem; font-size: 0.95rem; border-radius: 12px; }
+            .form-group small { font-size: 0.75rem; }
+            .btn { padding: 0.9rem; font-size: 0.95rem; border-radius: 12px; }
+            .link { margin-top: 1.5rem; font-size: 0.85rem; }
+            .notification { padding: 0.8rem; border-radius: 12px; font-size: 0.85rem; margin-bottom: 1.2rem; }
+            .modal-confirm { padding: 2rem; max-width: 90%; }
+            .modal-icon { width: 70px; height: 70px; font-size: 2rem; }
+            .modal-confirm h2 { font-size: 1.3rem; }
+            .modal-confirm p { font-size: 0.9rem; }
+            .modal-btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 0.8rem; }
+            .register-container { padding: 1.5rem 1rem; border-radius: 20px; max-width: 95%; }
+            .logo { width: 60px; height: 60px; border-radius: 14px; margin-bottom: 1rem; }
+            .logo-fallback { font-size: 1.6rem; border-radius: 14px; }
+            h1 { font-size: 1.35rem; margin-bottom: 0.2rem; }
+            .subtitle { font-size: 0.78rem; margin-bottom: 1.2rem; }
+            .form-group { margin-bottom: 0.8rem; }
+            .form-group label { font-size: 0.8rem; margin-bottom: 0.3rem; }
+            .form-group input { padding: 0.75rem 0.8rem; font-size: 0.9rem; border-radius: 10px; }
+            .form-group small { font-size: 0.7rem; }
+            .btn { padding: 0.8rem; font-size: 0.9rem; border-radius: 10px; }
+            .btn-primary { margin-bottom: 0.8rem; }
+            .link { margin-top: 1.2rem; font-size: 0.8rem; }
+            .notification { padding: 0.7rem; border-radius: 10px; font-size: 0.8rem; margin-bottom: 1rem; }
+            .modal-confirm { padding: 1.5rem; border-radius: 20px; }
+            .modal-icon { width: 60px; height: 60px; font-size: 1.8rem; margin-bottom: 1rem; }
+            .modal-confirm h2 { font-size: 1.15rem; }
+            .modal-confirm p { font-size: 0.8rem; }
+            .email-highlight { padding: 0.6rem 1rem; font-size: 0.8rem; border-radius: 10px; }
+            .modal-btn { padding: 0.7rem 1.2rem; font-size: 0.85rem; border-radius: 20px; }
+        }
+        @media (max-width: 360px) {
+            body { padding: 0.5rem; }
+            .register-container { padding: 1.2rem 0.8rem; border-radius: 16px; }
+            .logo { width: 50px; height: 50px; }
+            .logo-fallback { font-size: 1.3rem; }
+            h1 { font-size: 1.2rem; }
+            .subtitle { font-size: 0.72rem; }
+            .form-group { margin-bottom: 0.7rem; }
+            .form-group input { padding: 0.65rem 0.7rem; font-size: 0.85rem; }
+            .btn { padding: 0.7rem; font-size: 0.85rem; }
+            .modal-confirm { padding: 1.2rem; }
+            .modal-icon { width: 50px; height: 50px; font-size: 1.5rem; }
         }
     </style>
 </head>

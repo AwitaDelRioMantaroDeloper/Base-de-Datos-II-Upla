@@ -378,6 +378,9 @@ function esHorarioVisualizacion() {
     const overrideEnabled = localStorage.getItem('visualizacion_activada') === 'true';
     if (overrideEnabled) return true;
     
+    const autoDisabled = localStorage.getItem('visualizacion_automatica_activada') === 'false';
+    if (autoDisabled) return false;
+    
     const ahora = new Date();
     const dia = ahora.getDay();
     const hora = ahora.getHours();
@@ -396,6 +399,18 @@ function activarVisualizacion() {
 
 function desactivarVisualizacion() {
     localStorage.removeItem('visualizacion_activada');
+}
+
+function activarVisualizacionAutomatica() {
+    localStorage.setItem('visualizacion_automatica_activada', 'true');
+}
+
+function desactivarVisualizacionAutomatica() {
+    localStorage.setItem('visualizacion_automatica_activada', 'false');
+}
+
+function isVisualizacionAutomaticaActivada() {
+    return localStorage.getItem('visualizacion_automatica_activada') !== 'false';
 }
 
 function estaAutenticado() {
@@ -631,7 +646,10 @@ if (typeof window !== 'undefined') {
         requireGuest,
         esHorarioVisualizacion,
         activarVisualizacion,
-        desactivarVisualizacion
+        desactivarVisualizacion,
+        activarVisualizacionAutomatica,
+        desactivarVisualizacionAutomatica,
+        isVisualizacionAutomaticaActivada
     };
     
     console.log('[PortafolioAuth] Sistema inicializado');
