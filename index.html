@@ -2202,24 +2202,6 @@
         }
 
         async function abrirSemana(numero, titulo) {
-            if (!window.PortafolioAuth.esHorarioVisualizacion() && !window.PortafolioAuth.estaAutenticado()) {
-                document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-clock"></i> Fuera de Horario';
-                document.getElementById('trabajosModal').classList.add('show');
-                const content = document.getElementById('modalContent');
-                const ahora = new Date();
-                const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-                content.innerHTML = `
-                    <div class="login-required">
-                        <i class="fa-solid fa-clock" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
-                        <p><strong>Los trabajos solo están disponibles:</strong></p>
-                        <p style="font-size: 1.1rem; font-weight: 600;">Miércoles y Jueves</p>
-                        <p style="font-size: 1.1rem; font-weight: 600;">3:00 PM - 8:00 PM</p>
-                        <p style="margin-top: 1rem; color: var(--text-secondary);">Hoy es ${dias[ahora.getDay()]} y son las ${ahora.getHours()}:${String(ahora.getMinutes()).padStart(2, '0')}</p>
-                    </div>
-                `;
-                return;
-            }
-
             document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-calendar-week"></i> ' + titulo;
             document.getElementById('trabajosModal').classList.add('show');
             const content = document.getElementById('modalContent');
