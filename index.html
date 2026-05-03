@@ -1086,6 +1086,448 @@
         .week-card:hover .week-arrow {
             transform: translateX(5px);
         }
+
+        /* ============================================
+           DATANAUTA - Chatbot Profesional
+           ============================================ */
+        .dn-robot {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            cursor: pointer;
+            animation: dnFadeIn 0.8s ease-out;
+        }
+         /* Robot figure - pure CSS/SVG drawing */
+         .dn-robot__button {
+             width: 80px;
+             height: 80px;
+             border-radius: 50%;
+             background: transparent;
+             border: none;
+             cursor: pointer;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             box-shadow: none;
+             transition: all var(--dn-transition, 0.3s ease);
+             animation: dnFloat 3s ease-in-out infinite;
+             position: relative;
+             outline: none;
+             overflow: visible;
+             padding: 0;
+         }
+         .dn-robot__button::before {
+             content: '';
+             position: absolute;
+             inset: -8px;
+             border-radius: 50%;
+             background: radial-gradient(circle, rgba(79,195,247,0.12) 0%, transparent 70%);
+             animation: dnPulseGlow 2.5s ease-in-out infinite;
+             z-index: -1;
+         }
+         .dn-robot__button:hover { transform: scale(1.1); }
+         .dn-robot__button:active { transform: scale(0.95); }
+         html.dark-mode .dn-robot__button { background: transparent; }
+
+         .dn-robot__figure {
+             width: 52px; height: 52px; position: relative;
+             animation: dnRobotWave 3s ease-in-out infinite;
+         }
+         .dn-robot__figure--mini { width: 22px; height: 22px; }
+         .dn-robot__figure--mini .dn-robot__head { width: 18px; height: 14px; top: 0; }
+         .dn-robot__figure--mini .dn-robot__face { padding: 3px 3px; }
+         .dn-robot__figure--mini .dn-robot__eye { width: 3px; height: 3px; border-radius: 1px; }
+         .dn-robot__figure--mini .dn-robot__mouth { width: 5px; height: 2px; border-radius: 0 0 2px 2px; }
+         .dn-robot__figure--mini .dn-robot__body { display: none; }
+         .dn-robot__figure--mini .dn-robot__arm { display: none; }
+         .dn-robot__figure--mini .dn-robot__jet { display: none; }
+         .dn-robot__figure--mini .dn-robot__antenna { display: none; }
+         .dn-robot__figure--mini .dn-robot__ear { width: 3px; height: 5px; top: 3px; }
+         .dn-robot__figure--mini .dn-robot__ear--left { left: -3px; border-radius: 2px 0 0 2px; }
+         .dn-robot__figure--mini .dn-robot__ear--right { right: -3px; border-radius: 0 2px 2px 0; }
+
+         /* Head */
+         .dn-robot__head {
+             width: 42px; height: 30px;
+             background: linear-gradient(180deg, #ffffff 0%, #e8edf2 100%);
+             border-radius: 12px 12px 14px 14px;
+             position: absolute; top: 2px; left: 50%; transform: translateX(-50%);
+             z-index: 2; box-shadow: 0 2px 8px rgba(0,61,122,0.15);
+         }
+         html.dark-mode .dn-robot__head {
+             background: linear-gradient(180deg, #2a3a4a 0%, #1a2a3a 100%);
+             box-shadow: 0 2px 8px rgba(79,195,247,0.2);
+         }
+         /* Antenna */
+         .dn-robot__antenna {
+             width: 2px; height: 6px; background: #4a5568;
+             position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+             border-radius: 1px;
+         }
+         .dn-robot__antenna-tip {
+             width: 6px; height: 6px; background: var(--celeste);
+             border-radius: 50%; position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
+             animation: dnAntennaGlow 1.5s ease-in-out infinite;
+             box-shadow: 0 0 6px var(--celeste);
+         }
+         /* Face screen */
+         .dn-robot__face {
+             width: 34px; height: 20px; background: #1a2332;
+             border-radius: 8px; position: absolute;
+             top: 50%; left: 50%; transform: translate(-50%, -50%);
+             padding: 4px 5px; display: flex; flex-direction: column;
+             align-items: center; justify-content: center; gap: 2px;
+             box-shadow: inset 0 1px 4px rgba(0,0,0,0.3);
+         }
+         html.dark-mode .dn-robot__face {
+             background: #0d1b2a; box-shadow: inset 0 1px 4px rgba(79,195,247,0.1);
+         }
+         /* Eyes */
+         .dn-robot__eye {
+             width: 5px; height: 5px; background: var(--celeste);
+             border-radius: 50%; box-shadow: 0 0 4px var(--celeste), 0 0 8px rgba(79,195,247,0.3);
+             animation: dnEyeBlink 4s ease-in-out infinite;
+         }
+         .dn-robot__eye--left, .dn-robot__eye--right { display: inline-block; }
+         .dn-robot__mouth {
+             width: 8px; height: 3px; background: var(--celeste);
+             border-radius: 0 0 4px 4px; box-shadow: 0 0 3px var(--celeste);
+         }
+         /* Ears */
+         .dn-robot__ear {
+             width: 6px; height: 12px; background: linear-gradient(180deg, var(--celeste), var(--primary));
+             position: absolute; top: 6px; border-radius: 3px; z-index: 1;
+         }
+         .dn-robot__ear--left { left: -5px; border-radius: 3px 0 0 3px; }
+         .dn-robot__ear--right { right: -5px; border-radius: 0 3px 3px 0; }
+         html.dark-mode .dn-robot__ear {
+             background: linear-gradient(180deg, rgba(79,195,247,0.8), rgba(0,61,122,0.8));
+         }
+         /* Body */
+         .dn-robot__body {
+             width: 28px; height: 16px;
+             background: linear-gradient(180deg, #ffffff 0%, #e8edf2 100%);
+             border-radius: 8px 8px 14px 14px;
+             position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
+             z-index: 1; box-shadow: 0 2px 6px rgba(0,61,122,0.12);
+         }
+         html.dark-mode .dn-robot__body {
+             background: linear-gradient(180deg, #2a3a4a 0%, #1a2a3a 100%);
+         }
+         .dn-robot__chest-ring {
+             width: 14px; height: 14px; border-radius: 50%;
+             border: 2px solid var(--celeste); position: absolute;
+             top: 50%; left: 50%; transform: translate(-50%, -50%);
+             display: flex; align-items: center; justify-content: center;
+         }
+         .dn-robot__chest-icon {
+             width: 8px; height: 8px; border-radius: 50%;
+             background: var(--celeste); box-shadow: 0 0 4px var(--celeste);
+         }
+         /* Arms */
+         .dn-robot__arm {
+             width: 8px; height: 14px; background: #e8edf2;
+             border-radius: 4px; position: absolute; top: 30px; z-index: 0;
+         }
+         .dn-robot__arm--left { left: -2px; transform: rotate(-15deg); animation: dnWaveLeft 2s ease-in-out infinite; }
+         .dn-robot__arm--right { right: -2px; transform: rotate(15deg); animation: dnWaveRight 2s ease-in-out infinite 0.5s; }
+         html.dark-mode .dn-robot__arm { background: #2a3a4a; }
+         .dn-robot__hand {
+             width: 6px; height: 6px; background: #4a5568;
+             border-radius: 3px; position: absolute; bottom: -3px; left: 50%; transform: translateX(-50%);
+         }
+         html.dark-mode .dn-robot__hand { background: #3a4a5a; }
+         /* Jet / thruster */
+         .dn-robot__jet {
+             width: 16px; height: 6px; background: #4a5568;
+             border-radius: 0 0 8px 8px; position: absolute;
+             bottom: 0; left: 50%; transform: translateX(-50%); z-index: 0;
+         }
+         html.dark-mode .dn-robot__jet { background: #3a4a5a; }
+         .dn-robot__jet-flame {
+             width: 10px; height: 10px; border-radius: 50%;
+             background: radial-gradient(circle, rgba(79,195,247,0.8) 0%, rgba(79,195,247,0.2) 60%, transparent 100%);
+             position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+             animation: dnJetFlame 0.8s ease-in-out infinite;
+             box-shadow: 0 4px 12px rgba(79,195,247,0.3);
+         }
+         .dn-robot__glow-ring {
+             width: 24px; height: 6px; border-radius: 50%;
+             background: radial-gradient(ellipse, rgba(79,195,247,0.25) 0%, transparent 70%);
+             position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+             animation: dnGlowRing 2s ease-in-out infinite;
+         }
+        .dn-robot__bubble {
+            position: absolute;
+            bottom: 72px;
+            right: 0;
+            background: var(--bg-card, var(--white));
+            border: 1px solid var(--celeste-pale);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 0.82rem;
+            color: var(--text-dark);
+            white-space: nowrap;
+            box-shadow: 0 4px 20px rgba(0,61,122,0.12);
+            opacity: 0;
+            transform: translateY(10px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        html.dark-mode .dn-robot__bubble {
+            background: #1B2838;
+            border-color: rgba(79,195,247,0.2);
+            color: #F0F4F8;
+        }
+        .dn-robot__bubble--visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .dn-robot__bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            right: 22px;
+            width: 12px;
+            height: 12px;
+            background: var(--bg-card, var(--white));
+            border-right: 1px solid var(--celeste-pale);
+            border-bottom: 1px solid var(--celeste-pale);
+            transform: rotate(45deg);
+        }
+        html.dark-mode .dn-robot__bubble::after {
+            background: #1B2838;
+            border-color: rgba(79,195,247,0.2);
+        }
+        .dn-robot__dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            background: var(--celeste);
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            animation: dnPulse 2s ease-in-out infinite;
+        }
+        html.dark-mode .dn-robot__dot { border-color: #1B2838; }
+        /* Chat window */
+        .dn-chat {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            width: 390px;
+            max-height: 540px;
+            height: calc(100vh - 130px);
+            background: var(--bg-card, var(--white));
+            border: 1px solid var(--celeste-pale);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,61,122,0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9998;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transform-origin: bottom right;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        html.dark-mode .dn-chat {
+            background: #1B2838;
+            border-color: rgba(79,195,247,0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+        .dn-chat--open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        /* Header */
+        .dn-chat__header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.9rem 1.1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            flex-shrink: 0;
+        }
+        html.dark-mode .dn-chat__header {
+            background: linear-gradient(135deg, #1B3A4B 0%, #264653 100%);
+            border-bottom: 1px solid rgba(79,195,247,0.15);
+        }
+        .dn-chat__avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .dn-chat__avatar svg { width: 20px; height: 20px; fill: var(--celeste); }
+        .dn-chat__header-info { flex: 1; min-width: 0; }
+        .dn-chat__header-name { font-size: 0.95rem; font-weight: 700; color: white; }
+        .dn-chat__header-status { font-size: 0.72rem; color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 0.3rem; }
+        .dn-chat__header-status::before { content: ''; width: 7px; height: 7px; background: var(--celeste); border-radius: 50%; }
+        .dn-chat__close {
+            width: 32px; height: 32px; border-radius: 50%; border: none;
+            background: rgba(255,255,255,0.12); color: white;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s; flex-shrink: 0;
+        }
+        .dn-chat__close:hover { background: rgba(255,255,255,0.25); }
+        .dn-chat__close i { font-size: 14px; }
+        /* Messages */
+        .dn-chat__messages {
+            flex: 1; overflow-y: auto; padding: 1rem;
+            display: flex; flex-direction: column; gap: 0.75rem; scroll-behavior: smooth;
+        }
+        .dn-chat__messages::-webkit-scrollbar { width: 4px; }
+        .dn-chat__messages::-webkit-scrollbar-track { background: transparent; }
+        .dn-chat__messages::-webkit-scrollbar-thumb { background: var(--celeste-pale); border-radius: 4px; }
+        html.dark-mode .dn-chat__messages::-webkit-scrollbar-thumb { background: rgba(79,195,247,0.2); }
+        .dn-message { display: flex; flex-direction: column; max-width: 88%; animation: dnMessageIn 0.3s ease-out; }
+        .dn-message--bot { align-self: flex-start; }
+        .dn-message--user { align-self: flex-end; }
+        .dn-message__bubble {
+            padding: 0.7rem 1rem; border-radius: 14px;
+            font-size: 0.86rem; line-height: 1.55; word-wrap: break-word;
+        }
+        .dn-message--bot .dn-message__bubble {
+            background: var(--celeste-pale); color: var(--text-dark); border-bottom-left-radius: 4px;
+        }
+        html.dark-mode .dn-message--bot .dn-message__bubble { background: #1E3A5F; color: #F0F4F8; }
+        .dn-message--user .dn-message__bubble {
+            background: var(--primary); color: white; border-bottom-right-radius: 4px;
+        }
+        html.dark-mode .dn-message--user .dn-message__bubble { background: var(--celeste); color: #0D1B2A; }
+        .dn-message__time { font-size: 0.62rem; color: var(--text-secondary); margin-top: 0.25rem; padding: 0 0.3rem; }
+        .dn-message--user .dn-message__time { text-align: right; }
+        .dn-message__bubble i { margin-right: 0.3rem; font-size: 0.8rem; }
+        /* Quick actions */
+        .dn-quick-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+        .dn-quick-action {
+            padding: 0.4rem 0.75rem; border-radius: 20px;
+            border: 1px solid var(--celeste); background: transparent;
+            color: var(--primary); font-size: 0.76rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; white-space: nowrap;
+            display: flex; align-items: center; gap: 0.3rem;
+        }
+        html.dark-mode .dn-quick-action { color: var(--celeste); border-color: rgba(79,195,247,0.3); }
+        .dn-quick-action:hover { background: var(--celeste-pale); transform: translateY(-1px); }
+        html.dark-mode .dn-quick-action:hover { background: rgba(79,195,247,0.1); }
+        .dn-quick-action i { font-size: 0.75rem; }
+        /* Trabajo preview card */
+        .dn-trabajo-preview {
+            background: var(--white);
+            border: 1px solid var(--celeste-pale);
+            border-radius: 10px;
+            padding: 0.6rem 0.8rem;
+            margin-top: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        html.dark-mode .dn-trabajo-preview {
+            background: #1A2332;
+            border-color: rgba(79,195,247,0.15);
+        }
+        .dn-trabajo-preview:hover {
+            border-color: var(--celeste);
+            transform: translateX(3px);
+        }
+        .dn-trabajo-preview i { color: var(--celeste); font-size: 0.9rem; }
+        .dn-trabajo-preview .dn-trabajo-name { font-size: 0.8rem; font-weight: 600; color: var(--text-dark); flex: 1; }
+        html.dark-mode .dn-trabajo-preview .dn-trabajo-name { color: #F0F4F8; }
+        .dn-trabajo-preview .dn-trabajo-badge {
+            font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 10px; font-weight: 600; text-transform: uppercase;
+        }
+        .dn-trabajo-badge.pendiente { background: rgba(245,124,0,0.15); color: var(--warning); }
+        .dn-trabajo-badge.revisado { background: rgba(46,125,50,0.15); color: var(--success); }
+        /* Unit selector in chat */
+        .dn-unit-selector { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.5rem; }
+        .dn-unit-btn {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.55rem 0.75rem; border-radius: 10px;
+            border: 1px solid var(--celeste-pale); background: var(--white);
+            cursor: pointer; transition: all 0.2s; text-align: left;
+        }
+        html.dark-mode .dn-unit-btn { background: #1A2332; border-color: rgba(79,195,247,0.15); }
+        .dn-unit-btn:hover { border-color: var(--celeste); background: var(--celeste-pale); }
+        html.dark-mode .dn-unit-btn:hover { background: rgba(79,195,247,0.08); }
+        .dn-unit-btn i { color: var(--celeste); font-size: 0.9rem; width: 20px; text-align: center; }
+        .dn-unit-btn .dn-unit-info { flex: 1; }
+        .dn-unit-btn .dn-unit-label { font-size: 0.78rem; font-weight: 600; color: var(--text-dark); }
+        html.dark-mode .dn-unit-btn .dn-unit-label { color: #F0F4F8; }
+        .dn-unit-btn .dn-unit-desc { font-size: 0.68rem; color: var(--text-secondary); }
+        html.dark-mode .dn-unit-btn .dn-unit-desc { color: #B8C5D3; }
+        /* Typing indicator */
+        .dn-typing { display: flex; align-items: center; gap: 0.3rem; padding: 0.7rem 1rem; align-self: flex-start; }
+        .dn-typing__dot {
+            width: 7px; height: 7px; background: var(--text-secondary);
+            border-radius: 50%; animation: dnTyping 1.4s ease-in-out infinite;
+        }
+        .dn-typing__dot:nth-child(2) { animation-delay: 0.2s; }
+        .dn-typing__dot:nth-child(3) { animation-delay: 0.4s; }
+        /* Input */
+        .dn-chat__input {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.8rem 1rem; border-top: 1px solid var(--celeste-pale);
+            background: var(--bg-light, var(--bg-card)); flex-shrink: 0;
+        }
+        html.dark-mode .dn-chat__input { background: #15202E; border-top-color: rgba(79,195,247,0.1); }
+        .dn-chat__input-field {
+            flex: 1; padding: 0.6rem 0.9rem; border-radius: 24px;
+            border: 1.5px solid var(--celeste-pale); background: var(--white);
+            color: var(--text-dark); font-size: 0.86rem; font-family: inherit;
+            outline: none; transition: border-color 0.2s;
+        }
+        html.dark-mode .dn-chat__input-field {
+            background: #1A2332; border-color: rgba(79,195,247,0.15); color: #F0F4F8;
+        }
+        .dn-chat__input-field::placeholder { color: var(--text-secondary); }
+        .dn-chat__input-field:focus { border-color: var(--celeste); }
+        .dn-chat__send {
+            width: 38px; height: 38px; border-radius: 50%; border: none;
+            background: var(--primary); color: white;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; flex-shrink: 0;
+        }
+        html.dark-mode .dn-chat__send { background: var(--celeste); color: #0D1B2A; }
+        .dn-chat__send:hover { transform: scale(1.08); box-shadow: 0 4px 15px rgba(0,61,122,0.3); }
+        html.dark-mode .dn-chat__send:hover { box-shadow: 0 4px 15px rgba(79,195,247,0.3); }
+        .dn-chat__send:active { transform: scale(0.95); }
+        .dn-chat__send i { font-size: 16px; }
+        /* Animations */
+        @keyframes dnFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes dnFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes dnPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: 0.7; } }
+        @keyframes dnPulseGlow { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.3); opacity: 0.2; } }
+        @keyframes dnMessageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes dnTyping { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-4px); opacity: 1; } }
+        @keyframes dnGlow { 0%, 100% { filter: drop-shadow(0 0 8px rgba(79,195,247,0.3)); } 50% { filter: drop-shadow(0 0 20px rgba(79,195,247,0.6)); } }
+        @keyframes dnRobotWave { 0%, 100% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(-3deg) scale(1.02); } 75% { transform: rotate(3deg) scale(1.02); } }
+        @keyframes dnAntennaGlow { 0%, 100% { box-shadow: 0 0 6px var(--celeste); opacity: 1; } 50% { box-shadow: 0 0 12px var(--celeste); opacity: 0.8; } }
+        @keyframes dnEyeBlink { 0%, 42%, 48%, 100% { transform: scaleY(1); } 45% { transform: scaleY(0.1); } }
+        @keyframes dnWaveLeft { 0%, 100% { transform: rotate(-15deg); } 50% { transform: rotate(-35deg) translateY(-2px); } }
+        @keyframes dnWaveRight { 0%, 100% { transform: rotate(15deg); } 50% { transform: rotate(35deg) translateY(-2px); } }
+        @keyframes dnJetFlame { 0%, 100% { height: 10px; opacity: 0.7; } 50% { height: 16px; opacity: 1; } }
+        @keyframes dnGlowRing { 0%, 100% { width: 24px; opacity: 0.3; } 50% { width: 36px; opacity: 0.6; } }
+        /* Responsive */
+        @media (max-width: 480px) {
+            .dn-chat { right: 0; bottom: 0; width: 100%; max-height: 85vh; height: 85vh; border-radius: 0; border-left: none; border-right: none; }
+            .dn-chat--open { transform: translateY(0) scale(1); }
+            .dn-robot { bottom: 16px; right: 16px; }
+            .dn-robot__button { width: 68px; height: 68px; }
+            .dn-robot__figure { width: 44px; height: 44px; }
+            .dn-robot__bubble { bottom: 74px; right: -5px; font-size: 0.78rem; padding: 0.65rem 0.85rem; white-space: normal; max-width: 190px; }
+            .dn-message { max-width: 92%; }
+        }
+        @media (max-width: 360px) {
+            .dn-chat__header { padding: 0.7rem 0.9rem; }
+            .dn-chat__messages { padding: 0.7rem; }
+            .dn-chat__input { padding: 0.6rem 0.8rem; }
+            .dn-quick-action { padding: 0.35rem 0.6rem; font-size: 0.72rem; }
+            .dn-unit-btn { padding: 0.45rem 0.6rem; }
+        }
         .skill-item {
             display: flex;
             align-items: center;
@@ -1455,6 +1897,75 @@
         <p><i class="fa-solid fa-graduation-cap"></i> Universidad Peruana Los Andes - Base de Datos II</p>
     </footer>
 
+    <!-- ============================================
+         DATANAUTA - Asistente Virtual
+         ============================================ -->
+    <div class="dn-robot" id="dnRobot">
+        <div class="dn-robot__bubble" id="dnBubble"><i class="fa-solid fa-robot" style="margin-right:0.4rem;font-size:0.85rem;"></i>Hola, soy DataNauta. ¿Exploramos datos?</div>
+        <button class="dn-robot__button" id="dnRobotBtn" aria-label="Abrir chat">
+            <div class="dn-robot__figure">
+                <div class="dn-robot__head">
+                    <div class="dn-robot__antenna"><div class="dn-robot__antenna-tip"></div></div>
+                    <div class="dn-robot__face">
+                        <div class="dn-robot__eye dn-robot__eye--left"></div>
+                        <div class="dn-robot__eye dn-robot__eye--right"></div>
+                        <div class="dn-robot__mouth"></div>
+                    </div>
+                    <div class="dn-robot__ear dn-robot__ear--left"></div>
+                    <div class="dn-robot__ear dn-robot__ear--right"></div>
+                </div>
+                <div class="dn-robot__body">
+                    <div class="dn-robot__chest-ring">
+                        <div class="dn-robot__chest-icon">
+                            <div class="dn-robot__db-symbol"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dn-robot__arm dn-robot__arm--left">
+                    <div class="dn-robot__hand"></div>
+                </div>
+                <div class="dn-robot__arm dn-robot__arm--right">
+                    <div class="dn-robot__hand"></div>
+                </div>
+                <div class="dn-robot__jet">
+                    <div class="dn-robot__jet-flame"></div>
+                </div>
+                <div class="dn-robot__glow-ring"></div>
+            </div>
+            <span class="dn-robot__dot" id="dnDot"></span>
+        </button>
+    </div>
+
+    <div class="dn-chat" id="dnChat">
+        <div class="dn-chat__header">
+            <div class="dn-chat__avatar">
+                <div class="dn-robot__figure dn-robot__figure--mini">
+                    <div class="dn-robot__head">
+                        <div class="dn-robot__face">
+                            <div class="dn-robot__eye dn-robot__eye--left"></div>
+                            <div class="dn-robot__eye dn-robot__eye--right"></div>
+                            <div class="dn-robot__mouth"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dn-chat__header-info">
+                <div class="dn-chat__header-name">DataNauta</div>
+                <div class="dn-chat__header-status">En línea</div>
+            </div>
+            <button class="dn-chat__close" id="dnClose" aria-label="Cerrar chat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="dn-chat__messages" id="dnMessages"></div>
+        <div class="dn-chat__input">
+            <input type="text" class="dn-chat__input-field" id="dnInput" placeholder="Escribe tu consulta..." autocomplete="off"/>
+            <button class="dn-chat__send" id="dnSend" aria-label="Enviar mensaje">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
     <script src="auth.js"></script>
     <script>
         const UNIDADES = [
@@ -1759,6 +2270,371 @@
                 if (e.key === 'Escape') closeModal();
             });
         });
+
+        /* ============================================
+           DATANAUTA - Chatbot Engine
+           ============================================ */
+        (function () {
+            const robotBtn = document.getElementById('dnRobotBtn');
+            const bubble = document.getElementById('dnBubble');
+            const dot = document.getElementById('dnDot');
+            const chat = document.getElementById('dnChat');
+            const messages = document.getElementById('dnMessages');
+            const input = document.getElementById('dnInput');
+            const sendBtn = document.getElementById('dnSend');
+            const closeBtn = document.getElementById('dnClose');
+
+            let isChatOpen = false;
+            let hasInteracted = false;
+            let bubbleTimeout = null;
+            let bubbleCycleTimeout = null;
+
+            function showBubble() {
+                if (hasInteracted || isChatOpen) return;
+                bubble.classList.add('dn-robot__bubble--visible');
+                dot.style.display = 'none';
+                clearTimeout(bubbleTimeout);
+                bubbleTimeout = setTimeout(hideBubble, 5000);
+            }
+
+            function hideBubble() {
+                bubble.classList.remove('dn-robot__bubble--visible');
+                if (!hasInteracted) dot.style.display = 'block';
+            }
+
+            function startBubbleCycle() {
+                clearTimeout(bubbleCycleTimeout);
+                showBubble();
+                bubbleCycleTimeout = setInterval(() => {
+                    if (!hasInteracted && !isChatOpen) showBubble();
+                }, 15000);
+            }
+
+            function openChat() {
+                hasInteracted = true;
+                isChatOpen = true;
+                chat.classList.add('dn-chat--open');
+                hideBubble();
+                clearInterval(bubbleCycleTimeout);
+                dot.style.display = 'none';
+                input.focus();
+                if (messages.children.length === 0) showWelcome();
+            }
+
+            function closeChat() {
+                isChatOpen = false;
+                chat.classList.remove('dn-chat--open');
+                setTimeout(() => { if (!hasInteracted) startBubbleCycle(); }, 3000);
+            }
+
+            function getCurrentTime() {
+                return new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            }
+
+            function addMessage(text, sender, showActions) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'dn-message dn-message--' + sender;
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = 'dn-message__bubble';
+                bubbleDiv.innerHTML = text.replace(/\n/g, '<br>');
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'dn-message__time';
+                timeDiv.textContent = getCurrentTime();
+                msgDiv.appendChild(bubbleDiv);
+                msgDiv.appendChild(timeDiv);
+                if (showActions) {
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.className = 'dn-quick-actions';
+                    const actions = [
+                        { label: '<i class="fa-solid fa-folder-open"></i> Ver proyectos', action: 'proyectos' },
+                        { label: '<i class="fa-solid fa-book-open"></i> Aprender conceptos', action: 'conceptos' },
+                        { label: '<i class="fa-solid fa-user-graduate"></i> Sobre el estudiante', action: 'estudiante' },
+                        { label: '<i class="fa-solid fa-envelope"></i> Contacto', action: 'contacto' }
+                    ];
+                    actions.forEach(a => {
+                        const btn = document.createElement('button');
+                        btn.className = 'dn-quick-action';
+                        btn.innerHTML = a.label;
+                        btn.addEventListener('click', () => handleQuickAction(a.action));
+                        actionsDiv.appendChild(btn);
+                    });
+                    msgDiv.appendChild(actionsDiv);
+                }
+                messages.appendChild(msgDiv);
+                scrollToBottom();
+            }
+
+            function addUnitSelector() {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'dn-message dn-message--bot';
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = 'dn-message__bubble';
+                bubbleDiv.innerHTML = '<i class="fa-solid fa-compass" style="margin-right:0.3rem;"></i>Selecciona una unidad para explorar:';
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'dn-message__time';
+                timeDiv.textContent = getCurrentTime();
+                msgDiv.appendChild(bubbleDiv);
+                msgDiv.appendChild(timeDiv);
+                const selectorDiv = document.createElement('div');
+                selectorDiv.className = 'dn-unit-selector';
+                UNIDADES.forEach(unidad => {
+                    const btn = document.createElement('button');
+                    btn.className = 'dn-unit-btn';
+                    btn.innerHTML = '<i class="' + (unidad.icono || 'fa-solid fa-folder') + '"></i><div class="dn-unit-info"><div class="dn-unit-label">Unidad ' + unidad.numero + ': ' + unidad.titulo + '</div><div class="dn-unit-desc">' + unidad.descripcion + ' (' + unidad.semanas.length + ' semanas)</div></div>';
+                    btn.addEventListener('click', () => handleUnitSelect(unidad));
+                    selectorDiv.appendChild(btn);
+                });
+                msgDiv.appendChild(selectorDiv);
+                messages.appendChild(msgDiv);
+                scrollToBottom();
+            }
+
+            function handleUnitSelect(unidad) {
+                const label = 'Unidad ' + unidad.numero + ': ' + unidad.titulo;
+                addMessage('<i class="fa-solid fa-arrow-right-to-bracket"></i> ' + label, 'user');
+                addTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage('<i class="fa-solid fa-circle-check" style="color:var(--success);margin-right:0.3rem;"></i>Abriendo <strong>' + label + '</strong> en el portafolio...', 'bot');
+                    const semanasDiv = document.createElement('div');
+                    semanasDiv.className = 'dn-quick-actions';
+                    unidad.semanas.forEach(semana => {
+                        const btn = document.createElement('button');
+                        btn.className = 'dn-quick-action';
+                        btn.innerHTML = '<i class="fa-solid fa-calendar-week"></i> Semana ' + semana.numero;
+                        btn.addEventListener('click', () => {
+                            handleWeekSelect(unidad, semana);
+                        });
+                        semanasDiv.appendChild(btn);
+                    });
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = 'dn-message dn-message--bot';
+                    msgDiv.appendChild(semanasDiv);
+                    messages.appendChild(msgDiv);
+                    scrollToBottom();
+                    setTimeout(() => {
+                        scrollToUnit(unidad);
+                    }, 500);
+                }, 600);
+            }
+
+            async function handleWeekSelect(unidad, semana) {
+                const label = 'Semana ' + semana.numero + ': ' + semana.titulo;
+                addMessage('<i class="fa-solid fa-calendar-week"></i> ' + label, 'user');
+                addTypingIndicator();
+                setTimeout(async () => {
+                    removeTypingIndicator();
+                    const trabajos = await getTrabajosForWeek(semana.numero);
+                    addMessage('<i class="fa-solid fa-file-lines" style="margin-right:0.3rem;"></i>Aquí tienes los trabajos de la <strong>' + label + '</strong>:', 'bot');
+                    if (trabajos.length > 0) {
+                        trabajos.forEach(trabajo => {
+                            addTrabajoPreview(trabajo);
+                        });
+                    } else {
+                        addMessage('<i class="fa-solid fa-circle-info" style="margin-right:0.3rem;"></i>No hay trabajos cargados aún para esta semana. Sube tu contenido desde el dashboard.', 'bot');
+                    }
+                    setTimeout(() => {
+                        scrollToWeek(semana.numero);
+                    }, 400);
+                }, 700);
+            }
+
+            function addTrabajoPreview(trabajo) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'dn-message dn-message--bot';
+                const preview = document.createElement('div');
+                preview.className = 'dn-trabajo-preview';
+                const estadoClass = trabajo.estado === 'Revisado' ? 'revisado' : 'pendiente';
+                const displayName = trabajo.titulo || trabajo.nombre || 'Trabajo';
+                const displayDate = trabajo.fecha ? ' <span style="font-size:0.65rem;color:var(--text-secondary);margin-left:0.3rem;">(' + trabajo.fecha + ')</span>' : '';
+                preview.innerHTML = '<i class="fa-solid fa-file-lines"></i><span class="dn-trabajo-name">' + displayName + displayDate + '</span><span class="dn-trabajo-badge ' + estadoClass + '">' + trabajo.estado + '</span>';
+                preview.addEventListener('click', () => {
+                    const semanaGlobal = trabajo.semana_global;
+                    if (semanaGlobal) {
+                        scrollToWeek(semanaGlobal);
+                    }
+                    closeChat();
+                });
+                msgDiv.appendChild(preview);
+                messages.appendChild(msgDiv);
+                scrollToBottom();
+            }
+
+            async function getTrabajosForWeek(semanaGlobal) {
+                if (!window.PortafolioAuth) return [];
+                try {
+                    const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(semanaGlobal);
+                    return trabajos.map(t => ({
+                        titulo: t.nombre_archivo || 'Trabajo',
+                        tipo: 'trabajo',
+                        estado: t.estado || 'Pendiente',
+                        semana_global: semanaGlobal,
+                        fecha: t.created_at ? formatDate(t.created_at) : '',
+                        descripcion: t.descripcion || ''
+                    }));
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            function scrollToUnit(unidad) {
+                const units = document.querySelectorAll('.learning-unit');
+                const target = units[unidad.numero - 1];
+                if (target) {
+                    const header = target.querySelector('.unit-header');
+                    if (header && !target.classList.contains('expanded')) {
+                        header.click();
+                    }
+                    setTimeout(() => {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                }
+            }
+
+            function scrollToWeek(semanaGlobal) {
+                const container = document.getElementById('aprendizajeContainer');
+                if (!container) return;
+                const weekCards = container.querySelectorAll('.week-card');
+                const targetCard = Array.from(weekCards).find(card => {
+                    const weekNum = card.querySelector('.week-number');
+                    return weekNum && weekNum.textContent.trim().includes('Semana ' + semanaGlobal);
+                });
+                if (!targetCard) return;
+                const parentUnit = targetCard.closest('.learning-unit');
+                if (parentUnit && !parentUnit.classList.contains('expanded')) {
+                    const header = parentUnit.querySelector('.unit-header');
+                    if (header) header.click();
+                }
+                setTimeout(() => {
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    targetCard.style.boxShadow = '0 0 0 3px var(--celeste)';
+                    setTimeout(() => { targetCard.style.boxShadow = ''; }, 2000);
+                }, parentUnit && !parentUnit.classList.contains('expanded') ? 400 : 100);
+            }
+
+            function addTypingIndicator() {
+                const typing = document.createElement('div');
+                typing.className = 'dn-typing';
+                typing.id = 'dnTyping';
+                typing.innerHTML = '<span class="dn-typing__dot"></span><span class="dn-typing__dot"></span><span class="dn-typing__dot"></span>';
+                messages.appendChild(typing);
+                scrollToBottom();
+            }
+
+            function removeTypingIndicator() {
+                const typing = document.getElementById('dnTyping');
+                if (typing) typing.remove();
+            }
+
+            function scrollToBottom() {
+                requestAnimationFrame(() => { messages.scrollTop = messages.scrollHeight; });
+            }
+
+            function randomResponse(responses) {
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            function showWelcome() {
+                addMessage('<i class="fa-solid fa-robot" style="margin-right:0.4rem;"></i>Hola, soy <strong>DataNauta</strong>.<br>Tu guia en el mundo de Base de Datos II. ¿En qué deseas explorar hoy?', 'bot', true);
+                setTimeout(() => { addUnitSelector(); }, 800);
+            }
+
+            function getBotResponse(userInput) {
+                const lower = userInput.toLowerCase().trim();
+                const responses = {
+                    'sql': '<i class="fa-solid fa-database" style="margin-right:0.3rem;"></i>SQL (Structured Query Language) es el lenguaje estándar para gestionar bases de datos relacionales. Permite crear, consultar, actualizar y eliminar datos con comandos como SELECT, INSERT, UPDATE y DELETE.',
+                    'base de datos': '<i class="fa-solid fa-server" style="margin-right:0.3rem;"></i>Una base de datos es un sistema organizado que permite almacenar, gestionar y recuperar información de manera eficiente. Puede ser relacional (SQL) o no relacional (NoSQL).',
+                    'consulta': '<i class="fa-solid fa-magnifying-glass" style="margin-right:0.3rem;"></i>Una consulta (query) es una peticion que haces a la base de datos para obtener informacion especifica. En SQL se usa SELECT: <code>SELECT * FROM tabla WHERE condicion;</code>',
+                    'tabla': '<i class="fa-solid fa-table" style="margin-right:0.3rem;"></i>Una tabla es la estructura principal en una base de datos relacional. Organiza los datos en filas (registros) y columnas (campos). Cada tabla representa una entidad.',
+                    'primary key': '<i class="fa-solid fa-key" style="margin-right:0.3rem;"></i>La PRIMARY KEY es un identificador unico para cada registro. No puede ser nulo ni repetido. Ejemplo: <code>id_estudiante INT PRIMARY KEY</code>.',
+                    'foreign key': '<i class="fa-solid fa-link" style="margin-right:0.3rem;"></i>La FOREIGN KEY crea relacion entre dos tablas. Apunta a la PRIMARY KEY de otra tabla. Ejemplo: <code>curso_id REFERENCES cursos(id)</code>.',
+                    'join': '<i class="fa-solid fa-code-merge" style="margin-right:0.3rem;"></i>JOIN combina filas de dos o mas tablas. Tipos: INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN. Fundamental para consultas complejas.',
+                    'index': '<i class="fa-solid fa-bolt" style="margin-right:0.3rem;"></i>Un INDEX mejora la velocidad de consultas creando una estructura de busqueda rapida. <code>CREATE INDEX idx ON tabla(campo)</code>.',
+                    'normalizacion': '<i class="fa-solid fa-ruler-combined" style="margin-right:0.3rem;"></i>La normalizacion organiza datos para reducir redundancia. Tiene formas normales (1NF, 2NF, 3NF, BCNF). Ayuda a mantener la integridad.',
+                    'proyectos': '<i class="fa-solid fa-folder-open" style="margin-right:0.3rem;"></i>En esta seccion puedes ver los trabajos del curso:<br><i class="fa-solid fa-database" style="margin-right:0.3rem;"></i>Arquitectura de BD<br><i class="fa-solid fa-link" style="margin-right:0.3rem;"></i>Consultas avanzadas (JOINs)<br><i class="fa-solid fa-bolt" style="margin-right:0.3rem;"></i>Optimizacion e indices<br><i class="fa-solid fa-shield-halved" style="margin-right:0.3rem;"></i>Administracion y seguridad<br><br>Selecciona una unidad arriba para explorar.',
+                    'conceptos': '<i class="fa-solid fa-book-open" style="margin-right:0.3rem;"></i>Una base de datos es un sistema que almacena y organiza informacion.<br><br>SQL es el lenguaje para gestionarla:<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i>Crear tablas (CREATE TABLE)<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i>Insertar datos (INSERT INTO)<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i>Consultar (SELECT)<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i>Actualizar (UPDATE)<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i>Eliminar (DELETE)',
+                    'estudiante': '<i class="fa-solid fa-user-graduate" style="margin-right:0.3rem;"></i>Soy estudiante de Ingenieria de Sistemas y Computacion en la UPLA, cursando el V ciclo.<br><br>Esta web muestra mis trabajos de Base de Datos II: consultas, procedimientos y proyectos.',
+                    'contacto': '<i class="fa-solid fa-envelope" style="margin-right:0.3rem;"></i>Contacto:<br><i class="fa-solid fa-at" style="margin-right:0.3rem;"></i>Email: andymendozavillanueva@gmail.com<br><i class="fa-solid fa-building-columns" style="margin-right:0.3rem;"></i>Universidad Peruana Los Andes'
+                };
+                for (const [key, response] of Object.entries(responses)) {
+                    if (lower.includes(key)) return response;
+                }
+                if (/^(hola|hey|buenas|saludos|hi|que tal)/i.test(lower)) {
+                    return '<i class="fa-solid fa-hand" style="margin-right:0.3rem;"></i>¡Hola! Soy DataNauta, tu asistente de Base de Datos II. ¿Qué te gustaría explorar?';
+                }
+                if (/^(gracias|thanks|genial|perfecto)/i.test(lower)) {
+                    return randomResponse(['<i class="fa-solid fa-face-smile" style="margin-right:0.3rem;"></i>¡De nada! ¿Algo más?', '<i class="fa-solid fa-arrow-up-right-dots" style="margin-right:0.3rem;"></i>¡Un placer! ¿Necesitas algo más?', '<i class="fa-solid fa-hand-fist" style="margin-right:0.3rem;"></i>¡Genial! Si tienes más preguntas, aquí estoy.']);
+                }
+                if (/^(ayuda|help|opciones|menu|que puedes)/i.test(lower)) {
+                    return 'Puedo ayudarte con:<br><br><i class="fa-solid fa-folder-open" style="margin-right:0.3rem;"></i>Ver proyectos<br><i class="fa-solid fa-book-open" style="margin-right:0.3rem;"></i>Conceptos de bases de datos<br><i class="fa-solid fa-user-graduate" style="margin-right:0.3rem;"></i>Info del estudiante<br><i class="fa-solid fa-envelope" style="margin-right:0.3rem;"></i>Contacto<br><br>O preguntame sobre: SQL, tablas, consultas, indices, joins, normalizacion.';
+                }
+                // Try matching unit names
+                for (let i = 0; i < UNIDADES.length; i++) {
+                    const unidad = UNIDADES[i];
+                    if (lower.includes(unidad.titulo.toLowerCase()) || lower.includes('unidad ' + unidad.numero)) {
+                        setTimeout(() => { handleUnitSelect(unidad); }, 100);
+                        return null;
+                    }
+                    for (const semana of unidad.semanas) {
+                        if (lower.includes(semana.titulo.toLowerCase()) || lower.includes('semana ' + semana.numero)) {
+                            setTimeout(() => { handleWeekSelect(unidad, semana); }, 100);
+                            return null;
+                        }
+                    }
+                }
+                return randomResponse([
+                    '<i class="fa-solid fa-circle-question" style="margin-right:0.3rem;"></i>No encontre esa informacion, pero puedo ayudarte a explorar otras secciones. ¿Quieres ver proyectos o aprender conceptos?',
+                    '<i class="fa-solid fa-circle-question" style="margin-right:0.3rem;"></i>Hmm, no tengo esa respuesta todavia. Pero puedo ayudarte con temas de Base de Datos II.',
+                    '<i class="fa-solid fa-face-smile" style="margin-right:0.3rem;"></i>Eso no esta en mi base de datos... Intenta preguntarme sobre SQL o elige una opcion.',
+                    '<i class="fa-solid fa-compass" style="margin-right:0.3rem;"></i>Interesante pregunta. Puedo guiarte por el portafolio. ¿Que seccion te interesa?'
+                ]);
+            }
+
+            function handleQuickAction(action) {
+                const labels = { proyectos: '<i class="fa-solid fa-folder-open"></i> Ver proyectos', conceptos: '<i class="fa-solid fa-book-open"></i> Aprender conceptos', estudiante: '<i class="fa-solid fa-user-graduate"></i> Sobre el estudiante', contacto: '<i class="fa-solid fa-envelope"></i> Contacto' };
+                addMessage(labels[action] || action, 'user');
+                addTypingIndicator();
+                const delay = 600 + Math.random() * 400;
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    const response = getBotResponse(action);
+                    if (response) addMessage(response, 'bot');
+                }, delay);
+            }
+
+            function handleUserInput() {
+                const text = input.value.trim();
+                if (!text) return;
+                input.value = '';
+                addMessage(text, 'user');
+                addTypingIndicator();
+                const delay = 500 + Math.random() * 800;
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    const response = getBotResponse(text);
+                    if (response) addMessage(response, 'bot');
+                    input.focus();
+                }, delay);
+            }
+
+            // Event listeners
+            robotBtn.addEventListener('click', openChat);
+            bubble.addEventListener('click', openChat);
+            closeBtn.addEventListener('click', closeChat);
+            sendBtn.addEventListener('click', handleUserInput);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); handleUserInput(); }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && isChatOpen) closeChat();
+            });
+            document.addEventListener('click', (e) => {
+                if (isChatOpen && !chat.contains(e.target) && !document.getElementById('dnRobot').contains(e.target)) closeChat();
+            });
+
+            // Init bubble cycle
+            setTimeout(startBubbleCycle, 2000);
+        })();
     </script>
 </body>
 </html>
