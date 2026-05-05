@@ -585,6 +585,52 @@
             color: white; 
             transform: rotate(90deg);
         }
+        /* Trabajo Viewer (visor integrado) */
+        .trabajo-viewer { display: flex; flex-direction: column; height: 75vh; }
+        .btn-volver {
+            background: var(--celeste-pale);
+            border: 1px solid var(--celeste);
+            color: var(--primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            align-self: flex-start;
+            margin-bottom: 1rem;
+        }
+        html.dark-mode .btn-volver {
+            background: #1E3A5F;
+            color: var(--celeste);
+            border-color: rgba(79,195,247,0.3);
+        }
+        .btn-volver:hover {
+            background: var(--celeste);
+            color: white;
+            transform: translateX(-4px);
+        }
+        .trabajo-viewer-container {
+            flex: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid var(--celeste-pale);
+        }
+        html.dark-mode .trabajo-viewer-container {
+            background: #1a2332;
+            border-color: rgba(79,195,247,0.15);
+        }
+        .trabajo-iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            border: none;
+            display: block;
+        }
         .trabajo-item {
             background: var(--celeste-pale);
             border-radius: 16px;
@@ -1126,7 +1172,8 @@
              animation: dnPulseGlow 2.5s ease-in-out infinite;
              z-index: -1;
          }
-         .dn-robot__button:hover { transform: scale(1.1); }
+         .dn-robot__button:hover { transform: scale(1.1); animation: none; }
+         .dn-robot__button.chat-active { animation: dnChatOpen 0.5s ease-out; }
          .dn-robot__button:active { transform: scale(0.95); }
          html.dark-mode .dn-robot__button { background: transparent; }
 
@@ -1467,6 +1514,76 @@
         }
         .dn-typing__dot:nth-child(2) { animation-delay: 0.2s; }
         .dn-typing__dot:nth-child(3) { animation-delay: 0.4s; }
+        /* SQL Code Block */
+        .dn-sql-block {
+            background: #1a2332; border-radius: 8px; padding: 0.8rem 1rem;
+            margin: 0.5rem 0; font-family: 'Courier New', monospace;
+            font-size: 0.78rem; line-height: 1.6; color: #e0f0ff;
+            border-left: 3px solid var(--celeste); overflow-x: auto;
+        }
+        html.dark-mode .dn-sql-block { background: #0d1b2a; border-left-color: #7dd3fc; }
+        .dn-sql-block code { display: block; white-space: pre; }
+        .dn-sql-block .sql-keyword { color: #7dd3fc; font-weight: 700; }
+        .dn-sql-block .sql-string { color: #86efac; }
+        .dn-sql-block .sql-comment { color: #94a3b8; font-style: italic; }
+        .dn-sql-label { font-size: 0.65rem; color: var(--celeste); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.3rem; }
+        /* Quiz UI */
+        .dn-quiz { margin-top: 0.5rem; }
+        .dn-quiz-question {
+            font-size: 0.84rem; font-weight: 700; color: var(--primary);
+            margin-bottom: 0.6rem; padding: 0.6rem 0.8rem;
+            background: var(--celeste-pale); border-radius: 8px;
+            border-left: 3px solid var(--celeste);
+        }
+        html.dark-mode .dn-quiz-question { background: #1E3A5F; color: var(--celeste); }
+        .dn-quiz-options { display: flex; flex-direction: column; gap: 0.4rem; }
+        .dn-quiz-option {
+            padding: 0.5rem 0.8rem; border-radius: 8px;
+            border: 1.5px solid var(--celeste-pale); background: var(--white);
+            cursor: pointer; transition: all 0.2s; font-size: 0.8rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        html.dark-mode .dn-quiz-option { background: #1A2332; border-color: rgba(79,195,247,0.2); }
+        .dn-quiz-option:hover { border-color: var(--celeste); transform: translateX(4px); }
+        html.dark-mode .dn-quiz-option:hover { background: rgba(79,195,247,0.08); }
+        .dn-quiz-option.correct { border-color: var(--success); background: rgba(46,125,50,0.1); }
+        html.dark-mode .dn-quiz-option.correct { background: rgba(46,125,50,0.2); }
+        .dn-quiz-option.incorrect { border-color: var(--danger); background: rgba(220,38,38,0.1); }
+        html.dark-mode .dn-quiz-option.incorrect { background: rgba(220,38,38,0.2); }
+        .dn-quiz-option.disabled { pointer-events: none; opacity: 0.6; }
+        .dn-quiz-option .opt-letter {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: var(--celeste-pale); display: flex; align-items: center;
+            justify-content: center; font-weight: 700; font-size: 0.72rem; color: var(--primary);
+            flex-shrink: 0;
+        }
+        html.dark-mode .dn-quiz-option .opt-letter { background: rgba(79,195,247,0.15); color: var(--celeste); }
+        .dn-quiz-feedback {
+            margin-top: 0.6rem; padding: 0.6rem 0.8rem; border-radius: 8px;
+            font-size: 0.8rem; font-weight: 600;
+        }
+        .dn-quiz-feedback.correct { background: rgba(46,125,50,0.1); color: var(--success); }
+        .dn-quiz-feedback.incorrect { background: rgba(220,38,38,0.1); color: var(--danger); }
+        html.dark-mode .dn-quiz-feedback.correct { background: rgba(46,125,50,0.2); }
+        html.dark-mode .dn-quiz-feedback.incorrect { background: rgba(220,38,38,0.2); }
+        .dn-quiz-score {
+            margin-top: 0.5rem; padding: 0.5rem 0.8rem; border-radius: 8px;
+            font-size: 0.76rem; color: var(--text-secondary);
+            background: var(--celeste-pale); text-align: center;
+        }
+        html.dark-mode .dn-quiz-score { background: #1E3A5F; }
+        /* Follow-up */
+        .dn-followup {
+            margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 8px;
+            font-size: 0.76rem; color: var(--text-secondary);
+            background: rgba(79,195,247,0.06); border: 1px dashed var(--celeste-pale);
+        }
+        html.dark-mode .dn-followup { background: rgba(79,195,247,0.04); border-color: rgba(79,195,247,0.1); }
+        /* Bot personality tagline */
+        .dn-personality {
+            font-size: 0.72rem; color: var(--celeste); font-style: italic;
+            margin-top: 0.3rem; text-align: right; padding-right: 0.3rem;
+        }
         /* Input */
         .dn-chat__input {
             display: flex; align-items: center; gap: 0.5rem;
@@ -1511,6 +1628,7 @@
         @keyframes dnWaveRight { 0%, 100% { transform: rotate(15deg); } 50% { transform: rotate(35deg) translateY(-2px); } }
         @keyframes dnJetFlame { 0%, 100% { height: 10px; opacity: 0.7; } 50% { height: 16px; opacity: 1; } }
         @keyframes dnGlowRing { 0%, 100% { width: 24px; opacity: 0.3; } 50% { width: 36px; opacity: 0.6; } }
+        @keyframes dnChatOpen { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
         /* Responsive */
         @media (max-width: 480px) {
             .dn-chat { right: 0; bottom: 0; width: 100%; max-height: 85vh; height: 85vh; border-radius: 0; border-left: none; border-right: none; }
@@ -1901,7 +2019,7 @@
          DATANAUTA - Asistente Virtual
          ============================================ -->
     <div class="dn-robot" id="dnRobot">
-        <div class="dn-robot__bubble" id="dnBubble"><i class="fa-solid fa-robot" style="margin-right:0.4rem;font-size:0.85rem;"></i>Hola, soy DataNauta. ¿Exploramos datos?</div>
+        <div class="dn-robot__bubble" id="dnBubble"><i class="fa-solid fa-circle-question" style="margin-right:0.4rem;font-size:0.85rem;"></i>¿Necesitas ayuda?</div>
         <button class="dn-robot__button" id="dnRobotBtn" aria-label="Abrir chat">
             <div class="dn-robot__figure">
                 <div class="dn-robot__head">
@@ -2202,6 +2320,24 @@
         }
 
         async function abrirSemana(numero, titulo) {
+            if (!window.PortafolioAuth.esHorarioVisualizacion() && !window.PortafolioAuth.estaAutenticado()) {
+                document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-clock"></i> Fuera de Horario';
+                document.getElementById('trabajosModal').classList.add('show');
+                const content = document.getElementById('modalContent');
+                const ahora = new Date();
+                const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+                content.innerHTML = `
+                    <div class="login-required">
+                        <i class="fa-solid fa-clock" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
+                        <p><strong>Los trabajos solo están disponibles:</strong></p>
+                        <p style="font-size: 1.1rem; font-weight: 600;">Miércoles y Jueves</p>
+                        <p style="font-size: 1.1rem; font-weight: 600;">3:00 PM - 8:00 PM</p>
+                        <p style="margin-top: 1rem; color: var(--text-secondary);">Hoy es ${dias[ahora.getDay()]} y son las ${ahora.getHours()}:${String(ahora.getMinutes()).padStart(2, '0')}</p>
+                    </div>
+                `;
+                return;
+            }
+
             document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-calendar-week"></i> ' + titulo;
             document.getElementById('trabajosModal').classList.add('show');
             const content = document.getElementById('modalContent');
@@ -2209,6 +2345,9 @@
 
             try {
                 const trabajos = await window.PortafolioAuth.obtenerTrabajosPorSemana(numero);
+                window._trabajosCache = trabajos;
+                window._trabajosNumero = numero;
+                window._trabajosTitulo = titulo;
                 if (trabajos.length === 0) {
                     content.innerHTML = '<div class="no-trabajos"><i class="fa-regular fa-folder-open"></i><p>No hay trabajos subidos en esta semana</p></div>';
                     return;
@@ -2222,7 +2361,7 @@
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.8rem;">
                             <span class="badge badge-${t.estado}">${t.estado}</span>
-                            <a href="${t.ruta_storage}" target="_blank" class="btn-ver">Ver</a>
+                            <button onclick="verTrabajo('${t.ruta_storage}', '${t.nombre_archivo.replace(/'/g, "\\'")}')" class="btn-ver" style="cursor:pointer;">Ver</button>
                         </div>
                     </div>
                 `).join('');
@@ -2233,6 +2372,75 @@
 
         function closeModal() {
             document.getElementById('trabajosModal').classList.remove('show');
+        }
+
+        function verTrabajo(url, titulo) {
+            const isImage = /\.(jpg|jpeg|png|gif|webp|svg|bmp|avif)(\?.*)?$/i.test(url);
+            const isPDF = /\.(pdf)(\?.*)?$/i.test(url);
+            const isEmbeddable = isImage || isPDF;
+
+            if (!isEmbeddable) {
+                window.open(url, '_blank');
+                return;
+            }
+
+            const content = document.getElementById('modalContent');
+            const modalTitle = document.getElementById('modalTitle');
+            modalTitle.innerHTML = '<i class="fa-solid fa-file-lines"></i> ' + titulo;
+
+            if (isPDF) {
+                content.innerHTML = `
+                    <div class="trabajo-viewer">
+                        <button onclick="volverLista()" class="btn-volver">
+                            <i class="fa-solid fa-arrow-left"></i> Volver
+                        </button>
+                        <div class="trabajo-viewer-container">
+                            <iframe src="${url}" frameborder="0" class="trabajo-iframe" title="${titulo}"></iframe>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `
+                    <div class="trabajo-viewer">
+                        <button onclick="volverLista()" class="btn-volver">
+                            <i class="fa-solid fa-arrow-left"></i> Volver
+                        </button>
+                        <div class="trabajo-viewer-container" style="display:flex;align-items:center;justify-content:center;background:#000;">
+                            <img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;" alt="${titulo}">
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function volverLista() {
+            const content = document.getElementById('modalContent');
+            const modalTitle = document.getElementById('modalTitle');
+            const trabajos = window._trabajosCache || [];
+            const numero = window._trabajosNumero;
+            const titulo = window._trabajosTitulo;
+
+            if (trabajos.length === 0 || !numero) {
+                content.innerHTML = '<div class="no-trabajos"><i class="fa-solid fa-spinner fa-spin"></i> Cargando trabajos...</div>';
+                modalTitle.innerHTML = '<i class="fa-solid fa-calendar-week"></i> Semana ' + numero;
+                abrirSemana(numero, 'Semana ' + numero);
+                return;
+            }
+
+            modalTitle.innerHTML = '<i class="fa-solid fa-calendar-week"></i> ' + titulo;
+            content.innerHTML = trabajos.map((t, index) => `
+                <div class="trabajo-item" style="animation-delay: ${index * 0.1}s">
+                    <div class="trabajo-info">
+                        <span class="trabajo-nombre">${t.nombre_archivo}</span>
+                        <span class="trabajo-fecha"><i class="fa-solid fa-clock"></i> ${formatDate(t.created_at)}</span>
+                        ${t.descripcion ? '<span class="trabajo-fecha"><i class="fa-solid fa-note-sticky"></i> ' + t.descripcion + '</span>' : ''}
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.8rem;">
+                        <span class="badge badge-${t.estado}">${t.estado}</span>
+                        <button onclick="verTrabajo('${t.ruta_storage}', '${t.nombre_archivo.replace(/'/g, "\\'")}')" class="btn-ver" style="cursor:pointer;">Ver</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -2254,7 +2462,7 @@
         });
 
         /* ============================================
-           DATANAUTA - Chatbot Engine
+           DATANAUTA - Chatbot Engine (Enhanced)
            ============================================ */
         (function () {
             const robotBtn = document.getElementById('dnRobotBtn');
@@ -2271,8 +2479,28 @@
             let bubbleTimeout = null;
             let bubbleCycleTimeout = null;
 
+            // Quiz state
+            let quizActive = false;
+            let quizScore = 0;
+            let quizTotal = 0;
+            let currentQuizIndex = 0;
+
+            /* ============================================
+               INACTIVITY BUBBLES
+               ============================================ */
+            const inactivityBubbles = [
+                '¿Necesitas ayuda?',
+                '¿Tienes dudas de SQL?',
+                '¡Intenta un quiz!',
+                '¿Quieres practicar?',
+                'Estoy aquí para ayudarte'
+            ];
+            let bubbleIndex = 0;
+
             function showBubble() {
                 if (hasInteracted || isChatOpen) return;
+                bubbleIndex = (bubbleIndex + 1) % inactivityBubbles.length;
+                bubble.innerHTML = '<i class="fa-solid fa-circle-question" style="margin-right:0.4rem;font-size:0.85rem;"></i>' + inactivityBubbles[bubbleIndex];
                 bubble.classList.add('dn-robot__bubble--visible');
                 dot.style.display = 'none';
                 clearTimeout(bubbleTimeout);
@@ -2292,15 +2520,20 @@
                 }, 15000);
             }
 
+            /* ============================================
+               OPEN / CLOSE CHAT
+               ============================================ */
             function openChat() {
                 hasInteracted = true;
                 isChatOpen = true;
                 chat.classList.add('dn-chat--open');
+                robotBtn.classList.add('chat-active');
                 hideBubble();
                 clearInterval(bubbleCycleTimeout);
                 dot.style.display = 'none';
                 input.focus();
                 if (messages.children.length === 0) showWelcome();
+                setTimeout(() => robotBtn.classList.remove('chat-active'), 600);
             }
 
             function closeChat() {
@@ -2313,6 +2546,9 @@
                 return new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
             }
 
+            /* ============================================
+               MESSAGE RENDERING
+               ============================================ */
             function addMessage(text, sender, showActions) {
                 const msgDiv = document.createElement('div');
                 msgDiv.className = 'dn-message dn-message--' + sender;
@@ -2328,10 +2564,11 @@
                     const actionsDiv = document.createElement('div');
                     actionsDiv.className = 'dn-quick-actions';
                     const actions = [
-                        { label: '<i class="fa-solid fa-folder-open"></i> Ver proyectos', action: 'proyectos' },
-                        { label: '<i class="fa-solid fa-book-open"></i> Aprender conceptos', action: 'conceptos' },
-                        { label: '<i class="fa-solid fa-user-graduate"></i> Sobre el estudiante', action: 'estudiante' },
-                        { label: '<i class="fa-solid fa-envelope"></i> Contacto', action: 'contacto' }
+                        { label: '<i class="fa-solid fa-folder-open"></i> Proyectos', action: 'proyectos' },
+                        { label: '<i class="fa-solid fa-brain"></i> Conceptos', action: 'conceptos' },
+                        { label: '<i class="fa-solid fa-code"></i> SQL', action: 'sqlhelp' },
+                        { label: '<i class="fa-solid fa-question-circle"></i> Quiz', action: 'quiz' },
+                        { label: '<i class="fa-solid fa-shapes"></i> Diagramas', action: 'diagramas' }
                     ];
                     actions.forEach(a => {
                         const btn = document.createElement('button');
@@ -2344,6 +2581,335 @@
                 }
                 messages.appendChild(msgDiv);
                 scrollToBottom();
+            }
+
+            function addFollowUp() {
+                const followups = [
+                    '<i class="fa-solid fa-lightbulb" style="margin-right:0.3rem;"></i>¿Quieres ver un ejemplo o explorar otra sección?',
+                    '<i class="fa-solid fa-hand-point-right" style="margin-right:0.3rem;"></i>¿Te gustaría practicar con un quiz?',
+                    '<i class="fa-solid fa-message" style="margin-right:0.3rem;"></i>¿Tienes otra pregunta sobre este tema?'
+                ];
+                const div = document.createElement('div');
+                div.className = 'dn-followup';
+                div.innerHTML = randomResponse(followups);
+                messages.appendChild(div);
+                scrollToBottom();
+            }
+
+            function addPersonality() {
+                const phrases = [
+                    '<i class="fa-solid fa-arrow-up-right-dots"></i> Explorando datos contigo',
+                    '<i class="fa-solid fa-graduation-cap"></i> Aprendiendo paso a paso',
+                    '<i class="fa-solid fa-database"></i> Navegando entre consultas SQL',
+                    '<i class="fa-solid fa-compass"></i> Descubriendo conceptos juntos'
+                ];
+                const div = document.createElement('div');
+                div.className = 'dn-personality';
+                div.textContent = randomResponse(phrases);
+                messages.appendChild(div);
+                scrollToBottom();
+            }
+
+            /* ============================================
+               SQL PRACTICE MODE - Formatted code blocks
+               ============================================ */
+            function addSQLBlock(sql, explanation) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'dn-message dn-message--bot';
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'dn-sql-label';
+                labelDiv.innerHTML = '<i class="fa-solid fa-terminal"></i> Ejemplo SQL';
+                msgDiv.appendChild(labelDiv);
+                const codeDiv = document.createElement('div');
+                codeDiv.className = 'dn-sql-block';
+                codeDiv.innerHTML = '<code>' + highlightSQL(sql) + '</code>';
+                msgDiv.appendChild(codeDiv);
+                if (explanation) {
+                    const expDiv = document.createElement('div');
+                    expDiv.style.fontSize = '0.8rem';
+                    expDiv.style.marginTop = '0.4rem';
+                    expDiv.innerHTML = '<i class="fa-solid fa-circle-info" style="margin-right:0.3rem;color:var(--celeste);"></i>' + explanation;
+                    msgDiv.appendChild(expDiv);
+                }
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'dn-message__time';
+                timeDiv.textContent = getCurrentTime();
+                msgDiv.appendChild(timeDiv);
+                messages.appendChild(msgDiv);
+                scrollToBottom();
+            }
+
+            function highlightSQL(sql) {
+                const keywords = ['SELECT','FROM','WHERE','INSERT','INTO','VALUES','UPDATE','SET','DELETE','CREATE','TABLE','ALTER','DROP','JOIN','INNER','LEFT','RIGHT','FULL','OUTER','ON','AND','OR','NOT','IN','LIKE','BETWEEN','ORDER','BY','GROUP','HAVING','AS','DISTINCT','COUNT','SUM','AVG','MAX','MIN','PRIMARY','KEY','FOREIGN','REFERENCES','UNIQUE','DEFAULT','NULL','NOT','ASC','DESC','UNION','ALL','BEGIN','COMMIT','ROLLBACK','GRANT','REVOKE','PROCEDURE','FUNCTION','RETURNS','TRIGGER','AFTER','BEFORE','FOR','EACH','ROW','VIEW','INDEX','CASCADE','CHECK','CONSTRAINT'];
+                let result = escapeHtml(sql);
+                keywords.forEach(kw => {
+                    const regex = new RegExp('\\b(' + kw + ')\\b', 'gi');
+                    result = result.replace(regex, '<span class="sql-keyword">$1</span>');
+                });
+                result = result.replace(/'[^']*'/g, '<span class="sql-string">$&</span>');
+                result = result.replace(/--.*/g, '<span class="sql-comment">$&</span>');
+                return result;
+            }
+
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            /* ============================================
+               QUIZ MODE
+               ============================================ */
+            const quizQuestions = [
+                {
+                    q: '¿Qué tipo de relación es 1:N?',
+                    options: ['Uno a uno', 'Uno a muchos', 'Muchos a muchos', 'Ninguna'],
+                    correct: 1,
+                    explanation: '1:N significa "Uno a Muchos". Un registro de la tabla A se relaciona con varios de la tabla B.'
+                },
+                {
+                    q: '¿Qué comando SQL extrae datos de una tabla?',
+                    options: ['GET', 'EXTRACT', 'SELECT', 'FETCH'],
+                    correct: 2,
+                    explanation: 'SELECT es el comando estándar para consultar datos en SQL.'
+                },
+                {
+                    q: '¿Qué clave identifica unívocamente cada registro?',
+                    options: ['FOREIGN KEY', 'UNIQUE KEY', 'PRIMARY KEY', 'INDEX'],
+                    correct: 2,
+                    explanation: 'La PRIMARY KEY es un identificador único que no puede ser nulo ni repetido.'
+                },
+                {
+                    q: '¿Qué forma normal elimina grupos repetitivos?',
+                    options: ['BCNF', '3NF', '2NF', '1NF'],
+                    correct: 3,
+                    explanation: 'La Primera Forma Normal (1NF) elimina grupos repetitivos y requiere valores atómicos.'
+                },
+                {
+                    q: '¿Qué JOIN devuelve todos los registros de ambas tablas?',
+                    options: ['INNER JOIN', 'LEFT JOIN', 'FULL JOIN', 'CROSS JOIN'],
+                    correct: 2,
+                    explanation: 'FULL JOIN (o FULL OUTER JOIN) devuelve todos los registros de ambas tablas.'
+                },
+                {
+                    q: '¿Qué cláusula filtra resultados después de GROUP BY?',
+                    options: ['WHERE', 'FILTER', 'HAVING', 'CONDITION'],
+                    correct: 2,
+                    explanation: 'HAVING se usa para filtrar grupos después de una agregación con GROUP BY.'
+                },
+                {
+                    q: '¿Qué función de agregación calcula el promedio?',
+                    options: ['SUM()', 'COUNT()', 'AVG()', 'MEAN()'],
+                    correct: 2,
+                    explanation: 'AVG() calcula el promedio aritmético de los valores de una columna.'
+                },
+                {
+                    q: '¿Qué comando confirma una transacción?',
+                    options: ['SAVE', 'APPLY', 'COMMIT', 'CONFIRM'],
+                    correct: 2,
+                    explanation: 'COMMIT guarda permanentemente los cambios de una transacción.'
+                },
+                {
+                    q: '¿Qué comando elimina una tabla completamente?',
+                    options: ['DELETE TABLE', 'REMOVE TABLE', 'DROP TABLE', 'ERASE TABLE'],
+                    correct: 2,
+                    explanation: 'DROP TABLE elimina la tabla y toda su estructura permanentemente.'
+                },
+                {
+                    q: '¿Qué tipo de índice mejora búsquedas por rango?',
+                    options: ['HASH', 'BTREE', 'BITMAP', 'GIN'],
+                    correct: 1,
+                    explanation: 'B-Tree es el índice por defecto en PostgreSQL y es óptimo para búsquedas por rango.'
+                },
+                {
+                    q: '¿Qué dependencia elimina la 2NF?',
+                    options: ['Transitiva', 'Parcial', 'Funcional', 'Multivaluada'],
+                    correct: 1,
+                    explanation: 'La 2NF elimina dependencias parciales (atributos que dependen solo de parte de la clave).'
+                },
+                {
+                    q: '¿Qué comando SQL inserta nuevos registros?',
+                    options: ['ADD INTO', 'INSERT INTO', 'PUT INTO', 'NEW INTO'],
+                    correct: 1,
+                    explanation: 'INSERT INTO agrega nuevos registros a una tabla.'
+                },
+                {
+                    q: '¿Qué operador busca patrones en texto?',
+                    options: ['MATCH', 'FIND', 'LIKE', 'SEARCH'],
+                    correct: 2,
+                    explanation: 'LIKE busca patrones usando % (cualquier cadena) y _ (un carácter).'
+                },
+                {
+                    q: '¿Qué es una vista en SQL?',
+                    options: ['Una tabla temporal', 'Un SELECT guardado', 'Un índice', 'Un trigger'],
+                    correct: 1,
+                    explanation: 'Una vista es un SELECT guardado como tabla virtual que no almacena datos.'
+                },
+                {
+                    q: '¿Qué comando deshace una transacción?',
+                    options: ['UNDO', 'CANCEL', 'ROLLBACK', 'REVERT'],
+                    correct: 2,
+                    explanation: 'ROLLBACK cancela todos los cambios de una transacción no confirmada.'
+                }
+            ];
+
+            function startQuiz() {
+                quizActive = true;
+                quizScore = 0;
+                quizTotal = 0;
+                currentQuizIndex = 0;
+                shuffledQuiz = shuffleArray([...quizQuestions]).slice(0, 5);
+                showQuizQuestion();
+            }
+
+            let shuffledQuiz = [];
+
+            function shuffleArray(arr) {
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            }
+
+            function showQuizQuestion() {
+                if (currentQuizIndex >= shuffledQuiz.length) {
+                    finishQuiz();
+                    return;
+                }
+                const q = shuffledQuiz[currentQuizIndex];
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'dn-message dn-message--bot';
+                const quizDiv = document.createElement('div');
+                quizDiv.className = 'dn-quiz';
+                quizDiv.id = 'dnQuiz' + currentQuizIndex;
+
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'dn-quiz-question';
+                questionDiv.innerHTML = '<i class="fa-solid fa-question-circle" style="margin-right:0.3rem;"></i>' + q.q;
+                quizDiv.appendChild(questionDiv);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'dn-quiz-options';
+                const letters = ['A', 'B', 'C', 'D'];
+                q.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'dn-quiz-option';
+                    btn.innerHTML = '<span class="opt-letter">' + letters[idx] + '</span>' + opt;
+                    btn.addEventListener('click', () => handleQuizAnswer(currentQuizIndex, idx));
+                    optionsDiv.appendChild(btn);
+                });
+                quizDiv.appendChild(optionsDiv);
+
+                const scoreDiv = document.createElement('div');
+                scoreDiv.className = 'dn-quiz-score';
+                scoreDiv.textContent = 'Pregunta ' + (currentQuizIndex + 1) + ' de ' + shuffledQuiz.length + ' | Puntos: ' + quizScore;
+                quizDiv.appendChild(scoreDiv);
+
+                msgDiv.appendChild(quizDiv);
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'dn-message__time';
+                timeDiv.textContent = getCurrentTime();
+                msgDiv.appendChild(timeDiv);
+                messages.appendChild(msgDiv);
+                scrollToBottom();
+            }
+
+            function handleQuizAnswer(qIndex, selected) {
+                const q = shuffledQuiz[qIndex];
+                const quizDiv = document.getElementById('dnQuiz' + qIndex);
+                if (!quizDiv) return;
+
+                const options = quizDiv.querySelectorAll('.dn-quiz-option');
+                options.forEach((opt, idx) => {
+                    opt.classList.add('disabled');
+                    if (idx === q.correct) opt.classList.add('correct');
+                    if (idx === selected && idx !== q.correct) opt.classList.add('incorrect');
+                });
+
+                quizTotal++;
+                if (selected === q.correct) {
+                    quizScore++;
+                    const fbDiv = document.createElement('div');
+                    fbDiv.className = 'dn-quiz-feedback correct';
+                    fbDiv.innerHTML = '<i class="fa-solid fa-check-circle" style="margin-right:0.3rem;"></i>¡Correcto! ' + q.explanation;
+                    quizDiv.appendChild(fbDiv);
+                } else {
+                    const fbDiv = document.createElement('div');
+                    fbDiv.className = 'dn-quiz-feedback incorrect';
+                    fbDiv.innerHTML = '<i class="fa-solid fa-xmark-circle" style="margin-right:0.3rem;"></i>Incorrecto. ' + q.explanation;
+                    quizDiv.appendChild(fbDiv);
+                }
+
+                const scoreDiv = quizDiv.querySelector('.dn-quiz-score');
+                if (scoreDiv) scoreDiv.textContent = 'Pregunta ' + (currentQuizIndex + 1) + ' de ' + shuffledQuiz.length + ' | Puntos: ' + quizScore;
+
+                currentQuizIndex++;
+                setTimeout(() => showQuizQuestion(), 1500);
+            }
+
+            function finishQuiz() {
+                quizActive = false;
+                const percentage = Math.round((quizScore / shuffledQuiz.length) * 100);
+                let emoji, msg;
+                if (percentage >= 80) { emoji = ''; msg = '¡Excelente! Dominas los conceptos de BD.'; }
+                else if (percentage >= 60) { emoji = '👍'; msg = '¡Buen trabajo! Sigue practicando.'; }
+                else { emoji = '📚'; msg = 'Sigue estudiando, ¡tú puedes mejorar!'; }
+                addMessage('<i class="fa-solid fa-chart-bar" style="margin-right:0.3rem;"></i><strong>Resultado del Quiz:</strong><br>' + emoji + ' ' + quizScore + '/' + shuffledQuiz.length + ' (' + percentage + '%)<br>' + msg, 'bot');
+                addFollowUp();
+            }
+
+            /* ============================================
+               DIAGRAM EXPLANATION MODE
+               ============================================ */
+            function getDiagramResponse(keyword) {
+                const diagrams = {
+                    'diagrama': '<i class="fa-solid fa-shapes" style="margin-right:0.3rem;"></i>Un <strong>diagrama de base de datos</strong> representa visualmente la estructura de una BD.<br><br>Tipos principales:<br><i class="fa-solid fa-diagram-project" style="margin-right:0.3rem;"></i><strong>Modelo ER:</strong> Entidades, atributos y relaciones<br><i class="fa-solid fa-table" style="margin-right:0.3rem;"></i><strong>Diagrama relacional:</strong> Tablas y claves<br><i class="fa-solid fa-sitemap" style="margin-right:0.3rem;"></i><strong>Diagrama de flujo:</strong> Procesos y operaciones',
+                    'modelo er': '<i class="fa-solid fa-diagram-project" style="margin-right:0.3rem;"></i><strong>Modelo Entidad-Relación (ER)</strong><br><br>Un modelo ER representa:<br><i class="fa-solid fa-square" style="margin-right:0.3rem;"></i><strong>Entidades:</strong> Objetos del mundo real (Cliente, Producto)<br><i class="fa-solid fa-circle" style="margin-right:0.3rem;"></i><strong>Atributos:</strong> Propiedades de las entidades (nombre, precio)<br><i class="fa-solid fa-diamond" style="margin-right:0.3rem;"></i><strong>Relaciones:</strong> Conexiones entre entidades (compra, pertenece)',
+                    'entidad': '<i class="fa-solid fa-cube" style="margin-right:0.3rem;"></i><strong>Entidad</strong><br><br>Una entidad es un objeto del mundo real que se representa en la BD.<br><br><strong>Ejemplo:</strong><br><i class="fa-solid fa-user" style="margin-right:0.3rem;"></i>Entidad: <code>Estudiante</code><br><i class="fa-solid fa-circle" style="margin-right:0.3rem;"></i>Atributos: id, nombre, email, carrera<br><i class="fa-solid fa-key" style="margin-right:0.3rem;"></i>Clave primaria: id',
+                    'relacion': '<i class="fa-solid fa-link" style="margin-right:0.3rem;"></i><strong>Tipos de Relaciones en BD</strong><br><br><i class="fa-solid fa-arrows-left-right" style="margin-right:0.3rem;"></i><strong>1:1 (Uno a Uno):</strong> Un registro de A se relaciona con uno de B<br><i class="fa-solid fa-arrow-right" style="margin-right:0.3rem;"></i><strong>1:N (Uno a Muchos):</strong> Un registro de A se relaciona con varios de B<br><i class="fa-solid fa-arrows-left-right-to-line" style="margin-right:0.3rem;"></i><strong>M:N (Muchos a Muchos):</strong> Varios de A con varios de B (requiere tabla intermedia)',
+                    'atributo': '<i class="fa-solid fa-tag" style="margin-right:0.3rem;"></i><strong>Atributos</strong> son las propiedades de una entidad.<br><br>Tipos:<br><i class="fa-solid fa-key" style="margin-right:0.3rem;"></i><strong>Clave:</strong> Identifica unívocamente (id)<br><i class="fa-solid fa-font" style="margin-right:0.3rem;"></i><strong>Simple:</strong> No se divide (nombre)<br><i class="fa-solid fa-layer-group" style="margin-right:0.3rem;"></i><strong>Compuesto:</strong> Se divide (dirección → calle, ciudad)<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i><strong>Derivado:</strong> Se calcula (edad a partir de fecha_nac)'
+                };
+                for (const [key, response] of Object.entries(diagrams)) {
+                    if (keyword.includes(key)) return response;
+                }
+                return null;
+            }
+
+            /* ============================================
+               SMART NAVIGATION
+               ============================================ */
+            function handleSmartNavigation(lower) {
+                const navMap = [
+                    { patterns: ['ver proyectos', 'ver trabajos', 'mis trabajos', 'mis prácticas', 'trabajos subidos'], action: 'proyectos' },
+                    { patterns: ['ir a dashboard', 'abrir dashboard', 'panel admin', 'panel administrativo'], action: 'dashboard' },
+                    { patterns: ['inicio', 'volver al inicio', 'pagina principal'], action: 'inicio' },
+                    { patterns: ['sobre mí', 'mi perfil', 'perfil del estudiante'], action: 'estudiante' }
+                ];
+                for (const nav of navMap) {
+                    if (nav.patterns.some(p => lower.includes(p))) {
+                        return nav.action;
+                    }
+                }
+                return null;
+            }
+
+            function executeNavigation(action) {
+                if (action === 'inicio') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    addMessage('<i class="fa-solid fa-house" style="margin-right:0.3rem;"></i>Navegando al inicio del portafolio...', 'bot');
+                } else if (action === 'dashboard') {
+                    window.location.href = 'dashboard.html';
+                    addMessage('<i class="fa-solid fa-gauge-high" style="margin-right:0.3rem;"></i>Redirigiendo al Dashboard...', 'bot');
+                }
+            }
+
+            /* ============================================
+               WELCOME & UNIT SELECTOR
+               ============================================ */
+            function showWelcome() {
+                addMessage('<i class="fa-solid fa-robot" style="margin-right:0.4rem;"></i>Hola, soy <strong>DataNauta</strong>.<br>Tu asistente interactivo de Base de Datos II.<br><br>Puedo enseñarte SQL, explicarte conceptos, hacer quizzes y guiarte por el portafolio.', 'bot', true);
+                setTimeout(() => { addUnitSelector(); }, 800);
             }
 
             function addUnitSelector() {
@@ -2384,9 +2950,7 @@
                         const btn = document.createElement('button');
                         btn.className = 'dn-quick-action';
                         btn.innerHTML = '<i class="fa-solid fa-calendar-week"></i> Semana ' + semana.numero;
-                        btn.addEventListener('click', () => {
-                            handleWeekSelect(unidad, semana);
-                        });
+                        btn.addEventListener('click', () => { handleWeekSelect(unidad, semana); });
                         semanasDiv.appendChild(btn);
                     });
                     const msgDiv = document.createElement('div');
@@ -2394,9 +2958,7 @@
                     msgDiv.appendChild(semanasDiv);
                     messages.appendChild(msgDiv);
                     scrollToBottom();
-                    setTimeout(() => {
-                        scrollToUnit(unidad);
-                    }, 500);
+                    setTimeout(() => { scrollToUnit(unidad); }, 500);
                 }, 600);
             }
 
@@ -2409,15 +2971,11 @@
                     const trabajos = await getTrabajosForWeek(semana.numero);
                     addMessage('<i class="fa-solid fa-file-lines" style="margin-right:0.3rem;"></i>Aquí tienes los trabajos de la <strong>' + label + '</strong>:', 'bot');
                     if (trabajos.length > 0) {
-                        trabajos.forEach(trabajo => {
-                            addTrabajoPreview(trabajo);
-                        });
+                        trabajos.forEach(trabajo => { addTrabajoPreview(trabajo); });
                     } else {
                         addMessage('<i class="fa-solid fa-circle-info" style="margin-right:0.3rem;"></i>No hay trabajos cargados aún para esta semana. Sube tu contenido desde el dashboard.', 'bot');
                     }
-                    setTimeout(() => {
-                        scrollToWeek(semana.numero);
-                    }, 400);
+                    setTimeout(() => { scrollToWeek(semana.numero); }, 400);
                 }, 700);
             }
 
@@ -2431,10 +2989,7 @@
                 const displayDate = trabajo.fecha ? ' <span style="font-size:0.65rem;color:var(--text-secondary);margin-left:0.3rem;">(' + trabajo.fecha + ')</span>' : '';
                 preview.innerHTML = '<i class="fa-solid fa-file-lines"></i><span class="dn-trabajo-name">' + displayName + displayDate + '</span><span class="dn-trabajo-badge ' + estadoClass + '">' + trabajo.estado + '</span>';
                 preview.addEventListener('click', () => {
-                    const semanaGlobal = trabajo.semana_global;
-                    if (semanaGlobal) {
-                        scrollToWeek(semanaGlobal);
-                    }
+                    if (trabajo.semana_global) scrollToWeek(trabajo.semana_global);
                     closeChat();
                 });
                 msgDiv.appendChild(preview);
@@ -2454,9 +3009,7 @@
                         fecha: t.created_at ? formatDate(t.created_at) : '',
                         descripcion: t.descripcion || ''
                     }));
-                } catch (e) {
-                    return [];
-                }
+                } catch (e) { return []; }
             }
 
             function scrollToUnit(unidad) {
@@ -2464,12 +3017,8 @@
                 const target = units[unidad.numero - 1];
                 if (target) {
                     const header = target.querySelector('.unit-header');
-                    if (header && !target.classList.contains('expanded')) {
-                        header.click();
-                    }
-                    setTimeout(() => {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 300);
+                    if (header && !target.classList.contains('expanded')) header.click();
+                    setTimeout(() => { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
                 }
             }
 
@@ -2516,41 +3065,263 @@
                 return responses[Math.floor(Math.random() * responses.length)];
             }
 
-            function showWelcome() {
-                addMessage('<i class="fa-solid fa-robot" style="margin-right:0.4rem;"></i>Hola, soy <strong>DataNauta</strong>.<br>Tu guia en el mundo de Base de Datos II. ¿En qué deseas explorar hoy?', 'bot', true);
-                setTimeout(() => { addUnitSelector(); }, 800);
+            /* ============================================
+               YES / NO DETECTION
+               ============================================ */
+            function handleYesNo(lower) {
+                const yesPatterns = ['¿puedes', '¿es posible', '¿se puede', '¿está disponible', '¿hay', '¿tiene', '¿existe', '¿funciona', '¿sirve', '¿es correcto', '¿es verdad', '¿es real', '¿puede', '¿debo', '¿debería', '¿es necesario', '¿es obligatorio', '¿es gratis', '¿es gratis', '¿se puede ver', '¿puedo ver'];
+                const yesKeywords = ['puedo', 'puedes', 'se puede', 'es posible', 'hay trabajos', 'hay proyectos', 'está disponible', 'puedo ver', 'es gratis', 'funciona'];
+                const isYesQuestion = yesPatterns.some(p => lower.includes(p)) || yesKeywords.some(k => lower.includes(k));
+                if (!isYesQuestion) return null;
+                const affirmativeResponses = [
+                    'Sí, claro.',
+                    'Sí, por supuesto.',
+                    'Sí, así es.',
+                    'Sí, correcto.',
+                    'Sí, puedes hacerlo.'
+                ];
+                const negativeResponses = [
+                    'No, no es posible.',
+                    'No, eso no está disponible.',
+                    'No, no funciona así.'
+                ];
+                if (lower.includes('no ') && (lower.includes('puedo') || lower.includes('puedes') || lower.includes('se puede'))) {
+                    return 'No, no es posible.';
+                }
+                if (lower.includes('hay trabajos') || lower.includes('hay proyectos')) return 'Sí, hay trabajos en cada semana. Selecciona una unidad para verlos.';
+                if (lower.includes('está disponible') || lower.includes('disponible')) return 'Sí, está disponible. Los trabajos se pueden ver según el horario establecido.';
+                if (lower.includes('puedo ver') || lower.includes('puedes ver')) return 'Sí, puedes ver los trabajos seleccionando una unidad y semana.';
+                if (lower.includes('es gratis') || lower.includes('gratis')) return 'Sí, es completamente gratis.';
+                if (lower.includes('funciona')) return 'Sí, funciona correctamente.';
+                if (lower.includes('es correcto') || lower.includes('es verdad') || lower.includes('es real')) return 'Sí, así es.';
+                if (lower.includes('es necesario') || lower.includes('es obligatorio')) return 'Depende del contexto. Para ver trabajos fuera de horario, sí necesitas autenticarte.';
+                return randomResponse(affirmativeResponses);
             }
 
+            /* ============================================
+               MAIN RESPONSE ENGINE
+               ============================================ */
             function getBotResponse(userInput) {
-                const lower = userInput.toLowerCase().trim();
-                const responses = {
-                    'sql': '<i class="fa-solid fa-database" style="margin-right:0.3rem;"></i>SQL (Structured Query Language) es el lenguaje estándar para gestionar bases de datos relacionales. Permite crear, consultar, actualizar y eliminar datos con comandos como SELECT, INSERT, UPDATE y DELETE.',
-                    'base de datos': '<i class="fa-solid fa-server" style="margin-right:0.3rem;"></i>Una base de datos es un sistema organizado que permite almacenar, gestionar y recuperar información de manera eficiente. Puede ser relacional (SQL) o no relacional (NoSQL).',
-                    'consulta': '<i class="fa-solid fa-magnifying-glass" style="margin-right:0.3rem;"></i>Una consulta (query) es una peticion que haces a la base de datos para obtener informacion especifica. En SQL se usa SELECT: <code>SELECT * FROM tabla WHERE condicion;</code>',
-                    'tabla': '<i class="fa-solid fa-table" style="margin-right:0.3rem;"></i>Una tabla es la estructura principal en una base de datos relacional. Organiza los datos en filas (registros) y columnas (campos). Cada tabla representa una entidad.',
-                    'primary key': '<i class="fa-solid fa-key" style="margin-right:0.3rem;"></i>La PRIMARY KEY es un identificador unico para cada registro. No puede ser nulo ni repetido. Ejemplo: <code>id_estudiante INT PRIMARY KEY</code>.',
-                    'foreign key': '<i class="fa-solid fa-link" style="margin-right:0.3rem;"></i>La FOREIGN KEY crea relacion entre dos tablas. Apunta a la PRIMARY KEY de otra tabla. Ejemplo: <code>curso_id REFERENCES cursos(id)</code>.',
-                    'join': '<i class="fa-solid fa-code-merge" style="margin-right:0.3rem;"></i>JOIN combina filas de dos o mas tablas. Tipos: INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN. Fundamental para consultas complejas.',
-                    'index': '<i class="fa-solid fa-bolt" style="margin-right:0.3rem;"></i>Un INDEX mejora la velocidad de consultas creando una estructura de busqueda rapida. <code>CREATE INDEX idx ON tabla(campo)</code>.',
-                    'normalizacion': '<i class="fa-solid fa-ruler-combined" style="margin-right:0.3rem;"></i>La normalizacion organiza datos para reducir redundancia. Tiene formas normales (1NF, 2NF, 3NF, BCNF). Ayuda a mantener la integridad.',
-                    'proyectos': '<i class="fa-solid fa-folder-open" style="margin-right:0.3rem;"></i>En esta seccion puedes ver los trabajos del curso:<br><i class="fa-solid fa-database" style="margin-right:0.3rem;"></i>Arquitectura de BD<br><i class="fa-solid fa-link" style="margin-right:0.3rem;"></i>Consultas avanzadas (JOINs)<br><i class="fa-solid fa-bolt" style="margin-right:0.3rem;"></i>Optimizacion e indices<br><i class="fa-solid fa-shield-halved" style="margin-right:0.3rem;"></i>Administracion y seguridad<br><br>Selecciona una unidad arriba para explorar.',
-                    'conceptos': '<i class="fa-solid fa-book-open" style="margin-right:0.3rem;"></i>Una base de datos es un sistema que almacena y organiza informacion.<br><br>SQL es el lenguaje para gestionarla:<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i>Crear tablas (CREATE TABLE)<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i>Insertar datos (INSERT INTO)<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i>Consultar (SELECT)<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i>Actualizar (UPDATE)<br><i class="fa-solid fa-plus" style="margin-right:0.3rem;"></i>Eliminar (DELETE)',
-                    'estudiante': '<i class="fa-solid fa-user-graduate" style="margin-right:0.3rem;"></i>Soy estudiante de Ingenieria de Sistemas y Computacion en la UPLA, cursando el V ciclo.<br><br>Esta web muestra mis trabajos de Base de Datos II: consultas, procedimientos y proyectos.',
-                    'contacto': '<i class="fa-solid fa-envelope" style="margin-right:0.3rem;"></i>Contacto:<br><i class="fa-solid fa-at" style="margin-right:0.3rem;"></i>Email: andymendozavillanueva@gmail.com<br><i class="fa-solid fa-building-columns" style="margin-right:0.3rem;"></i>Universidad Peruana Los Andes'
+                const lower = userInput.toLowerCase().trim().replace(/\s+/g, ' ');
+
+                /* --- 0. YES/NO DETECTION --- */
+                const yesNoAnswer = handleYesNo(lower);
+                if (yesNoAnswer) return yesNoAnswer;
+
+                /* --- 1. SMART NAVIGATION --- */
+                const navAction = handleSmartNavigation(lower);
+                if (navAction) {
+                    executeNavigation(navAction);
+                    if (navAction === 'proyectos') {
+                        return '<i class="fa-solid fa-folder-open" style="margin-right:0.3rem;"></i>Puedes explorar los proyectos seleccionando una unidad arriba, o preguntarme por una semana específica.';
+                    }
+                    return null;
+                }
+
+                /* --- 2. QUIZ MODE --- */
+                if (lower.includes('quiz') || lower.includes('examen') || lower.includes('test') || lower.includes('practicar quiz') || lower.includes('quiz interactivo')) {
+                    startQuiz();
+                    return null;
+                }
+
+                /* --- 3. DIAGRAM EXPLANATION MODE --- */
+                const diagramResponse = getDiagramResponse(lower);
+                if (diagramResponse) {
+                    return diagramResponse;
+                }
+
+                /* --- 4. SQL PRACTICE MODE - Interactive examples --- */
+                const sqlExamples = {
+                    'select': {
+                        sql: "SELECT nombre, email\nFROM estudiantes\nWHERE carrera = 'Sistemas';",
+                        explanation: 'SELECT extrae datos de una tabla.'
+                    },
+                    'insert': {
+                        sql: "INSERT INTO estudiantes (nombre, email, carrera)\nVALUES ('Ana García', 'ana@email.com', 'Sistemas');",
+                        explanation: 'INSERT INTO agrega nuevos registros.'
+                    },
+                    'update': {
+                        sql: "UPDATE estudiantes\nSET email = 'nuevo@email.com'\nWHERE id = 5;",
+                        explanation: 'UPDATE modifica registros. Siempre usa WHERE.'
+                    },
+                    'delete': {
+                        sql: "DELETE FROM estudiantes\nWHERE id = 5;",
+                        explanation: 'DELETE elimina registros. Sin WHERE borras todo.'
+                    },
+                    'inner join': {
+                        sql: "SELECT e.nombre, n.calificacion\nFROM estudiantes e\nINNER JOIN notas n ON e.id = n.estudiante_id;",
+                        explanation: 'INNER JOIN combina tablas con coincidencia.'
+                    },
+                    'left join': {
+                        sql: "SELECT e.nombre, n.calificacion\nFROM estudiantes e\nLEFT JOIN notas n ON e.id = n.estudiante_id;",
+                        explanation: 'LEFT JOIN devuelve todo de la tabla izquierda.'
+                    },
+                    'join': {
+                        sql: "SELECT c.nombre, p.total\nFROM clientes c\nJOIN pedidos p ON c.id = p.cliente_id;",
+                        explanation: 'JOIN combina tablas relacionadas.'
+                    },
+                    'create table': {
+                        sql: "CREATE TABLE estudiantes (\n  id SERIAL PRIMARY KEY,\n  nombre VARCHAR(100) NOT NULL,\n  email VARCHAR(100) UNIQUE\n);",
+                        explanation: 'CREATE TABLE define la estructura de una tabla.'
+                    },
+                    'group by': {
+                        sql: "SELECT carrera, COUNT(*) as total,\n       AVG(nota) as promedio\nFROM estudiantes\nGROUP BY carrera;",
+                        explanation: 'GROUP BY agrupa resultados con agregaciones.'
+                    },
+                    'subconsulta': {
+                        sql: "SELECT nombre, nota\nFROM estudiantes\nWHERE nota > (\n  SELECT AVG(nota)\n  FROM estudiantes\n);",
+                        explanation: 'Subconsulta: un SELECT dentro de otro.'
+                    },
+                    'order by': {
+                        sql: "SELECT nombre, nota\nFROM estudiantes\nORDER BY nota DESC;",
+                        explanation: 'ORDER BY ordena: ASC ascendente, DESC descendente.'
+                    },
+                    'like': {
+                        sql: "SELECT * FROM estudiantes\nWHERE nombre LIKE '%garcía%';",
+                        explanation: 'LIKE busca patrones. % = cualquier cadena.'
+                    },
+                    'distinct': {
+                        sql: "SELECT DISTINCT carrera\nFROM estudiantes;",
+                        explanation: 'DISTINCT elimina duplicados.'
+                    },
+                    'alter': {
+                        sql: "ALTER TABLE estudiantes\nADD COLUMN telefono VARCHAR(20);",
+                        explanation: 'ALTER TABLE modifica la estructura.'
+                    },
+                    'drop': {
+                        sql: "DROP TABLE IF EXISTS temp;",
+                        explanation: 'DROP elimina tablas permanentemente.'
+                    },
+                    'where': {
+                        sql: "SELECT * FROM productos\nWHERE precio BETWEEN 10 AND 50\n  AND stock > 0;",
+                        explanation: 'WHERE filtra resultados con condiciones.'
+                    },
+                    'having': {
+                        sql: "SELECT depto, COUNT(*)\nFROM empleados\nGROUP BY depto\nHAVING COUNT(*) > 5;",
+                        explanation: 'HAVING filtra grupos después de GROUP BY.'
+                    },
+                    'count': {
+                        sql: "SELECT COUNT(*) FROM estudiantes;",
+                        explanation: 'COUNT() cuenta filas.'
+                    },
+                    'sum': {
+                        sql: "SELECT SUM(precio) FROM ventas;",
+                        explanation: 'SUM() suma valores numéricos.'
+                    },
+                    'avg': {
+                        sql: "SELECT AVG(nota) FROM examenes;",
+                        explanation: 'AVG() calcula el promedio.'
+                    },
+                    'union': {
+                        sql: "SELECT nombre FROM estudiantes\nUNION\nSELECT nombre FROM profesores;",
+                        explanation: 'UNION combina resultados de dos SELECTs.'
+                    },
+                    'vista': {
+                        sql: "CREATE VIEW vista_sistemas AS\nSELECT id, nombre, nota\nFROM estudiantes\nWHERE carrera = 'Sistemas';",
+                        explanation: 'Vista: SELECT guardado como tabla virtual.'
+                    },
+                    'transaccion': {
+                        sql: "BEGIN;\n  UPDATE cuentas SET saldo = saldo - 100 WHERE id = 1;\n  UPDATE cuentas SET saldo = saldo + 100 WHERE id = 2;\nCOMMIT;",
+                        explanation: 'Transacción: BEGIN inicia, COMMIT confirma, ROLLBACK cancela.'
+                    },
+                    'commit': {
+                        sql: "BEGIN;\n  INSERT INTO auditoria VALUES (...);\nCOMMIT;",
+                        explanation: 'COMMIT guarda los cambios permanentemente.'
+                    },
+                    'rollback': {
+                        sql: "BEGIN;\n  DELETE FROM pedidos;\nROLLBACK;",
+                        explanation: 'ROLLBACK deshace todo en la transacción.'
+                    },
+                    'stored procedure': {
+                        sql: "CREATE PROCEDURE registrar_nota(\n  p_est INT, p_nota DECIMAL\n)\nBEGIN\n  INSERT INTO notas VALUES (p_est, p_nota);\nEND;",
+                        explanation: 'Stored Procedure: código SQL almacenado.'
+                    },
+                    'trigger': {
+                        sql: "CREATE TRIGGER log_cambio\nAFTER UPDATE ON estudiantes\nFOR EACH ROW\nBEGIN\n  INSERT INTO logs VALUES (OLD.id, NEW.nota);\nEND;",
+                        explanation: 'Trigger: se ejecuta automáticamente ante un evento.'
+                    },
+                    'funcion': {
+                        sql: "CREATE FUNCTION calcular_promedio(p_id INT)\nRETURNS DECIMAL\nBEGIN\n  RETURN (SELECT AVG(nota) FROM notas WHERE estudiante_id = p_id);\nEND;",
+                        explanation: 'Función: retorna un valor.'
+                    },
+                    'backup': {
+                        sql: "pg_dump -U usuario -d mi_bd > backup.sql",
+                        explanation: 'pg_dump crea backups en PostgreSQL.'
+                    },
+                    'permisos': {
+                        sql: "GRANT SELECT ON tabla TO rol;\nREVOKE DELETE ON tabla FROM rol;",
+                        explanation: 'GRANT otorga, REVOKE quita permisos.'
+                    },
+                    '1nf': {
+                        sql: "-- 1NF: Eliminar grupos repetitivos\nCREATE TABLE telefonos (\n  estudiante_id INT,\n  telefono VARCHAR(20),\n  PRIMARY KEY (estudiante_id, telefono)\n);",
+                        explanation: '1NF: cada celda un solo valor atómico.'
+                    },
+                    '2nf': {
+                        sql: "-- 2NF: Eliminar dependencias parciales\nCREATE TABLE detalle_pedido (\n  pedido_id INT, producto_id INT,\n  cantidad INT,\n  PRIMARY KEY (pedido_id, producto_id)\n);",
+                        explanation: '2NF: sin dependencias parciales de la clave.'
+                    },
+                    '3nf': {
+                        sql: "-- 3NF: Eliminar dependencias transitivas\nCREATE TABLE departamentos (\n  id INT PRIMARY KEY,\n  nombre VARCHAR(100),\n  ubicacion VARCHAR(100)\n);",
+                        explanation: '3NF: atributos dependen solo de la clave primaria.'
+                    },
+                    'bcnf': {
+                        sql: "-- BCNF: Cada determinante es clave candidata\n-- Se descompone la tabla si hay determinantes no clave",
+                        explanation: 'BCNF: versión más estricta que 3NF.'
+                    }
                 };
-                for (const [key, response] of Object.entries(responses)) {
+
+                // Check SQL examples
+                for (const [key, example] of Object.entries(sqlExamples)) {
+                    if (lower.includes(key)) {
+                        addSQLBlock(example.sql, example.explanation);
+                        return null; // addSQLBlock handles rendering
+                    }
+                }
+
+                /* --- 5. STANDARD RESPONSES --- */
+                const standardResponses = {
+                    'sql': '<i class="fa-solid fa-database" style="margin-right:0.3rem;"></i>SQL (Structured Query Language) es el lenguaje para gestionar bases de datos relacionales. Comandos principales:<br><i class="fa-solid fa-check" style="margin-right:0.3rem;"></i>DML: SELECT, INSERT, UPDATE, DELETE<br><i class="fa-solid fa-check" style="margin-right:0.3rem;"></i>DDL: CREATE, ALTER, DROP<br><i class="fa-solid fa-check" style="margin-right:0.3rem;"></i>DCL: GRANT, REVOKE',
+                    'base de datos': '<i class="fa-solid fa-server" style="margin-right:0.3rem;"></i>Una base de datos es un sistema organizado para almacenar, gestionar y recuperar información. Tipos: Relacional (SQL), NoSQL (MongoDB, Redis), Orientada a objetos, y más.',
+                    'consulta': '<i class="fa-solid fa-magnifying-glass" style="margin-right:0.3rem;"></i>Una consulta (query) es una petición a la BD para obtener datos. Ejemplo: <code>SELECT * FROM tabla WHERE condicion;</code>',
+                    'tabla': '<i class="fa-solid fa-table" style="margin-right:0.3rem;"></i>Una tabla organiza datos en filas (registros) y columnas (campos). Cada tabla representa una entidad del modelo.',
+                    'primary key': '<i class="fa-solid fa-key" style="margin-right:0.3rem;"></i>La PRIMARY KEY identifica unívocamente cada registro. No puede ser NULL ni repetida. Ejemplo: <code>id INT PRIMARY KEY</code>',
+                    'foreign key': '<i class="fa-solid fa-link" style="margin-right:0.3rem;"></i>La FOREIGN KEY crea relaciones entre tablas apuntando a la PK de otra. Ejemplo: <code>curso_id REFERENCES cursos(id)</code>',
+                    'index': '<i class="fa-solid fa-bolt" style="margin-right:0.3rem;"></i>Un INDEX acelera búsquedas. <code>CREATE INDEX idx ON tabla(campo);</code> Tipos: B-Tree, Hash, GiST, GIN.',
+                    'normalizacion': '<i class="fa-solid fa-ruler-combined" style="margin-right:0.3rem;"></i>La normalización reduce redundancia y anomalías. Formas: 1NF (atómico), 2NF (sin parciales), 3NF (sin transitivas), BCNF (determinantes = clave).',
+                    'proyectos': '<i class="fa-solid fa-folder-open" style="margin-right:0.3rem;"></i>Explora los trabajos del curso seleccionando una unidad arriba. Cada unidad tiene 4 semanas con trabajos prácticos.',
+                    'conceptos': '<i class="fa-solid fa-book-open" style="margin-right:0.3rem;"></i>Temas del curso:<br><i class="fa-solid fa-database" style="margin-right:0.3rem;"></i>Arquitectura de BD<br><i class="fa-solid fa-link" style="margin-right:0.3rem;"></i>Consultas avanzadas<br><i class="fa-solid fa-bolt" style="margin-right:0.3rem;"></i>Optimización e índices<br><i class="fa-solid fa-shield-halved" style="margin-right:0.3rem;"></i>Administración y seguridad',
+                    'estudiante': '<i class="fa-solid fa-user-graduate" style="margin-right:0.3rem;"></i>Estudiante de Ingeniería de Sistemas y Computación, UPLA, V ciclo. Este portafolio muestra los trabajos de Base de Datos II.',
+                    'contacto': '<i class="fa-solid fa-envelope" style="margin-right:0.3rem;"></i>Email: andymendozavillanueva@gmail.com<br><i class="fa-solid fa-building-columns" style="margin-right:0.3rem;"></i>Universidad Peruana Los Andes',
+                    'horario': '<i class="fa-solid fa-clock" style="margin-right:0.3rem;"></i>Horario de visualización:<br><i class="fa-solid fa-calendar-day" style="margin-right:0.3rem;"></i>Miércoles y Jueves<br><i class="fa-solid fa-clock" style="margin-right:0.3rem;"></i>3:00 PM - 8:00 PM<br><i class="fa-solid fa-lock-open" style="color:var(--success);margin-right:0.3rem;"></i>Autenticados ven en cualquier momento.',
+                    'curso': '<i class="fa-solid fa-graduation-cap" style="margin-right:0.3rem;"></i>Base de Datos II - UPLA<br>Ingeniería de Sistemas, V Ciclo<br>4 Unidades, 16 Semanas',
+                    'unidad': '<i class="fa-solid fa-compass" style="margin-right:0.3rem;"></i>Unidad I: Arquitectura (Sem 1-4)<br>Unidad II: Consultas (Sem 5-8)<br>Unidad III: Optimización (Sem 9-12)<br>Unidad IV: Administración (Sem 13-16)',
+                    'semana': '<i class="fa-solid fa-calendar-week" style="margin-right:0.3rem;"></i>16 semanas en 4 unidades. Selecciona una unidad arriba para ver las semanas.',
+                    'dashboard': '<i class="fa-solid fa-gauge-high" style="margin-right:0.3rem;"></i>El Dashboard permite subir archivos, agregar enlaces (Genially/Canva), controlar visualización y ver estadísticas.',
+                    'proyecto': '<i class="fa-solid fa-flag-checkered" style="margin-right:0.3rem;"></i>Proyecto Final (Semana 16): Integrador con diseño de BD, consultas avanzadas, optimización y seguridad.',
+                    'upla': '<i class="fa-solid fa-building-columns" style="margin-right:0.3rem;"></i>Universidad Peruana Los Andes - Huancayo, Junín. Fundada en 1997.',
+                    'diagramas': '<i class="fa-solid fa-shapes" style="margin-right:0.3rem;"></i>Un <strong>diagrama de BD</strong> representa visualmente la estructura.<br><br>Tipos:<br><i class="fa-solid fa-diagram-project" style="margin-right:0.3rem;"></i><strong>Modelo ER:</strong> Entidades, atributos, relaciones<br><i class="fa-solid fa-table" style="margin-right:0.3rem;"></i><strong>Relacional:</strong> Tablas y claves foráneas<br><i class="fa-solid fa-sitemap" style="margin-right:0.3rem;"></i><strong>Flujo:</strong> Procesos de datos'
+                };
+
+                for (const [key, response] of Object.entries(standardResponses)) {
                     if (lower.includes(key)) return response;
                 }
-                if (/^(hola|hey|buenas|saludos|hi|que tal)/i.test(lower)) {
-                    return '<i class="fa-solid fa-hand" style="margin-right:0.3rem;"></i>¡Hola! Soy DataNauta, tu asistente de Base de Datos II. ¿Qué te gustaría explorar?';
+
+                /* --- 6. GREETINGS & SOCIAL --- */
+                if (/^(hola|hey|buenas|saludos|hi|que tal|buenos dias|buenas tardes|buenas noches|holi)/i.test(lower)) {
+                    return '<i class="fa-solid fa-hand" style="margin-right:0.3rem;"></i>¡Hola! Soy DataNauta. Puedo enseñarte SQL, explicarte conceptos de BD, hacer quizzes interactivos o guiarte por el portafolio. ¿Qué necesitas?';
                 }
-                if (/^(gracias|thanks|genial|perfecto)/i.test(lower)) {
-                    return randomResponse(['<i class="fa-solid fa-face-smile" style="margin-right:0.3rem;"></i>¡De nada! ¿Algo más?', '<i class="fa-solid fa-arrow-up-right-dots" style="margin-right:0.3rem;"></i>¡Un placer! ¿Necesitas algo más?', '<i class="fa-solid fa-hand-fist" style="margin-right:0.3rem;"></i>¡Genial! Si tienes más preguntas, aquí estoy.']);
+                if (/^(gracias|thanks|genial|perfecto|excelente|genio|increible)/i.test(lower)) {
+                    return randomResponse([
+                        '<i class="fa-solid fa-face-smile" style="margin-right:0.3rem;"></i>¡De nada! ¿Algo más en lo que pueda ayudarte?',
+                        '<i class="fa-solid fa-arrow-up-right-dots" style="margin-right:0.3rem;"></i>¡Un placer! Aquí estoy si necesitas algo más.',
+                        '<i class="fa-solid fa-hand-fist" style="margin-right:0.3rem;"></i>¡Genial! Si tienes más preguntas, no dudes en preguntar.'
+                    ]);
                 }
-                if (/^(ayuda|help|opciones|menu|que puedes)/i.test(lower)) {
-                    return 'Puedo ayudarte con:<br><br><i class="fa-solid fa-folder-open" style="margin-right:0.3rem;"></i>Ver proyectos<br><i class="fa-solid fa-book-open" style="margin-right:0.3rem;"></i>Conceptos de bases de datos<br><i class="fa-solid fa-user-graduate" style="margin-right:0.3rem;"></i>Info del estudiante<br><i class="fa-solid fa-envelope" style="margin-right:0.3rem;"></i>Contacto<br><br>O preguntame sobre: SQL, tablas, consultas, indices, joins, normalizacion.';
+                if (/^(ayuda|help|opciones|menu|que puedes|comandos|como funciona)/i.test(lower)) {
+                    return 'Puedo ayudarte con:<br><br><i class="fa-solid fa-folder-open" style="margin-right:0.3rem;"></i>Proyectos y navegación<br><i class="fa-solid fa-brain" style="margin-right:0.3rem;"></i>Conceptos de BD<br><i class="fa-solid fa-code" style="margin-right:0.3rem;"></i>SQL con ejemplos interactivos<br><i class="fa-solid fa-question-circle" style="margin-right:0.3rem;"></i>Quiz interactivo<br><i class="fa-solid fa-shapes" style="margin-right:0.3rem;"></i>Diagramas y modelos ER<br><i class="fa-solid fa-clock" style="margin-right:0.3rem;"></i>Horario de visualización<br><br>Pregúntame sobre cualquier tema de Base de Datos II.';
                 }
-                // Try matching unit names
+
+                /* --- 7. UNIT/WEEK NAVIGATION --- */
                 for (let i = 0; i < UNIDADES.length; i++) {
                     const unidad = UNIDADES[i];
                     if (lower.includes(unidad.titulo.toLowerCase()) || lower.includes('unidad ' + unidad.numero)) {
@@ -2564,42 +3335,73 @@
                         }
                     }
                 }
+
+                /* --- 8. DEFAULT FALLBACK --- */
                 return randomResponse([
-                    '<i class="fa-solid fa-circle-question" style="margin-right:0.3rem;"></i>No encontre esa informacion, pero puedo ayudarte a explorar otras secciones. ¿Quieres ver proyectos o aprender conceptos?',
-                    '<i class="fa-solid fa-circle-question" style="margin-right:0.3rem;"></i>Hmm, no tengo esa respuesta todavia. Pero puedo ayudarte con temas de Base de Datos II.',
-                    '<i class="fa-solid fa-face-smile" style="margin-right:0.3rem;"></i>Eso no esta en mi base de datos... Intenta preguntarme sobre SQL o elige una opcion.',
-                    '<i class="fa-solid fa-compass" style="margin-right:0.3rem;"></i>Interesante pregunta. Puedo guiarte por el portafolio. ¿Que seccion te interesa?'
+                    '<i class="fa-solid fa-circle-question" style="margin-right:0.3rem;"></i>No encontré esa información. Intenta con: SQL, SELECT, JOIN, quiz, diagramas, o navega las unidades.',
+                    '<i class="fa-solid fa-circle-question" style="margin-right:0.3rem;"></i>Hmm, no tengo esa respuesta. Pregúntame sobre comandos SQL, normalización, o inicia un quiz.',
+                    '<i class="fa-solid fa-face-smile" style="margin-right:0.3rem;"></i>Eso no está en mi base de datos... Prueba con "quiz", "sql", "diagramas" o explora las unidades.',
+                    '<i class="fa-solid fa-compass" style="margin-right:0.3rem;"></i>Puedo guiarte por el portafolio o enseñarte BD. ¿Qué sección te interesa?'
                 ]);
             }
 
+            /* ============================================
+               QUICK ACTION HANDLER
+               ============================================ */
             function handleQuickAction(action) {
-                const labels = { proyectos: '<i class="fa-solid fa-folder-open"></i> Ver proyectos', conceptos: '<i class="fa-solid fa-book-open"></i> Aprender conceptos', estudiante: '<i class="fa-solid fa-user-graduate"></i> Sobre el estudiante', contacto: '<i class="fa-solid fa-envelope"></i> Contacto' };
+                const labels = {
+                    proyectos: '<i class="fa-solid fa-folder-open"></i> Proyectos',
+                    conceptos: '<i class="fa-solid fa-brain"></i> Conceptos',
+                    sqlhelp: '<i class="fa-solid fa-code"></i> SQL',
+                    quiz: '<i class="fa-solid fa-question-circle"></i> Quiz',
+                    diagramas: '<i class="fa-solid fa-shapes"></i> Diagramas',
+                    horario: '<i class="fa-solid fa-clock"></i> Horario',
+                    estudiante: '<i class="fa-solid fa-user-graduate"></i> Estudiante',
+                    dashboard: '<i class="fa-solid fa-gauge-high"></i> Dashboard'
+                };
                 addMessage(labels[action] || action, 'user');
                 addTypingIndicator();
                 const delay = 600 + Math.random() * 400;
                 setTimeout(() => {
                     removeTypingIndicator();
                     const response = getBotResponse(action);
-                    if (response) addMessage(response, 'bot');
+                    if (response) {
+                        addMessage(response, 'bot');
+                        addFollowUp();
+                    }
                 }, delay);
             }
 
+            /* ============================================
+               USER INPUT HANDLER
+               ============================================ */
             function handleUserInput() {
-                const text = input.value.trim();
-                if (!text) return;
+                const rawText = input.value.trim();
+                if (!rawText) return;
+
+                // Normalize input
+                const text = rawText.toLowerCase().replace(/\s+/g, ' ').trim();
                 input.value = '';
-                addMessage(text, 'user');
+
+                addMessage(rawText, 'user');
                 addTypingIndicator();
+
                 const delay = 500 + Math.random() * 800;
                 setTimeout(() => {
                     removeTypingIndicator();
                     const response = getBotResponse(text);
-                    if (response) addMessage(response, 'bot');
+                    if (response) {
+                        addMessage(response, 'bot');
+                        addFollowUp();
+                        addPersonality();
+                    }
                     input.focus();
                 }, delay);
             }
 
-            // Event listeners
+            /* ============================================
+               EVENT LISTENERS
+               ============================================ */
             robotBtn.addEventListener('click', openChat);
             bubble.addEventListener('click', openChat);
             closeBtn.addEventListener('click', closeChat);

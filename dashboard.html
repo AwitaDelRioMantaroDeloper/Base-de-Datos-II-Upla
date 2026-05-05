@@ -1564,7 +1564,7 @@ let uploadType = 'archivo';
                     <td>${formatDate(t.created_at)}</td>
                     <td><span class="badge badge-${t.estado}">${t.estado}</span></td>
                     <td class="acciones">
-                        <a href="${t.ruta_storage}" target="_blank" class="btn-action view"><i class="fa-solid fa-eye"></i></a>
+                        <button onclick="window.location.href='${t.ruta_storage}'" class="btn-action view" style="cursor:pointer;"><i class="fa-solid fa-eye"></i></button>
                         <button class="btn-action delete" onclick="eliminarTrabajo('${t.id}')" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
                         <button class="btn-action status" onclick="cambiarEstado('${t.id}')" title="Marcar como revisado"><i class="fa-solid fa-check"></i></button>
                         <button class="btn-action status-pending" onclick="marcarPendiente('${t.id}')" title="Marcar como pendiente"><i class="fa-solid fa-rotate-left"></i></button>
