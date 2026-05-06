@@ -1143,6 +1143,19 @@
             z-index: 9999;
             cursor: pointer;
             animation: dnFadeIn 0.8s ease-out;
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+        }
+        .dn-robot--flying {
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
+        }
+        .dn-robot--selecting .dn-robot__button {
+            animation: dnSelectBounce 0.6s ease-in-out !important;
+        }
+        .dn-robot--flying .dn-robot__figure {
+            animation: dnJetFly 0.5s ease-in-out infinite;
+        }
+        .dn-robot--returning .dn-robot__figure {
+            animation: dnJetFly 0.5s ease-in-out infinite;
         }
          /* Robot figure - pure CSS/SVG drawing */
          .dn-robot__button {
@@ -1629,6 +1642,22 @@
         @keyframes dnJetFlame { 0%, 100% { height: 10px; opacity: 0.7; } 50% { height: 16px; opacity: 1; } }
         @keyframes dnGlowRing { 0%, 100% { width: 24px; opacity: 0.3; } 50% { width: 36px; opacity: 0.6; } }
         @keyframes dnChatOpen { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        @keyframes dnSelectBounce {
+            0% { transform: scale(1) rotate(0deg); }
+            20% { transform: scale(1.35) rotate(-12deg); }
+            40% { transform: scale(0.85) rotate(8deg); }
+            60% { transform: scale(1.2) rotate(-6deg); }
+            80% { transform: scale(0.95) rotate(3deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        @keyframes dnJetFly {
+            0%, 100% { transform: rotate(-20deg) scaleY(1.05); }
+            50% { transform: rotate(-15deg) scaleY(1.15); }
+        }
+        @keyframes dnTrailGlow {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 0; transform: scale(2.5); }
+        }
         /* Responsive */
         @media (max-width: 480px) {
             .dn-chat { right: 0; bottom: 0; width: 100%; max-height: 85vh; height: 85vh; border-radius: 0; border-left: none; border-right: none; }
@@ -2568,7 +2597,8 @@
                         { label: '<i class="fa-solid fa-brain"></i> Conceptos', action: 'conceptos' },
                         { label: '<i class="fa-solid fa-code"></i> SQL', action: 'sqlhelp' },
                         { label: '<i class="fa-solid fa-question-circle"></i> Quiz', action: 'quiz' },
-                        { label: '<i class="fa-solid fa-shapes"></i> Diagramas', action: 'diagramas' }
+                        { label: '<i class="fa-solid fa-shapes"></i> Diagramas', action: 'diagramas' },
+                        { label: '<i class="fa-solid fa-list-check"></i> Resumen', action: 'resumen' }
                     ];
                     actions.forEach(a => {
                         const btn = document.createElement('button');
@@ -2908,7 +2938,7 @@
                WELCOME & UNIT SELECTOR
                ============================================ */
             function showWelcome() {
-                addMessage('<i class="fa-solid fa-robot" style="margin-right:0.4rem;"></i>Hola, soy <strong>DataNauta</strong>.<br>Tu asistente interactivo de Base de Datos II.<br><br>Puedo enseñarte SQL, explicarte conceptos, hacer quizzes y guiarte por el portafolio.', 'bot', true);
+                addMessage('<i class="fa-solid fa-robot" style="margin-right:0.4rem;"></i>Hola, soy <strong>DataNauta</strong>.<br>Tu asistente interactivo de Base de Datos II.<br><br>Puedo explicarte cada semana, enseñarte SQL con ejemplos, hacer quizzes y analizar tus archivos subidos.', 'bot', true);
                 setTimeout(() => { addUnitSelector(); }, 800);
             }
 
@@ -3041,6 +3071,289 @@
                     targetCard.style.boxShadow = '0 0 0 3px var(--celeste)';
                     setTimeout(() => { targetCard.style.boxShadow = ''; }, 2000);
                 }, parentUnit && !parentUnit.classList.contains('expanded') ? 400 : 100);
+            }
+
+            const WEEK_KNOWLEDGE = {
+                1: {
+                    titulo: 'Introducción a la Arquitectura de Base de Datos',
+                    resumen: 'Esta semana sienta las bases del curso. Aprendes qué es una arquitectura de base de datos, por qué es importante y los componentes principales de un sistema gestor (SGDB).',
+                    temas: ['Definición de arquitectura de BD', 'Componentes del SGDB (motor de almacenamiento, procesador de consultas, gestor de transacciones)', 'Niveles de abstracción (externo, conceptual, interno)', 'Independencia de datos (lógica y física)', 'Modelo ANSI/SPARC'],
+                    ejemploSQL: '-- Modelo ANSI/SPARC: 3 niveles de abstracción\n-- Exterpo: Vistas del usuario\n-- Conceptual: Tablas y relaciones\n-- Interno: Estructuras de almacenamiento',
+                    importancia: 'Sin entender la arquitectura, no puedes diseñar BD eficientes. Aquí comprendes cómo un SGDB organiza los datos internamente.'
+                },
+                2: {
+                    titulo: 'Gestores de Base de Datos',
+                    resumen: 'Estudias los principales sistemas gestores de bases de datos: sus características, ventajas y casos de uso. Comparas PostgreSQL, MySQL, Oracle, SQL Server y MongoDB.',
+                    temas: ['PostgreSQL: open-source, ACID, extensible', 'MySQL: rápido, popular, ideal para web', 'Oracle: enterprise, alta disponibilidad', 'SQL Server: ecosistema Microsoft', 'MongoDB: NoSQL orientado a documentos', 'Comparativa de funcionalidades'],
+                    ejemploSQL: '-- PostgreSQL: tipos avanzados\nCREATE TABLE datos (\n  id SERIAL PRIMARY KEY,\n  info JSONB,\n  tags TEXT[]\n);',
+                    importancia: 'Elegir el SGDB correcto impacta en rendimiento, costos y escalabilidad de tus proyectos.'
+                },
+                3: {
+                    titulo: 'Diseño de Arquitecturas de Base de Datos',
+                    resumen: 'Aprendes a diseñar la arquitectura de una base de datos desde cero: modelo conceptual (ER), modelo lógico y modelo físico.',
+                    temas: ['Modelo Entidad-Relación (ER)', 'Entidades, atributos, relaciones', 'Cardinalidad (1:1, 1:N, M:N)', 'Diagramas ER con herramientas', 'Del modelo ER al modelo relacional', 'Modelo físico: tablas, índices, constraints'],
+                    ejemploSQL: "-- Modelo ER a relacional:\n-- Entidad: Estudiante\nCREATE TABLE estudiantes (\n  id SERIAL PRIMARY KEY,\n  nombre VARCHAR(100) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  carrera_id INT REFERENCES carreras(id)\n);",
+                    importancia: 'Un buen diseño evita problemas de redundancia, inconsistencia y bajo rendimiento a largo plazo.'
+                },
+                4: {
+                    titulo: 'Tipos de Arquitecturas de Base de Datos',
+                    resumen: 'Exploras las diferentes arquitecturas: centralizada, cliente-servidor, distribuida y en la nube. Comprendes cuándo usar cada una.',
+                    temas: ['Arquitectura centralizada', 'Cliente-servidor (2 niveles)', 'Tres niveles (presentación, aplicación, datos)', 'Bases de datos distribuidas', 'Replicación y fragmentación', 'Cloud: RDS, DynamoDB, Cloud SQL'],
+                    ejemploSQL: '-- 3 niveles: aplicación conecta al SGDB\n-- Frontend → API → PostgreSQL\n-- La app no accede directo a la BD',
+                    importancia: 'La arquitectura define cómo escalan tus aplicaciones y cómo se protegen los datos.'
+                },
+                5: {
+                    titulo: 'JOINs Internos',
+                    resumen: 'Dominas INNER JOIN para combinar datos de múltiples tablas. Es la base de las consultas relacionales.',
+                    temas: ['INNER JOIN: combina filas con coincidencia', 'Sintaxis con ON y USING', 'JOIN con múltiples tablas', 'Alias de tablas', 'Producto cartesiano (CROSS JOIN)', 'Diferencias implícitas vs explícitas'],
+                    ejemploSQL: 'SELECT e.nombre, c.calificacion\nFROM estudiantes e\nINNER JOIN inscripciones i ON e.id = i.estudiante_id\nINNER JOIN cursos c ON i.curso_id = c.id\nWHERE c.calificacion > 80;',
+                    importancia: 'INNER JOIN es el comando más usado en BD relacionales. Sin él, no puedes unir datos de tablas separadas.'
+                },
+                6: {
+                    titulo: 'JOINs Externos',
+                    resumen: 'Aprendes LEFT JOIN, RIGHT JOIN y FULL OUTER JOIN para obtener datos incluso cuando no hay coincidencias entre tablas.',
+                    temas: ['LEFT JOIN: todo de la tabla izquierda + coincidencias', 'RIGHT JOIN: todo de la tabla derecha + coincidencias', 'FULL OUTER JOIN: todo de ambas tablas', 'Manejo de valores NULL en JOINs', 'Diferencias entre JOIN externos'],
+                    ejemploSQL: '-- Estudiantes SIN inscripciones\nSELECT e.nombre\nFROM estudiantes e\nLEFT JOIN inscripciones i ON e.id = i.estudiante_id\nWHERE i.estudiante_id IS NULL;',
+                    importancia: 'Los JOIN externos revelan datos faltantes, esenciales para análisis y reportes.'
+                },
+                7: {
+                    titulo: 'Subconsultas',
+                    resumen: 'Dominas las consultas anidadas (subqueries) para hacer consultas complejas dentro de otras consultas.',
+                    temas: ['Subconsultas en WHERE', 'Subconsultas en SELECT', 'Subconsultas en FROM (tablas derivadas)', 'Operadores: IN, EXISTS, ANY, ALL', 'Subconsultas correlacionadas', 'CTEs con WITH'],
+                    ejemploSQL: '-- Estudiantes con nota mayor al promedio\nSELECT nombre, nota\nFROM estudiantes\nWHERE nota > (\n  SELECT AVG(nota) FROM estudiantes\n);\n\n-- Con EXISTS:\nSELECT nombre FROM carreras c\nWHERE EXISTS (\n  SELECT 1 FROM estudiantes e WHERE e.carrera_id = c.id\n);',
+                    importancia: 'Las subconsultas resuelven problemas que un JOIN simple no puede, como comparaciones con agregados.'
+                },
+                8: {
+                    titulo: 'Vistas',
+                    resumen: 'Creas vistas para simplificar consultas complejas, proteger datos y reutilizar lógica de consulta.',
+                    temas: ['CREATE VIEW: tablas virtuales', 'Vistas simples vs complejas', 'Vistas con JOINs y agregaciones', 'Vistas materializadas', 'Ventajas: seguridad, simplicidad, rendimiento', 'Actualizar datos a través de vistas'],
+                    ejemploSQL: '-- Vista: mejores estudiantes\nCREATE VIEW vista_mejores AS\nSELECT e.nombre, c.nombre as curso, i.calificacion\nFROM estudiantes e\nJOIN inscripciones i ON e.id = i.estudiante_id\nJOIN cursos c ON i.curso_id = c.id\nWHERE i.calificacion >= 90;\n\n-- Usar la vista:\nSELECT * FROM vista_mejores;',
+                    importancia: 'Las vistas simplifican consultas repetitivas y protegen columnas sensibles sin duplicar datos.'
+                },
+                9: {
+                    titulo: 'Índices',
+                    resumen: 'Aprendes a crear índices para acelerar las búsquedas en bases de datos grandes. Es clave para el rendimiento.',
+                    temas: ['Qué es un índice y cómo funciona', 'B-Tree: índice por defecto', 'Hash: búsquedas exactas', 'GiST: datos geográficos y full-text', 'GIN: arrays y JSONB', 'Cuándo crear y cuándo evitar índices'],
+                    ejemploSQL: '-- Índice en columna frecuente\nCREATE INDEX idx_email ON estudiantes(email);\n\n-- Índice compuesto\nCREATE INDEX idx_carrera_nombre ON estudiantes(carrera_id, nombre);\n\n-- Índice parcial\nCREATE INDEX idx_activos ON estudiantes(email)\nWHERE estado = \'activo\';',
+                    importancia: 'Un buen índice puede reducir una consulta de 10 segundos a 10 milisegundos.'
+                },
+                10: {
+                    titulo: 'Optimización de Consultas',
+                    resumen: 'Analizas y optimizas consultas lentas usando EXPLAIN, estadísticas y buenas prácticas.',
+                    temas: ['EXPLAIN y EXPLAIN ANALYZE', 'Seq Scan vs Index Scan vs Bitmap Scan', 'Estadísticas del optimizador (ANALYZE)', 'Query plan: cómo Postgres ejecuta consultas', 'Evitar SELECT *', 'Paginación eficiente con LIMIT/OFFSET'],
+                    ejemploSQL: '-- Analizar plan de ejecución\nEXPLAIN ANALYZE\nSELECT * FROM estudiantes\nWHERE email = \'ana@email.com\';\n\n-- Actualizar estadísticas\nANALYZE estudiantes;',
+                    importancia: 'Sin optimización, tu aplicación se vuelve lenta con pocos datos. EXPLAIN es tu mejor herramienta.'
+                },
+                11: {
+                    titulo: 'Transacciones',
+                    resumen: 'Controlas transacciones con BEGIN, COMMIT y ROLLBACK para garantizar la integridad de los datos.',
+                    temas: ['BEGIN: iniciar transacción', 'COMMIT: guardar cambios', 'ROLLBACK: deshacer cambios', 'Propiedades ACID', 'Niveles de aislamiento', 'SAVEPOINT y ROLLBACK TO'],
+                    ejemploSQL: 'BEGIN;\n  UPDATE cuentas SET saldo = saldo - 100 WHERE id = 1;\n  UPDATE cuentas SET saldo = saldo + 100 WHERE id = 2;\n  -- Si algo falla:\n  ROLLBACK;\n  -- Si todo está bien:\n  COMMIT;\n\n-- Con SAVEPOINT:\nBEGIN;\n  UPDATE ...;\n  SAVEPOINT sp1;\n  UPDATE ...;\n  ROLLBACK TO sp1;\n  COMMIT;',
+                    importancia: 'Las transacciones garantizan que las operaciones críticas se completen todas o ninguna (atomicidad).'
+                },
+                12: {
+                    titulo: 'Stored Procedures y Funciones',
+                    resumen: 'Creas procedimientos almacenados y funciones para encapsular lógica de negocio en la base de datos.',
+                    temas: ['CREATE PROCEDURE: ejecuta lógica', 'CREATE FUNCTION: retorna valores', 'Parámetros: IN, OUT, INOUT', 'PL/pgSQL: lenguaje procedural', 'Variables y estructuras de control', 'Diferencias entre procedures y functions'],
+                    ejemploSQL: '-- Function: calcular promedio\nCREATE OR REPLACE FUNCTION calcular_promedio(p_id INT)\nRETURNS DECIMAL AS $$\nDECLARE\n  prom DECIMAL;\nBEGIN\n  SELECT AVG(nota) INTO prom\n  FROM inscripciones WHERE estudiante_id = p_id;\n  RETURN prom;\nEND;\n$$ LANGUAGE plpgsql;',
+                    importancia: 'Los procedures mueven lógica al servidor de BD, reduciendo tráfico y mejorando rendimiento.'
+                },
+                13: {
+                    titulo: 'Seguridad en Bases de Datos',
+                    resumen: 'Configuras usuarios, roles y permisos para proteger la base de datos contra accesos no autorizados.',
+                    temas: ['CREATE ROLE y CREATE USER', 'GRANT: otorgar permisos', 'REVOKE: quitar permisos', 'Roles y herencia', 'Seguridad a nivel de fila (RLS)', 'Autenticación y autorización', 'Cifrado en tránsito y en reposo'],
+                    ejemploSQL: "-- Crear usuario con permisos limitados\nCREATE ROLE reporte WITH LOGIN PASSWORD 'secure123';\nGRANT SELECT ON estudiantes TO reporte;\nGRANT SELECT ON cursos TO reporte;\nREVOKE ALL ON estudiantes FROM public;\n\n-- Row Level Security\nALTER TABLE estudiantes ENABLE ROW LEVEL SECURITY;\nCREATE POLICY user_policy ON estudiantes\n  USING (usuario = current_user);",
+                    importancia: 'Sin seguridad, cualquier persona puede modificar o eliminar datos críticos.'
+                },
+                14: {
+                    titulo: 'Respaldo y Recuperación',
+                    resumen: 'Aprendes a hacer backups (respaldos) y restaurar bases de datos para prevenir pérdida de datos.',
+                    temas: ['pg_dump: backup lógico', 'pg_restore: restaurar backups', 'Backup completo vs incremental', 'pg_basebackup: backup físico', 'WAL (Write-Ahead Logging)', 'Point-in-Time Recovery (PITR)', 'Estrategias de backup automatizado'],
+                    ejemploSQL: "-- Backup de una BD\n-- pg_dump -U usuario -d mi_bd > backup.sql\n\n-- Restaurar\n-- psql -U usuario -d mi_bd < backup.sql\n\n-- Backup comprimido\n-- pg_dump -U usuario -d mi_bd -Fc > backup.dump\n-- pg_restore -d mi_bd backup.dump",
+                    importancia: 'Un backup puede salvar tu negocio. Sin él, un fallo de hardware significa pérdida total.'
+                },
+                15: {
+                    titulo: 'Normalización',
+                    resumen: 'Aplicas las formas normales (1NF a BCNF) para eliminar redundancia y anomalías en las tablas.',
+                    temas: ['1NF: valores atómicos, sin grupos repetitivos', '2NF: eliminar dependencias parciales', '3NF: eliminar dependencias transitivas', 'BCNF: forma normal de Boyce-Codd', 'Desnormalización: cuándo y por qué', 'Anomalías de inserción, actualización y eliminación'],
+                    ejemploSQL: "-- 1NF: cada celda = 1 valor\nCREATE TABLE telefonos (\n  estudiante_id INT,\n  telefono VARCHAR(20),\n  PRIMARY KEY (estudiante_id, telefono)\n);\n\n-- 3NF: separar dependencias transitivas\nCREATE TABLE departamentos (\n  id INT PRIMARY KEY,\n  nombre VARCHAR(100)\n);",
+                    importancia: 'La normalización evita datos duplicados, inconsistentes y corruptos en tu BD.'
+                },
+                16: {
+                    titulo: 'Proyecto Final',
+                    resumen: 'Integras todo lo aprendido: diseño de BD, consultas avanzadas, optimización, seguridad y respaldo en un caso práctico completo.',
+                    temas: ['Diseño de modelo ER completo', 'Implementación de tablas con constraints', 'Consultas complejas con JOINs y subconsultas', 'Índices para optimizar', 'Transacciones para integridad', 'Vistas para simplificar reportes', 'Seguridad con roles y permisos', 'Backup del proyecto'],
+                    ejemploSQL: '-- Proyecto integrador: sistema completo\n-- 1. Modelo ER\n-- 2. CREATE TABLE con PK, FK, CHECK\n-- 3. INSERT de datos de prueba\n-- 4. Consultas complejas con JOIN\n-- 5. Vistas para reportes\n-- 6. Índices para rendimiento\n-- 7. Procedures para lógica\n-- 8. Roles y permisos\n-- 9. Backup final',
+                    importancia: 'Este proyecto demuestra que dominas todos los conceptos del curso. Es tu portafolio profesional.'
+                }
+            };
+
+            async function handleWeekExplanation(num) {
+                const wk = WEEK_KNOWLEDGE[num];
+                if (!wk) {
+                    addMessage('<i class="fa-solid fa-circle-info" style="margin-right:0.3rem;"></i>No tengo información sobre esa semana.', 'bot');
+                    return;
+                }
+
+                const unidad = UNIDADES.find(u => u.semanas.some(s => s.numero === num));
+                const unidadLabel = unidad ? 'Unidad ' + romanianNumber(unidad.numero) + ' (' + unidad.titulo + ')' : '';
+
+                addMessage('<i class="fa-solid fa-calendar-week"></i> Semana ' + num + ': ' + wk.titulo, 'user');
+                addTypingIndicator();
+
+                setTimeout(async () => {
+                    removeTypingIndicator();
+
+                    let html = '<div style="margin-bottom:0.8rem;"><i class="fa-solid fa-compass" style="color:var(--celeste);margin-right:0.3rem;"></i><strong>' + unidadLabel + '</strong></div>';
+
+                    html += '<div style="margin-bottom:0.6rem;"><i class="fa-solid fa-book-open" style="color:var(--celeste);margin-right:0.3rem;"></i><strong>Resumen:</strong><br>' + wk.resumen + '</div>';
+
+                    html += '<div style="margin-bottom:0.6rem;"><i class="fa-solid fa-list-ol" style="color:var(--celeste);margin-right:0.3rem;"></i><strong>Temas:</strong><br>';
+                    wk.temas.forEach((t, i) => {
+                        html += (i + 1) + '. ' + t + '<br>';
+                    });
+                    html += '</div>';
+
+                    html += '<div style="margin-bottom:0.6rem;"><i class="fa-solid fa-lightbulb" style="color:var(--warning);margin-right:0.3rem;"></i><strong>Importancia:</strong><br>' + wk.importancia + '</div>';
+
+                    const trabajos = await getTrabajosForWeek(num);
+                    if (trabajos.length > 0) {
+                        html += '<div style="margin-bottom:0.6rem;padding-top:0.5rem;border-top:1px solid var(--celeste-pale);"><i class="fa-solid fa-file-lines" style="color:var(--success);margin-right:0.3rem;"></i><strong>Archivos subidos (' + trabajos.length + '):</strong><br>';
+                        trabajos.forEach(t => {
+                            html += '<i class="fa-solid fa-check" style="color:var(--success);margin-right:0.3rem;"></i>' + t.titulo;
+                            if (t.estado) html += ' <span style="color:var(--' + (t.estado === 'Aprobado' ? 'success' : t.estado === 'Pendiente' ? 'warning' : 'error') + ');">[' + t.estado + ']</span>';
+                            if (t.fecha) html += ' - <small>' + t.fecha + '</small>';
+                            if (t.descripcion) html += ' <em>(' + t.descripcion + ')</em>';
+                            html += '<br>';
+                        });
+                        html += '</div>';
+                    } else {
+                        html += '<div style="padding-top:0.5rem;border-top:1px solid var(--celeste-pale);"><i class="fa-solid fa-folder-open" style="color:var(--text-secondary);margin-right:0.3rem;"></i><strong>Archivos:</strong> No hay trabajos subidos aún.</div>';
+                    }
+
+                    addMessage(html, 'bot');
+
+                    addSQLBlock(wk.ejemploSQL, 'Ejemplo relacionado');
+
+                    setTimeout(() => { scrollToWeek(num); }, 600);
+                }, 800);
+            }
+
+            async function handleUnitExplanation(unidad) {
+                addMessage('<i class="fa-solid fa-compass"></i> Unidad ' + romanianNumber(unidad.numero) + ': ' + unidad.titulo, 'user');
+                addTypingIndicator();
+
+                setTimeout(async () => {
+                    removeTypingIndicator();
+
+                    let html = '<div style="margin-bottom:0.8rem;"><i class="fa-solid fa-bullseye" style="color:var(--celeste);margin-right:0.3rem;"></i><strong>Objetivo:</strong> ' + unidad.descripcion + '</div>';
+
+                    html += '<div style="margin-bottom:0.6rem;"><i class="fa-solid fa-calendar-week" style="color:var(--celeste);margin-right:0.3rem;"></i><strong>Semanas:</strong><br>';
+                    let totalTrabajos = 0;
+                    for (const s of unidad.semanas) {
+                        const wk = WEEK_KNOWLEDGE[s.numero];
+                        const trabajos = await getTrabajosForWeek(s.numero);
+                        totalTrabajos += trabajos.length;
+                        html += s.numero + '. <strong>' + s.titulo + '</strong>';
+                        if (trabajos.length > 0) {
+                            html += ' <span style="color:var(--success);">(' + trabajos.length + ' trabajo' + (trabajos.length > 1 ? 's' : '') + ')</span>';
+                        } else {
+                            html += ' <span style="color:var(--text-secondary);">(sin archivos)</span>';
+                        }
+                        html += '<br>';
+                        if (wk) {
+                            html += '<small style="color:var(--text-secondary);">' + wk.resumen.substring(0, 100) + '...</small><br>';
+                        }
+                    }
+                    html += '</div>';
+
+                    html += '<div style="margin-bottom:0.6rem;"><i class="fa-solid fa-folder-open" style="color:var(--success);margin-right:0.3rem;"></i><strong>Total trabajos:</strong> ' + totalTrabajos + ' de ' + unidad.semanas.length + ' semanas</div>';
+
+                    addMessage(html, 'bot');
+                    setTimeout(() => {
+                        const units = document.querySelectorAll('.learning-unit');
+                        const target = units[unidad.numero - 1];
+                        if (target) flyRobotToElement(target);
+                    }, 400);
+                }, 700);
+            }
+
+            async function handleAllWeeksSummary() {
+                addMessage('<i class="fa-solid fa-book-open"></i> Resumen General del Curso', 'user');
+                addTypingIndicator();
+
+                setTimeout(async () => {
+                    removeTypingIndicator();
+
+                    let html = '<div style="margin-bottom:0.8rem;"><i class="fa-solid fa-graduation-cap" style="color:var(--celeste);margin-right:0.3rem;"></i><strong>Base de Datos II - UPLA</strong><br>4 Unidades, 16 Semanas</div>';
+
+                    let totalTrabajos = 0;
+                    for (let i = 0; i < UNIDADES.length; i++) {
+                        const unidad = UNIDADES[i];
+                        const unitIcons = ['fa-solid fa-database', 'fa-solid fa-link', 'fa-solid fa-bolt', 'fa-solid fa-shield-halved'];
+
+                        html += '<div style="margin-bottom:0.6rem;padding:0.5rem;background:var(--celeste-pale);border-radius:8px;">';
+                        html += '<i class="' + unitIcons[i] + '" style="color:var(--celeste);margin-right:0.3rem;"></i><strong>Unidad ' + romanianNumber(unidad.numero) + ': ' + unidad.titulo + '</strong><br>';
+
+                        for (const s of unidad.semanas) {
+                            const wk = WEEK_KNOWLEDGE[s.numero];
+                            const trabajos = await getTrabajosForWeek(s.numero);
+                            totalTrabajos += trabajos.length;
+                            html += '<small>' + s.numero + '. ' + s.titulo;
+                            if (trabajos.length > 0) {
+                                html += ' <span style="color:var(--success);">[' + trabajos.length + ']</span>';
+                            }
+                            html += '</small><br>';
+                        }
+                        html += '</div>';
+                    }
+
+                    html += '<div style="margin-top:0.5rem;"><i class="fa-solid fa-folder-open" style="color:var(--success);margin-right:0.3rem;"></i><strong>Total general:</strong> ' + totalTrabajos + ' trabajos subidos en 16 semanas</div>';
+
+                    addMessage(html, 'bot');
+                }, 900);
+            }
+
+            function flyRobotToElement(el) {
+                if (!el) return;
+                const rect = el.getBoundingClientRect();
+                const robot = document.getElementById('dnRobot');
+                const robotW = robot.offsetWidth;
+                const robotH = robot.offsetHeight;
+
+                const targetX = rect.left - robotW - 12;
+                const targetY = rect.top + (rect.height / 2) - (robotH / 2);
+
+                const clampedX = Math.max(8, Math.min(targetX, window.innerWidth - robotW - 8));
+                const clampedY = Math.max(8, Math.min(targetY, window.innerHeight - robotH - 8));
+
+                robot.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+                robot.style.transform = `translate(${clampedX - (window.innerWidth - robotW - 24)}px, ${clampedY - (window.innerHeight - robotH - 24)}px)`;
+                robot.classList.add('dn-robot--flying');
+
+                const createTrail = () => {
+                    const trail = document.createElement('div');
+                    trail.style.cssText = `position:fixed;width:8px;height:8px;border-radius:50%;background:var(--celeste);pointer-events:none;z-index:9998;animation:dnTrailGlow 0.4s ease-out forwards;left:${clampedX + robotW/2 - 4}px;top:${clampedY + robotH/2 - 4}px;`;
+                    document.body.appendChild(trail);
+                    setTimeout(() => trail.remove(), 400);
+                };
+
+                setTimeout(() => {
+                    createTrail();
+                    robot.classList.add('dn-robot--selecting');
+                    setTimeout(() => {
+                        robot.classList.remove('dn-robot--selecting');
+                        setTimeout(() => {
+                            robot.style.transition = 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+                            robot.style.transform = 'translate(0, 0)';
+                            robot.classList.remove('dn-robot--flying');
+                            setTimeout(() => {
+                                robot.style.transition = '';
+                                robot.style.transform = '';
+                            }, 650);
+                        }, 800);
+                    }, 600);
+                }, 520);
             }
 
             function addTypingIndicator() {
@@ -3299,7 +3612,8 @@
                     'dashboard': '<i class="fa-solid fa-gauge-high" style="margin-right:0.3rem;"></i>El Dashboard permite subir archivos, agregar enlaces (Genially/Canva), controlar visualización y ver estadísticas.',
                     'proyecto': '<i class="fa-solid fa-flag-checkered" style="margin-right:0.3rem;"></i>Proyecto Final (Semana 16): Integrador con diseño de BD, consultas avanzadas, optimización y seguridad.',
                     'upla': '<i class="fa-solid fa-building-columns" style="margin-right:0.3rem;"></i>Universidad Peruana Los Andes - Huancayo, Junín. Fundada en 1997.',
-                    'diagramas': '<i class="fa-solid fa-shapes" style="margin-right:0.3rem;"></i>Un <strong>diagrama de BD</strong> representa visualmente la estructura.<br><br>Tipos:<br><i class="fa-solid fa-diagram-project" style="margin-right:0.3rem;"></i><strong>Modelo ER:</strong> Entidades, atributos, relaciones<br><i class="fa-solid fa-table" style="margin-right:0.3rem;"></i><strong>Relacional:</strong> Tablas y claves foráneas<br><i class="fa-solid fa-sitemap" style="margin-right:0.3rem;"></i><strong>Flujo:</strong> Procesos de datos'
+                    'diagramas': '<i class="fa-solid fa-shapes" style="margin-right:0.3rem;"></i>Un <strong>diagrama de BD</strong> representa visualmente la estructura.<br><br>Tipos:<br><i class="fa-solid fa-diagram-project" style="margin-right:0.3rem;"></i><strong>Modelo ER:</strong> Entidades, atributos, relaciones<br><i class="fa-solid fa-table" style="margin-right:0.3rem;"></i><strong>Relacional:</strong> Tablas y claves foráneas<br><i class="fa-solid fa-sitemap" style="margin-right:0.3rem;"></i><strong>Flujo:</strong> Procesos de datos',
+                    'resumen': '<i class="fa-solid fa-list-check" style="margin-right:0.3rem;"></i>Aquí tienes un resumen rápido del curso:<br><br><i class="fa-solid fa-database" style="margin-right:0.3rem;"></i>Unidad I: Arquitectura (Sem 1-4)<br><i class="fa-solid fa-link" style="margin-right:0.3rem;"></i>Unidad II: Consultas Avanzadas (Sem 5-8)<br><i class="fa-solid fa-bolt" style="margin-right:0.3rem;"></i>Unidad III: Optimización (Sem 9-12)<br><i class="fa-solid fa-shield-halved" style="margin-right:0.3rem;"></i>Unidad IV: Administración (Sem 13-16)<br><br>Dime "semana X" para el detalle de cada semana, o "resumen general" para ver todo con tus archivos.'
                 };
 
                 for (const [key, response] of Object.entries(standardResponses)) {
@@ -3318,30 +3632,83 @@
                     ]);
                 }
                 if (/^(ayuda|help|opciones|menu|que puedes|comandos|como funciona)/i.test(lower)) {
-                    return 'Puedo ayudarte con:<br><br><i class="fa-solid fa-folder-open" style="margin-right:0.3rem;"></i>Proyectos y navegación<br><i class="fa-solid fa-brain" style="margin-right:0.3rem;"></i>Conceptos de BD<br><i class="fa-solid fa-code" style="margin-right:0.3rem;"></i>SQL con ejemplos interactivos<br><i class="fa-solid fa-question-circle" style="margin-right:0.3rem;"></i>Quiz interactivo<br><i class="fa-solid fa-shapes" style="margin-right:0.3rem;"></i>Diagramas y modelos ER<br><i class="fa-solid fa-clock" style="margin-right:0.3rem;"></i>Horario de visualización<br><br>Pregúntame sobre cualquier tema de Base de Datos II.';
+                    return 'Puedo ayudarte con:<br><br><i class="fa-solid fa-folder-open" style="margin-right:0.3rem;"></i>Proyectos y navegación<br><i class="fa-solid fa-brain" style="margin-right:0.3rem;"></i>Conceptos de BD<br><i class="fa-solid fa-code" style="margin-right:0.3rem;"></i>SQL con ejemplos interactivos<br><i class="fa-solid fa-question-circle" style="margin-right:0.3rem;"></i>Quiz interactivo<br><i class="fa-solid fa-shapes" style="margin-right:0.3rem;"></i>Diagramas y modelos ER<br><i class="fa-solid fa-list-check" style="margin-right:0.3rem;"></i>Resumen general del curso<br><i class="fa-solid fa-calendar-week" style="margin-right:0.3rem;"></i>Explicación de cada semana<br><i class="fa-solid fa-clock" style="margin-right:0.3rem;"></i>Horario de visualización<br><br>Dime "semana 5" para ver el resumen de esa semana, o "resumen general" para ver todo el curso.';
                 }
 
-                /* --- 7. UNIT/WEEK NAVIGATION --- */
+                /* --- 7. WEEK EXPLANATION MODE --- */
+                const semanaMatch = lower.match(/semana\s*(\d+)/);
+                if (semanaMatch) {
+                    const num = parseInt(semanaMatch[1]);
+                    if (num >= 1 && num <= 16) {
+                        setTimeout(() => { handleWeekExplanation(num); }, 100);
+                        return null;
+                    }
+                }
+
+                /* --- 8. UNIT/WEEK NAVIGATION --- */
                 for (let i = 0; i < UNIDADES.length; i++) {
                     const unidad = UNIDADES[i];
-                    if (lower.includes(unidad.titulo.toLowerCase()) || lower.includes('unidad ' + unidad.numero)) {
+                    if (lower.includes(unidad.titulo.toLowerCase()) || lower.includes('unidad ' + unidad.numero) || lower.includes('unidad ' + romanianNumber(unidad.numero).toLowerCase())) {
                         setTimeout(() => { handleUnitSelect(unidad); }, 100);
                         return null;
                     }
                     for (const semana of unidad.semanas) {
-                        if (lower.includes(semana.titulo.toLowerCase()) || lower.includes('semana ' + semana.numero)) {
-                            setTimeout(() => { handleWeekSelect(unidad, semana); }, 100);
+                        if (lower.includes(semana.titulo.toLowerCase()) || lower.includes(semana.descripcion.toLowerCase())) {
+                            setTimeout(() => { handleWeekExplanation(semana.numero); }, 100);
                             return null;
                         }
                     }
                 }
 
-                /* --- 8. DEFAULT FALLBACK --- */
+                /* --- 9. ALL WEEKS SUMMARY --- */
+                if (lower.includes('resumen general') || lower.includes('todas las semanas') || lower.includes('todo el curso') || lower.includes('todas las unidades')) {
+                    setTimeout(() => { handleAllWeeksSummary(); }, 100);
+                    return null;
+                }
+
+                /* --- 10. WHAT IS IN A UNIT --- */
+                for (let i = 0; i < UNIDADES.length; i++) {
+                    const unidad = UNIDADES[i];
+                    if (lower.includes('que hay en la unidad') || lower.includes('que trata la unidad') || lower.includes('de que trata la unidad')) {
+                        const unitNumMatch = lower.match(/unidad\s*(\d+)/);
+                        if (unitNumMatch && parseInt(unitNumMatch[1]) === unidad.numero) {
+                            setTimeout(() => { handleUnitExplanation(unidad); }, 100);
+                            return null;
+                        }
+                    }
+                }
+
+                /* --- 11. DEFAULT FALLBACK --- */
+                const generalPatterns = [
+                    { pattern: /que\s*(es|significa|son)\s*(un|una|los|las|el)?\s*(join|inner|left|right|full|outer)/i, response: 'Un <strong>JOIN</strong> combina filas de dos o más tablas según una condición. INNER JOIN solo devuelve coincidencias, LEFT JOIN incluye todo de la tabla izquierda, RIGHT JOIN todo de la derecha, y FULL OUTER JOIN ambas.' },
+                    { pattern: /que\s*(es|significa)\s*(un|una|el)?\s*(indice|index)/i, response: 'Un <strong>índice</strong> es una estructura que acelera las búsquedas en una tabla. Es como el índice de un libro: en vez de leer todo, vas directo a la página. Tipos: B-Tree (defecto), Hash (exacto), GiST (geográfico), GIN (JSON/arrays).' },
+                    { pattern: /que\s*(es|significa)\s*(un|una|el)?\s*(transaccion|transaction)/i, response: 'Una <strong>transacción</strong> es un grupo de operaciones que se ejecutan como una sola unidad. O se completan todas (COMMIT) o se deshacen todas (ROLLBACK). Propiedades ACID: Atomicidad, Consistencia, Aislamiento, Durabilidad.' },
+                    { pattern: /que\s*(es|significa)\s*(un|una|el)?\s*(vista|view)/i, response: 'Una <strong>vista</strong> es una consulta SQL guardada como una tabla virtual. No almacena datos, solo la consulta. Útil para simplificar queries complejos y proteger columnas sensibles.' },
+                    { pattern: /que\s*(es|significa)\s*(la|una)?\s*normalizaci/i, response: 'La <strong>normalización</strong> es el proceso de organizar datos para eliminar redundancia y anomalías. Formas: 1NF (atómico), 2NF (sin parciales), 3NF (sin transitivas), BCNF (determinantes = clave).' },
+                    { pattern: /que\s*(es|significa)\s*(un|el)?\s*(procedure|procedimiento|stored procedure)/i, response: 'Un <strong>Stored Procedure</strong> es código SQL almacenado en la BD que se ejecuta con un CALL. Encapsula lógica de negocio, reduce tráfico de red y mejora rendimiento.' },
+                    { pattern: /que\s*(es|significa)\s*(un|una|el)?\s*(trigger|disparador)/i, response: 'Un <strong>trigger</strong> es un bloque de código que se ejecuta automáticamente cuando ocurre un evento (INSERT, UPDATE, DELETE) en una tabla. Útil para auditoría y validación.' },
+                    { pattern: /que\s*(es|significa)\s*(un|una|el)?\s*(backup|respaldo)/i, response: 'Un <strong>backup</strong> es una copia de seguridad de tu base de datos. En PostgreSQL: pg_dump (lógico), pg_basebackup (físico). Sin backup, un fallo de hardware = pérdida total.' },
+                    { pattern: /que\s*(es|significa)\s*(la|una)?\s*(seguridad|rls|row level)/i, response: 'La <strong>seguridad en BD</strong> incluye: roles y permisos (GRANT/REVOKE), Row Level Security (RLS) para filtrar por usuario, cifrado en tránsito (SSL) y en reposo.' },
+                    { pattern: /que\s*(es|significa|son)\s*(un|una|los|las|el)?\s*(subconsulta|subquery)/i, response: 'Una <strong>subconsulta</strong> es un SELECT dentro de otro SELECT. Se usa en WHERE, SELECT o FROM. Puede ser correlacionada (depende de la consulta externa) o independiente.' },
+                    { pattern: /que\s*(es|significa)\s*(un|una|el)?\s*(sgdb|gestor|sistema gestor)/i, response: 'Un <strong>SGDB</strong> (Sistema Gestor de Base de Datos) es el software que crea, gestiona y protege las bases de datos. Ejemplos: PostgreSQL, MySQL, Oracle, SQL Server, MongoDB.' },
+                    { pattern: /que\s*(es|significa)\s*(un|una|el)?\s*(er|entidad.*relacion|modelo er)/i, response: 'Un <strong>diagrama ER</strong> (Entidad-Relación) representa visualmente la estructura de una BD: entidades (tablas), atributos (columnas) y relaciones (conexiones entre tablas).' },
+                    { pattern: /como\s*(funciona|se hace|se usa|se crea)\s*(un|una|los|las|el)?\s*(join|indice|transaccion|vista|backup|procedure|trigger)/i, response: 'Depende del tema. Dime específicamente: "JOIN", "índice", "transacción", "vista", "backup", "procedure" o "trigger" y te doy un ejemplo completo.' },
+                    { pattern: /diferencia\s*(entre|de)/i, response: 'Dime qué quieres comparar. Por ejemplo: INNER vs LEFT JOIN, 2NF vs 3NF, procedure vs function, backup lógico vs físico, etc.' },
+                    { pattern: /cuando\s*(se usa|usar|debo usar|utilizar)/i, response: 'Depende del contexto. Pregúntame sobre un tema específico y te explico cuándo y cómo usarlo.' },
+                    { pattern: /para que\s*(sirve|se usa)/i, response: 'Depende del tema. Dime qué elemento te interesa y te explico su utilidad con ejemplos.' }
+                ];
+
+                for (const gp of generalPatterns) {
+                    if (gp.pattern.test(lower)) {
+                        return '<i class="fa-solid fa-circle-info" style="margin-right:0.3rem;"></i>' + gp.response;
+                    }
+                }
+
+                /* --- 12. DEFAULT FALLBACK --- */
                 return randomResponse([
-                    '<i class="fa-solid fa-circle-question" style="margin-right:0.3rem;"></i>No encontré esa información. Intenta con: SQL, SELECT, JOIN, quiz, diagramas, o navega las unidades.',
-                    '<i class="fa-solid fa-circle-question" style="margin-right:0.3rem;"></i>Hmm, no tengo esa respuesta. Pregúntame sobre comandos SQL, normalización, o inicia un quiz.',
-                    '<i class="fa-solid fa-face-smile" style="margin-right:0.3rem;"></i>Eso no está en mi base de datos... Prueba con "quiz", "sql", "diagramas" o explora las unidades.',
-                    '<i class="fa-solid fa-compass" style="margin-right:0.3rem;"></i>Puedo guiarte por el portafolio o enseñarte BD. ¿Qué sección te interesa?'
+                    '<i class="fa-solid fa-circle-question" style="margin-right:0.3rem;"></i>No encontré esa info. Prueba: "semana 5", "resumen general", "JOIN", "quiz", o navega las unidades.',
+                    '<i class="fa-solid fa-face-smile" style="margin-right:0.3rem;"></i>Eso no está en mi BD... Pregúntame sobre cualquier semana (1-16), comandos SQL, o pide un "resumen general".',
+                    '<i class="fa-solid fa-compass" style="margin-right:0.3rem;"></i>Puedo explicarte cada semana del curso, enseñarte SQL o hacer quizzes. ¿Qué necesitas?'
                 ]);
             }
 
@@ -3357,7 +3724,8 @@
                     diagramas: '<i class="fa-solid fa-shapes"></i> Diagramas',
                     horario: '<i class="fa-solid fa-clock"></i> Horario',
                     estudiante: '<i class="fa-solid fa-user-graduate"></i> Estudiante',
-                    dashboard: '<i class="fa-solid fa-gauge-high"></i> Dashboard'
+                    dashboard: '<i class="fa-solid fa-gauge-high"></i> Dashboard',
+                    resumen: '<i class="fa-solid fa-list-check"></i> Resumen General'
                 };
                 addMessage(labels[action] || action, 'user');
                 addTypingIndicator();
@@ -3415,6 +3783,25 @@
             document.addEventListener('click', (e) => {
                 if (isChatOpen && !chat.contains(e.target) && !document.getElementById('dnRobot').contains(e.target)) closeChat();
             });
+
+            document.addEventListener('click', (e) => {
+                const unitHeader = e.target.closest('.unit-header');
+                const weekCard = e.target.closest('.week-card');
+                const unitBtn = e.target.closest('.dn-unit-btn');
+                const navLink = e.target.closest('nav a, .nav-item');
+
+                if (unitHeader) {
+                    flyRobotToElement(unitHeader);
+                } else if (weekCard) {
+                    flyRobotToElement(weekCard);
+                } else if (unitBtn) {
+                    flyRobotToElement(unitBtn);
+                } else if (navLink) {
+                    flyRobotToElement(navLink);
+                }
+            });
+
+            window.dnFlyRobotToElement = flyRobotToElement;
 
             // Init bubble cycle
             setTimeout(startBubbleCycle, 2000);

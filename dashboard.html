@@ -1455,7 +1455,13 @@ let uploadType = 'archivo';
             const descripcion = document.getElementById('descripcion').value;
             const submitBtn = document.getElementById('submitBtn');
 
-            console.log('Datos del formulario:', { semana, descripcion, uploadType });
+            const semanaNum = parseInt(semana);
+            if (!semana || isNaN(semanaNum) || semanaNum < 1 || semanaNum > 16) {
+                showNotification('Selecciona una semana válida (1-16)', 'error');
+                return;
+            }
+
+            console.log('Datos del formulario:', { semana: semanaNum, descripcion, uploadType });
 
             if (!semana) {
                 showNotification('Selecciona una semana', 'error');
@@ -1474,7 +1480,7 @@ let uploadType = 'archivo';
                         submitBtn.innerHTML = '<i class="fa-solid fa-upload"></i> Subir Trabajo';
                         return;
                     }
-                    const result = await window.PortafolioAuth.subirTrabajo(archivo, parseInt(semana), descripcion);
+                    const result = await window.PortafolioAuth.subirTrabajo(archivo, semanaNum, descripcion);
                     showNotification('¡Archivo subido exitosamente!');
                     clearFile();
                 } else {
@@ -1495,7 +1501,7 @@ let uploadType = 'archivo';
                     }
                     
                     const descripcionEnlace = plataforma.toUpperCase() + ' - ' + descripcion;
-                    const result = await window.PortafolioAuth.subirEnlace(enlace, parseInt(semana), descripcionEnlace, plataforma);
+                    const result = await window.PortafolioAuth.subirEnlace(enlace, semanaNum, descripcionEnlace, plataforma);
                     showNotification('¡Enlace subido exitosamente!');
                     document.getElementById('enlaceUrl').value = '';
                     document.getElementById('enlacePlataforma').value = '';

@@ -21,7 +21,10 @@ async request(method, endpoint, body = null) {
         let authHeader = useAnonKey ? `Bearer ${SUPABASE_ANON_KEY}` : `Bearer ${localStorage.getItem('sb_access_token') || SUPABASE_ANON_KEY}`;
         
         const options = { method, headers: { ...this.headers, 'Authorization': authHeader } };
-        if (body && method !== 'GET') options.body = JSON.stringify(body);
+        if (body && method !== 'GET') {
+            options.body = JSON.stringify(body);
+            options.headers['Prefer'] = 'return=representation';
+        }
         
         try {
             const response = await fetch(`${this.url}/rest/v1${endpoint}`, options);
@@ -492,10 +495,13 @@ async function subirTrabajo(archivo, numeroSemana, descripcion = '') {
     const userEmail = localStorage.getItem('user_email');
     if (!userId) throw new Error('Usuario no encontrado. Inicia sesion nuevamente.');
     
+    const num = parseInt(numeroSemana);
+    if (isNaN(num) || num < 1 || num > 16) throw new Error('Numero de semana invalido. Debe ser entre 1 y 16.');
+    
     const user = { id: userId, email: userEmail };
 
     const extension = archivo.name.split('.').pop();
-    const nombreArchivo = `${user.id}_semana${numeroSemana}_${Date.now()}.${extension}`;
+    const nombreArchivo = `${user.id}_semana${num}_${Date.now()}.${extension}`;
     const rutaArchivo = `${user.id}/${nombreArchivo}`;
 
     try {
@@ -513,7 +519,7 @@ async function subirTrabajo(archivo, numeroSemana, descripcion = '') {
     
     const result = await supabase.request('POST', '/trabajos', {
         usuario_id: user.id,
-        numero_semana: numeroSemana,
+        numero_semana: num,
         nombre_archivo: archivo.name,
         ruta_storage: publicUrl,
         descripcion: descripcion,
@@ -531,6 +537,9 @@ async function subirEnlace(enlace, numeroSemana, descripcion = '', plataforma = 
     const userEmail = localStorage.getItem('user_email');
     if (!userId) throw new Error('Usuario no encontrado. Inicia sesion nuevamente.');
     
+    const num = parseInt(numeroSemana);
+    if (isNaN(num) || num < 1 || num > 16) throw new Error('Numero de semana invalido. Debe ser entre 1 y 16.');
+    
     let plataformaNombre = '';
     if (plataforma === 'genially') {
         plataformaNombre = 'Genially';
@@ -542,7 +551,7 @@ async function subirEnlace(enlace, numeroSemana, descripcion = '', plataforma = 
     
     const result = await supabase.request('POST', '/trabajos', {
         usuario_id: userId,
-        numero_semana: numeroSemana,
+        numero_semana: num,
         nombre_archivo: nombreArchivo,
         ruta_storage: enlace,
         descripcion: descripcion,
