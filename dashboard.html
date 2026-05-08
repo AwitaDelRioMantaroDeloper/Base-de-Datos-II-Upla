@@ -993,8 +993,8 @@
         <div class="visualizacion-cards">
             <div class="visualizacion-control" id="visualizacionAutomatica">
                 <div class="visualizacion-info">
-                    <h4><i class="fa-solid fa-clock"></i> Visualización Automática</h4>
-                    <p>Miércoles y Jueves de 3:00 PM a 8:00 PM</p>
+                    <h4><i class="fa-solid fa-clock"></i> Visualización</h4>
+                    <p>Los trabajos están disponibles sin restricción de horario</p>
                 </div>
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;">
                     <div class="visualizacion-toggle">
@@ -1246,6 +1246,7 @@
         </div>
     </main>
 
+    <script src="config.js"></script>
     <script src="auth.js"></script>
     <script>
         let todosLosTrabajos = [];
@@ -1340,31 +1341,9 @@
         }
 
         function actualizarEstadoVisualizacion() {
-            const esHorario = window.PortafolioAuth.esHorarioVisualizacion();
-            const overrideActive = localStorage.getItem('visualizacion_activada') === 'true';
-            const autoActive = window.PortafolioAuth.isVisualizacionAutomaticaActivada();
-            
-            const toggleAuto = document.getElementById('toggleAutomatica');
             const autoBadge = document.getElementById('horarioBadge');
-            const toggleManual = document.getElementById('toggleVisualizacion');
-            const manualStatus = document.getElementById('manualStatusText');
-            
-            if (autoActive) {
-                toggleAuto.classList.add('active');
-                if (esHorario) {
-                    autoBadge.classList.add('activo');
-                    autoBadge.textContent = 'Horario Activo';
-                } else {
-                    autoBadge.classList.remove('activo');
-                    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-                    const ahora = new Date();
-                    autoBadge.textContent = `Fuera de horario (${dias[ahora.getDay()]} ${ahora.getHours()}:00)`;
-                }
-            } else {
-                toggleAuto.classList.remove('active');
-                autoBadge.classList.remove('activo');
-                autoBadge.textContent = 'Automático Desactivado';
-            }
+            autoBadge.classList.add('activo');
+            autoBadge.textContent = 'Siempre disponible';
             
             if (overrideActive) {
                 toggleManual.classList.add('active');

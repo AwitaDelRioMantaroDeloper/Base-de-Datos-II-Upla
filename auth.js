@@ -378,22 +378,7 @@ function esAdmin() {
 }
 
 function esHorarioVisualizacion() {
-    const overrideEnabled = localStorage.getItem('visualizacion_activada') === 'true';
-    if (overrideEnabled) return true;
-    
-    const autoDisabled = localStorage.getItem('visualizacion_automatica_activada') === 'false';
-    if (autoDisabled) return false;
-    
-    const ahora = new Date();
-    const dia = ahora.getDay();
-    const hora = ahora.getHours();
-    
-    const esMiercoles = dia === 3;
-    const esJueves = dia === 4;
-    
-    const dentroDelHorario = hora >= 15 && hora < 20;
-    
-    return (esMiercoles || esJueves) && dentroDelHorario;
+    return true; // Visualización siempre disponible
 }
 
 function activarVisualizacion() {
@@ -627,12 +612,127 @@ function requireGuest() {
     return true;
 }
 
+// ===== GEMINI AI INTEGRATION =====
+
+const GEMINI_MODEL = 'gemini-2.0-flash'; // rápido y gratis
+
+function convertToGeminiMessages(messages) {
+    const systemMsg = messages.find(m => m.role === 'system');
+    const contents = messages.filter(m => m.role !== 'system').map(m => ({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.content }]
+    }));
+
+    if (contents.length === 0) {
+        contents.push({ role: 'user', parts: [{ text: 'Hola' }] });
+    }
+
+    return { contents, systemInstruction: systemMsg ? { parts: [{ text: systemMsg.content }] } : undefined };
+}
+
+async function callAI(messages, onChunk = null) {
+    if (!window.GEMINI_API_KEY) {
+        throw new Error('GEMINI_API_KEY no configurada. Agrega tu API key en config.js');
+    }
+
+    const { contents, systemInstruction } = convertToGeminiMessages(messages);
+    const baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models';
+    const key = window.GEMINI_API_KEY;
+
+    if (onChunk) {
+        const url = `${baseUrl}/${GEMINI_MODEL}:streamGenerateContent?alt=sse&key=${key}`;
+        const body = { contents };
+        if (systemInstruction) body.systemInstruction = systemInstruction;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            const err = await response.json().catch(() => ({}));
+            throw new Error(err.error?.message || `Error ${response.status}`);
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let fullContent = '';
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split('\n').filter(l => l.startsWith('data: ') && l !== 'data: [DONE]');
+
+            for (const line of lines) {
+                try {
+                    const json = JSON.parse(line.slice(6));
+                    const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                    if (text) {
+                        fullContent += text;
+                        onChunk(fullContent);
+                    }
+                } catch {}
+            }
+        }
+
+        return fullContent;
+    } else {
+        const url = `${baseUrl}/${GEMINI_MODEL}:generateContent?key=${key}`;
+        const body = { contents };
+        if (systemInstruction) body.systemInstruction = systemInstruction;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            const err = await response.json().catch(() => ({}));
+            throw new Error(err.error?.message || `Error ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    }
+}
+
+async function getSystemPrompt() {
+    const unidades = window.UNIDADES || [];
+    const weekKnowledge = window.WEEK_KNOWLEDGE || {};
+    
+    return `Eres DataNauta, un asistente experto en Bases de Datos del curso "Base de Datos II" de la Universidad Peruana Los Andes (UPLA).
+
+INSTRUCCIONES:
+- Respondes SIEMPRE en español, de forma clara y educativa.
+- Usa los iconos de Font Awesome cuando ayude a la legibilidad: <i class="fa-solid fa-database"></i>, <i class="fa-solid fa-link"></i>, <i class="fa-solid fa-bolt"></i>, etc.
+- Si te preguntan por comandos SQL incluye ejemplos prácticos.
+- Si preguntan por conceptos de BD da explicaciones completas pero concisas.
+- NO inventes información sobre semanas o temas del curso. Usa SOLO lo que está en el contexto.
+
+ESTRUCTURA DEL CURSO:
+${JSON.stringify(unidades, null, 2)}
+
+INFORMACIÓN DE CADA SEMANA:
+${JSON.stringify(weekKnowledge, null, 2)}
+
+RESPONDE CON UN FORMATO COMO ESTE:
+<strong>Concepto:</strong> explicación breve
+<br><br><strong>Ejemplo:</strong> código o aplicación práctica
+<br><br><strong>Importancia:</strong> por qué es relevante`;
+}
+
 // ===== EXPORTAR =====
 if (typeof window !== 'undefined') {
     window.PortafolioAuth = {
         SUPABASE_URL,
         SUPABASE_ANON_KEY,
         STORAGE_BUCKET,
+        callAI,
+        getSystemPrompt,
         ADMIN_EMAILS,
         getConnectionStatus,
         verificarConexion,

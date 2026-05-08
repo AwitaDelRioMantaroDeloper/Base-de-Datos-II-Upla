@@ -2113,6 +2113,7 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script src="auth.js"></script>
     <script>
         const UNIDADES = [
@@ -2349,24 +2350,6 @@
         }
 
         async function abrirSemana(numero, titulo) {
-            if (!window.PortafolioAuth.esHorarioVisualizacion() && !window.PortafolioAuth.estaAutenticado()) {
-                document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-clock"></i> Fuera de Horario';
-                document.getElementById('trabajosModal').classList.add('show');
-                const content = document.getElementById('modalContent');
-                const ahora = new Date();
-                const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-                content.innerHTML = `
-                    <div class="login-required">
-                        <i class="fa-solid fa-clock" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
-                        <p><strong>Los trabajos solo están disponibles:</strong></p>
-                        <p style="font-size: 1.1rem; font-weight: 600;">Miércoles y Jueves</p>
-                        <p style="font-size: 1.1rem; font-weight: 600;">3:00 PM - 8:00 PM</p>
-                        <p style="margin-top: 1rem; color: var(--text-secondary);">Hoy es ${dias[ahora.getDay()]} y son las ${ahora.getHours()}:${String(ahora.getMinutes()).padStart(2, '0')}</p>
-                    </div>
-                `;
-                return;
-            }
-
             document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-calendar-week"></i> ' + titulo;
             document.getElementById('trabajosModal').classList.add('show');
             const content = document.getElementById('modalContent');
@@ -3188,6 +3171,8 @@
                 }
             };
 
+            window.WEEK_KNOWLEDGE = WEEK_KNOWLEDGE;
+
             async function handleWeekExplanation(num) {
                 const wk = WEEK_KNOWLEDGE[num];
                 if (!wk) {
@@ -3402,7 +3387,7 @@
                     return 'No, no es posible.';
                 }
                 if (lower.includes('hay trabajos') || lower.includes('hay proyectos')) return 'Sí, hay trabajos en cada semana. Selecciona una unidad para verlos.';
-                if (lower.includes('está disponible') || lower.includes('disponible')) return 'Sí, está disponible. Los trabajos se pueden ver según el horario establecido.';
+                if (lower.includes('está disponible') || lower.includes('disponible')) return 'Sí, está disponible. Los trabajos están visibles sin restricción de horario.';
                 if (lower.includes('puedo ver') || lower.includes('puedes ver')) return 'Sí, puedes ver los trabajos seleccionando una unidad y semana.';
                 if (lower.includes('es gratis') || lower.includes('gratis')) return 'Sí, es completamente gratis.';
                 if (lower.includes('funciona')) return 'Sí, funciona correctamente.';
@@ -3605,7 +3590,7 @@
                     'conceptos': '<i class="fa-solid fa-book-open" style="margin-right:0.3rem;"></i>Temas del curso:<br><i class="fa-solid fa-database" style="margin-right:0.3rem;"></i>Arquitectura de BD<br><i class="fa-solid fa-link" style="margin-right:0.3rem;"></i>Consultas avanzadas<br><i class="fa-solid fa-bolt" style="margin-right:0.3rem;"></i>Optimización e índices<br><i class="fa-solid fa-shield-halved" style="margin-right:0.3rem;"></i>Administración y seguridad',
                     'estudiante': '<i class="fa-solid fa-user-graduate" style="margin-right:0.3rem;"></i>Estudiante de Ingeniería de Sistemas y Computación, UPLA, V ciclo. Este portafolio muestra los trabajos de Base de Datos II.',
                     'contacto': '<i class="fa-solid fa-envelope" style="margin-right:0.3rem;"></i>Email: andymendozavillanueva@gmail.com<br><i class="fa-solid fa-building-columns" style="margin-right:0.3rem;"></i>Universidad Peruana Los Andes',
-                    'horario': '<i class="fa-solid fa-clock" style="margin-right:0.3rem;"></i>Horario de visualización:<br><i class="fa-solid fa-calendar-day" style="margin-right:0.3rem;"></i>Miércoles y Jueves<br><i class="fa-solid fa-clock" style="margin-right:0.3rem;"></i>3:00 PM - 8:00 PM<br><i class="fa-solid fa-lock-open" style="color:var(--success);margin-right:0.3rem;"></i>Autenticados ven en cualquier momento.',
+                    'horario': '<i class="fa-solid fa-clock" style="margin-right:0.3rem;"></i>Visualización:<br><i class="fa-solid fa-check" style="color:var(--success);margin-right:0.3rem;"></i>Los trabajos están disponibles <strong>siempre</strong>.<br><i class="fa-solid fa-lock-open" style="color:var(--success);margin-right:0.3rem;"></i>Sin restricción de horario.',
                     'curso': '<i class="fa-solid fa-graduation-cap" style="margin-right:0.3rem;"></i>Base de Datos II - UPLA<br>Ingeniería de Sistemas, V Ciclo<br>4 Unidades, 16 Semanas',
                     'unidad': '<i class="fa-solid fa-compass" style="margin-right:0.3rem;"></i>Unidad I: Arquitectura (Sem 1-4)<br>Unidad II: Consultas (Sem 5-8)<br>Unidad III: Optimización (Sem 9-12)<br>Unidad IV: Administración (Sem 13-16)',
                     'semana': '<i class="fa-solid fa-calendar-week" style="margin-right:0.3rem;"></i>16 semanas en 4 unidades. Selecciona una unidad arriba para ver las semanas.',
@@ -3704,12 +3689,8 @@
                     }
                 }
 
-                /* --- 12. DEFAULT FALLBACK --- */
-                return randomResponse([
-                    '<i class="fa-solid fa-circle-question" style="margin-right:0.3rem;"></i>No encontré esa info. Prueba: "semana 5", "resumen general", "JOIN", "quiz", o navega las unidades.',
-                    '<i class="fa-solid fa-face-smile" style="margin-right:0.3rem;"></i>Eso no está en mi BD... Pregúntame sobre cualquier semana (1-16), comandos SQL, o pide un "resumen general".',
-                    '<i class="fa-solid fa-compass" style="margin-right:0.3rem;"></i>Puedo explicarte cada semana del curso, enseñarte SQL o hacer quizzes. ¿Qué necesitas?'
-                ]);
+                /* --- 12. DEFAULT FALLBACK → Use AI --- */
+                return '__AI__';
             }
 
             /* ============================================
@@ -3733,7 +3714,9 @@
                 setTimeout(() => {
                     removeTypingIndicator();
                     const response = getBotResponse(action);
-                    if (response) {
+                    if (response === '__AI__') {
+                        handleAIResponse(action);
+                    } else if (response) {
                         addMessage(response, 'bot');
                         addFollowUp();
                     }
@@ -3747,24 +3730,79 @@
                 const rawText = input.value.trim();
                 if (!rawText) return;
 
-                // Normalize input
                 const text = rawText.toLowerCase().replace(/\s+/g, ' ').trim();
                 input.value = '';
 
                 addMessage(rawText, 'user');
-                addTypingIndicator();
 
-                const delay = 500 + Math.random() * 800;
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    const response = getBotResponse(text);
-                    if (response) {
-                        addMessage(response, 'bot');
-                        addFollowUp();
-                        addPersonality();
+                const specialResponse = getBotResponse(text);
+
+                if (specialResponse === '__AI__') {
+                    addTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        handleAIResponse(text);
+                    }, 400 + Math.random() * 400);
+                    input.focus();
+                    return;
+                }
+
+                if (specialResponse) {
+                    addMessage(specialResponse, 'bot');
+                    addFollowUp();
+                    addPersonality();
+                }
+
+                input.focus();
+            }
+
+            let conversationHistory = [];
+
+            async function handleAIResponse(userText) {
+                removeTypingIndicator();
+
+                try {
+                    const systemPrompt = await window.PortafolioAuth.getSystemPrompt();
+
+                    conversationHistory.push({ role: 'user', content: userText });
+
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = 'dn-message dn-message--bot';
+                    const bubbleDiv = document.createElement('div');
+                    bubbleDiv.className = 'dn-message__bubble';
+                    bubbleDiv.innerHTML = '<em style="color:var(--text-secondary);">Escribiendo...</em>';
+                    const timeDiv = document.createElement('div');
+                    timeDiv.className = 'dn-message__time';
+                    timeDiv.textContent = getCurrentTime();
+                    msgDiv.appendChild(bubbleDiv);
+                    msgDiv.appendChild(timeDiv);
+                    messages.appendChild(msgDiv);
+                    scrollToBottom();
+
+                    const fullResponse = await window.PortafolioAuth.callAI([
+                        { role: 'system', content: systemPrompt },
+                        ...conversationHistory.slice(-10)
+                    ], (currentText) => {
+                        bubbleDiv.innerHTML = currentText.replace(/\n/g, '<br>');
+                        scrollToBottom();
+                    });
+
+                    bubbleDiv.innerHTML = fullResponse.replace(/\n/g, '<br>');
+                    conversationHistory.push({ role: 'assistant', content: fullResponse });
+
+                    addFollowUp();
+                    addPersonality();
+                    input.focus();
+                } catch (error) {
+                    console.error('AI Error:', error);
+                    const errMsg = error.message || 'Error al conectar con la IA';
+                    if (errMsg.includes('GEMINI_API_KEY') || errMsg.includes('API key')) {
+                        addMessage('<i class="fa-solid fa-triangle-exclamation" style="color:var(--warning);margin-right:0.3rem;"></i>' + errMsg + '<br><br><small>Consigue tu API key gratis en <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> y pégala en config.js</small>', 'bot');
+                    } else {
+                        addMessage('<i class="fa-solid fa-triangle-exclamation" style="color:var(--warning);margin-right:0.3rem;"></i>Error de conexión con la IA: ' + errMsg.replace(/Bearer .+/, 'Bearer ***'), 'bot');
                     }
                     input.focus();
-                }, delay);
+                }
             }
 
             /* ============================================
