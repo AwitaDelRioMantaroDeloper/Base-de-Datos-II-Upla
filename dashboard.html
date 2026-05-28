@@ -1344,7 +1344,11 @@
             const autoBadge = document.getElementById('horarioBadge');
             autoBadge.classList.add('activo');
             autoBadge.textContent = 'Siempre disponible';
-            
+
+            const overrideActive = localStorage.getItem('visualizacion_activada') === 'true';
+            const toggleManual = document.getElementById('toggleVisualizacion');
+            const manualStatus = document.getElementById('manualStatusText');
+
             if (overrideActive) {
                 toggleManual.classList.add('active');
                 manualStatus.textContent = 'Activado';

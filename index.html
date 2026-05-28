@@ -587,11 +587,81 @@
         }
         /* Trabajo Viewer (visor integrado) */
         .trabajo-viewer { display: flex; flex-direction: column; height: 75vh; }
-        .btn-volver {
+        .viewer-toolbar {
+            display: flex; align-items: center; gap: 0.5rem;
+            margin-bottom: 0.8rem; flex-wrap: wrap;
+        }
+        .viewer-toolbar .btn-volver {
+            margin-bottom: 0; align-self: auto;
+            background: transparent;
+            border: 1.5px solid var(--celeste);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            text-decoration: none;
+        }
+        html.dark-mode .viewer-toolbar .btn-volver {
+            color: var(--celeste);
+            border-color: rgba(79,195,247,0.4);
+            background: transparent;
+        }
+        .viewer-toolbar .btn-volver:hover {
+            background: var(--celeste);
+            color: white;
+        }
+        .viewer-zoom-group {
+            display: flex; align-items: center;
+            background: var(--celeste-pale);
+            border-radius: 10px;
+            border: 1px solid var(--celeste);
+            overflow: hidden;
+            margin-left: auto;
+        }
+        html.dark-mode .viewer-zoom-group {
+            background: #1E3A5F;
+            border-color: rgba(79,195,247,0.3);
+        }
+        .viewer-zoom-btn {
+            padding: 0.5rem 0.8rem;
+            border: none;
+            background: transparent;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        html.dark-mode .viewer-zoom-btn { color: var(--celeste); }
+        .viewer-zoom-btn:hover { background: var(--celeste); color: white; }
+        .viewer-zoom-btn:not(:last-child) { border-right: 1px solid var(--celeste); }
+        html.dark-mode .viewer-zoom-btn:not(:last-child) { border-color: rgba(79,195,247,0.3); }
+        .viewer-zoom-label {
+            padding: 0.5rem 0.6rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 40px;
+            text-align: center;
+            border-right: 1px solid var(--celeste);
+        }
+        html.dark-mode .viewer-zoom-label {
+            color: var(--celeste);
+            border-color: rgba(79,195,247,0.3);
+        }
+        .btn-download {
             background: var(--celeste-pale);
             border: 1px solid var(--celeste);
             color: var(--primary);
-            padding: 0.6rem 1.2rem;
+            padding: 0.5rem 1rem;
             border-radius: 10px;
             font-size: 0.85rem;
             font-weight: 600;
@@ -600,25 +670,28 @@
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            align-self: flex-start;
-            margin-bottom: 1rem;
+            text-decoration: none;
         }
-        html.dark-mode .btn-volver {
+        html.dark-mode .btn-download {
             background: #1E3A5F;
             color: var(--celeste);
             border-color: rgba(79,195,247,0.3);
         }
-        .btn-volver:hover {
-            background: var(--celeste);
-            color: white;
-            transform: translateX(-4px);
-        }
+        .btn-download:hover { background: var(--celeste); color: white; }
         .trabajo-viewer-container {
             flex: 1;
             border-radius: 12px;
-            overflow: hidden;
+            overflow: auto;
             background: #fff;
             border: 1px solid var(--celeste-pale);
+            cursor: grab;
+            user-select: none;
+        }
+        .trabajo-viewer-container.grabbing {
+            cursor: grabbing;
+        }
+        .trabajo-viewer-container.grab-disabled {
+            cursor: default;
         }
         html.dark-mode .trabajo-viewer-container {
             background: #1a2332;
@@ -2400,28 +2473,101 @@
             const modalTitle = document.getElementById('modalTitle');
             modalTitle.innerHTML = '<i class="fa-solid fa-file-lines"></i> ' + titulo;
 
-            if (isPDF) {
-                content.innerHTML = `
-                    <div class="trabajo-viewer">
+            const viewerId = 'viewerContainer_' + Date.now();
+            const zoomLevel = 100;
+
+            content.innerHTML = `
+                <div class="trabajo-viewer">
+                    <div class="viewer-toolbar">
                         <button onclick="volverLista()" class="btn-volver">
                             <i class="fa-solid fa-arrow-left"></i> Volver
                         </button>
-                        <div class="trabajo-viewer-container">
-                            <iframe src="${url}" frameborder="0" class="trabajo-iframe" title="${titulo}"></iframe>
+                        <div class="viewer-zoom-group">
+                            <button class="viewer-zoom-btn" onclick="zoomOut('${viewerId}')" title="Alejar">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <span class="viewer-zoom-label" id="${viewerId}_label">100%</span>
+                            <button class="viewer-zoom-btn" onclick="zoomIn('${viewerId}')" title="Acercar">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
                         </div>
+                        <a href="${url}" download class="btn-download" title="Descargar">
+                            <i class="fa-solid fa-download"></i> Descargar
+                        </a>
                     </div>
-                `;
-            } else {
-                content.innerHTML = `
-                    <div class="trabajo-viewer">
-                        <button onclick="volverLista()" class="btn-volver">
-                            <i class="fa-solid fa-arrow-left"></i> Volver
-                        </button>
-                        <div class="trabajo-viewer-container" style="display:flex;align-items:center;justify-content:center;background:#000;">
-                            <img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;" alt="${titulo}">
-                        </div>
+                    <div class="trabajo-viewer-container" id="${viewerId}">
+                        ${isPDF ? `<iframe src="${url}" frameborder="0" class="trabajo-iframe" id="${viewerId}_content" title="${titulo}"></iframe>`
+                              : `<img src="${url}" id="${viewerId}_content" style="display:block;margin:auto;" alt="${titulo}">`}
                     </div>
-                `;
+                </div>
+            `;
+            zoomData[viewerId] = 100;
+            applyZoom(viewerId);
+            setTimeout(() => makeDraggable(viewerId), 100);
+        }
+
+        let zoomData = {};
+        let dragState = null;
+
+        function makeDraggable(id) {
+            const container = document.getElementById(id);
+            if (!container) return;
+
+            container.addEventListener('mousedown', (e) => {
+                if (zoomData[id] <= 100) return;
+                e.preventDefault();
+                dragState = {
+                    id, startX: e.clientX, startY: e.clientY,
+                    scrollLeft: container.scrollLeft,
+                    scrollTop: container.scrollTop
+                };
+                container.classList.add('grabbing');
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!dragState || dragState.id !== id) return;
+                e.preventDefault();
+                const dx = e.clientX - dragState.startX;
+                const dy = e.clientY - dragState.startY;
+                container.scrollLeft = dragState.scrollLeft - dx;
+                container.scrollTop = dragState.scrollTop - dy;
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (dragState && dragState.id === id) {
+                    container.classList.remove('grabbing');
+                    dragState = null;
+                }
+            });
+        }
+
+        function zoomIn(id) {
+            if (!zoomData[id]) zoomData[id] = 100;
+            zoomData[id] = Math.min(300, zoomData[id] + 25);
+            applyZoom(id);
+        }
+
+        function zoomOut(id) {
+            if (!zoomData[id]) zoomData[id] = 100;
+            zoomData[id] = Math.max(25, zoomData[id] - 25);
+            applyZoom(id);
+        }
+
+        function applyZoom(id) {
+            const label = document.getElementById(id + '_label');
+            if (label) label.textContent = zoomData[id] + '%';
+            const el = document.getElementById(id + '_content');
+            if (el) {
+                el.style.width = zoomData[id] + '%';
+                el.style.maxWidth = 'none';
+            }
+            const container = document.getElementById(id);
+            if (container) {
+                if (zoomData[id] > 100) {
+                    container.classList.remove('grab-disabled');
+                } else {
+                    container.classList.add('grab-disabled');
+                }
             }
         }
 

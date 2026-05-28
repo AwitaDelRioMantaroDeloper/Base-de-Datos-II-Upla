@@ -614,7 +614,8 @@ function requireGuest() {
 
 // ===== GEMINI AI INTEGRATION =====
 
-const GEMINI_MODEL = 'gemini-2.0-flash'; // rápido y gratis
+let GEMINI_MODEL = 'gemini-1.5-flash';
+let GEMINI_API_VERSION = 'v1beta';
 
 function convertToGeminiMessages(messages) {
     const systemMsg = messages.find(m => m.role === 'system');
@@ -636,68 +637,96 @@ async function callAI(messages, onChunk = null) {
     }
 
     const { contents, systemInstruction } = convertToGeminiMessages(messages);
-    const baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models';
     const key = window.GEMINI_API_KEY;
 
-    if (onChunk) {
-        const url = `${baseUrl}/${GEMINI_MODEL}:streamGenerateContent?alt=sse&key=${key}`;
-        const body = { contents };
-        if (systemInstruction) body.systemInstruction = systemInstruction;
+    const modelsToTry = [
+        { model: GEMINI_MODEL, version: GEMINI_API_VERSION },
+        { model: 'gemini-1.5-flash', version: 'v1' },
+        { model: 'gemini-1.5-flash-001', version: 'v1beta' },
+        { model: 'gemini-1.5-pro', version: 'v1beta' },
+        { model: 'gemini-pro', version: 'v1beta' }
+    ];
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        });
+    // Remove the current model from duplicates
+    const unique = [modelsToTry[0], ...modelsToTry.filter(m => m.model !== modelsToTry[0].model)];
 
-        if (!response.ok) {
-            const err = await response.json().catch(() => ({}));
-            throw new Error(err.error?.message || `Error ${response.status}`);
-        }
+    let lastError = null;
 
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let fullContent = '';
+    for (const { model, version } of unique) {
+        try {
+            const baseUrl = `https://generativelanguage.googleapis.com/${version}/models`;
+            const body = { contents };
+            if (systemInstruction) body.systemInstruction = systemInstruction;
 
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
+            if (onChunk) {
+                const url = `${baseUrl}/${model}:streamGenerateContent?alt=sse&key=${key}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
 
-            const chunk = decoder.decode(value, { stream: true });
-            const lines = chunk.split('\n').filter(l => l.startsWith('data: ') && l !== 'data: [DONE]');
+                if (!response.ok) {
+                    const err = await response.json().catch(() => ({}));
+                    lastError = new Error(err.error?.message || `Error ${response.status}`);
+                    continue;
+                }
 
-            for (const line of lines) {
-                try {
-                    const json = JSON.parse(line.slice(6));
-                    const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
-                    if (text) {
-                        fullContent += text;
-                        onChunk(fullContent);
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let fullContent = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n').filter(l => l.startsWith('data: ') && l !== 'data: [DONE]');
+
+                    for (const line of lines) {
+                        try {
+                            const json = JSON.parse(line.slice(6));
+                            const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                            if (text) {
+                                fullContent += text;
+                                onChunk(fullContent);
+                            }
+                        } catch {}
                     }
-                } catch {}
+                }
+
+                if (model !== GEMINI_MODEL) {
+                    GEMINI_MODEL = model;
+                    GEMINI_API_VERSION = version;
+                }
+                return fullContent;
+            } else {
+                const url = `${baseUrl}/${model}:generateContent?key=${key}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                if (!response.ok) {
+                    const err = await response.json().catch(() => ({}));
+                    lastError = new Error(err.error?.message || `Error ${response.status}`);
+                    continue;
+                }
+
+                const data = await response.json();
+                if (model !== GEMINI_MODEL) {
+                    GEMINI_MODEL = model;
+                    GEMINI_API_VERSION = version;
+                }
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
             }
+        } catch (e) {
+            lastError = e;
         }
-
-        return fullContent;
-    } else {
-        const url = `${baseUrl}/${GEMINI_MODEL}:generateContent?key=${key}`;
-        const body = { contents };
-        if (systemInstruction) body.systemInstruction = systemInstruction;
-
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        });
-
-        if (!response.ok) {
-            const err = await response.json().catch(() => ({}));
-            throw new Error(err.error?.message || `Error ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
+
+    throw lastError || new Error('No se pudo conectar con Gemini');
 }
 
 async function getSystemPrompt() {
