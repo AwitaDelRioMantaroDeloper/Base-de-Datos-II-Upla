@@ -1322,11 +1322,35 @@
              border-radius: 50%; box-shadow: 0 0 4px var(--celeste), 0 0 8px rgba(79,195,247,0.3);
              animation: dnEyeBlink 4s ease-in-out infinite;
          }
-         .dn-robot__eye--left, .dn-robot__eye--right { display: inline-block; }
-         .dn-robot__mouth {
-             width: 8px; height: 3px; background: var(--celeste);
-             border-radius: 0 0 4px 4px; box-shadow: 0 0 3px var(--celeste);
-         }
+          .dn-robot__eye--left, .dn-robot__eye--right { display: inline-block; position: relative; }
+          .dn-robot__pupil {
+              width: 2.5px; height: 2.5px; background: #fff; border-radius: 50%;
+              position: absolute; top: 50%; left: 50%;
+              transform: translate(-50%, -50%);
+              transition: transform 0.08s linear;
+              box-shadow: 0 0 2px rgba(255,255,255,0.5);
+              pointer-events: none; z-index: 1;
+          }
+          .dn-robot--dizzy .dn-robot__pupil {
+              animation: dnEyeSpin 0.25s linear infinite;
+          }
+          .dn-robot--dizzy .dn-robot__face {
+              animation: dnDizzyShake 0.15s ease-in-out infinite;
+          }
+          .dn-robot--dizzy .dn-robot__mouth {
+              width: 6px; height: 6px; border-radius: 50%; background: transparent;
+              border: 2px solid var(--celeste);
+          }
+          .dn-robot--dizzy .dn-robot__head {
+              animation: dnDizzyWobble 0.3s ease-in-out infinite;
+          }
+          .dn-robot--dizzy .dn-robot__antenna-tip {
+              animation: dnDizzyGlow 0.1s linear infinite;
+          }
+          .dn-robot__mouth {
+              width: 8px; height: 3px; background: var(--celeste);
+              border-radius: 0 0 4px 4px; box-shadow: 0 0 3px var(--celeste);
+          }
          /* Ears */
          .dn-robot__ear {
              width: 6px; height: 12px; background: linear-gradient(180deg, var(--celeste), var(--primary));
@@ -1385,13 +1409,13 @@
              animation: dnJetFlame 0.8s ease-in-out infinite;
              box-shadow: 0 4px 12px rgba(79,195,247,0.3);
          }
-         .dn-robot__glow-ring {
-             width: 24px; height: 6px; border-radius: 50%;
-             background: radial-gradient(ellipse, rgba(79,195,247,0.25) 0%, transparent 70%);
-             position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
-             animation: dnGlowRing 2s ease-in-out infinite;
-         }
-        .dn-robot__bubble {
+          .dn-robot__glow-ring {
+              width: 24px; height: 6px; border-radius: 50%;
+              background: radial-gradient(ellipse, rgba(79,195,247,0.25) 0%, transparent 70%);
+              position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+              animation: dnGlowRing 2s ease-in-out infinite;
+          }
+          .dn-robot__bubble {
             position: absolute;
             bottom: 72px;
             right: 0;
@@ -1724,13 +1748,36 @@
             100% { transform: scale(1) rotate(0deg); }
         }
         @keyframes dnJetFly {
-            0%, 100% { transform: rotate(-20deg) scaleY(1.05); }
-            50% { transform: rotate(-15deg) scaleY(1.15); }
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-3px) scale(0.98); }
+        }
+        @keyframes dnEyeSpin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @keyframes dnDizzyShake {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            25% { transform: translate(-50%, -50%) rotate(4deg); }
+            75% { transform: translate(-50%, -50%) rotate(-4deg); }
+        }
+        @keyframes dnDizzyWobble {
+            0%, 100% { transform: translateX(-50%) rotate(0deg) scale(1); }
+            25% { transform: translateX(-50%) rotate(-3deg) scale(1.02); }
+            75% { transform: translateX(-50%) rotate(3deg) scale(0.98); }
+        }
+        @keyframes dnDizzyGlow {
+            0%, 100% { box-shadow: 0 0 6px var(--celeste), 0 0 12px var(--celeste); opacity: 1; }
+            50% { box-shadow: 0 0 12px var(--celeste), 0 0 24px var(--celeste); opacity: 0.6; }
+        }
+        @keyframes dnStarFloat {
+            0%, 100% { transform: translateY(0) scale(1); opacity: var(--o, 0.7); }
+            50% { transform: translateY(-4px) scale(1.15); opacity: 1; }
         }
         @keyframes dnTrailGlow {
             0% { opacity: 0.8; transform: scale(1); }
             100% { opacity: 0; transform: scale(2.5); }
         }
+        /* Dizzy keyframes (used by robot class) */
         /* Responsive */
         @media (max-width: 480px) {
             .dn-chat { right: 0; bottom: 0; width: 100%; max-height: 85vh; height: 85vh; border-radius: 0; border-left: none; border-right: none; }
@@ -2127,8 +2174,8 @@
                 <div class="dn-robot__head">
                     <div class="dn-robot__antenna"><div class="dn-robot__antenna-tip"></div></div>
                     <div class="dn-robot__face">
-                        <div class="dn-robot__eye dn-robot__eye--left"></div>
-                        <div class="dn-robot__eye dn-robot__eye--right"></div>
+                        <div class="dn-robot__eye dn-robot__eye--left"><div class="dn-robot__pupil"></div></div>
+                        <div class="dn-robot__eye dn-robot__eye--right"><div class="dn-robot__pupil"></div></div>
                         <div class="dn-robot__mouth"></div>
                     </div>
                     <div class="dn-robot__ear dn-robot__ear--left"></div>
@@ -3509,6 +3556,13 @@
                 return responses[Math.floor(Math.random() * responses.length)];
             }
 
+            function convertMarkdown(text) {
+                return text
+                    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                    .replace(/\n/g, '<br>');
+            }
+
             /* ============================================
                YES / NO DETECTION
                ============================================ */
@@ -3908,7 +3962,7 @@
                 removeTypingIndicator();
 
                 try {
-                    const systemPrompt = await window.PortafolioAuth.getSystemPrompt();
+                    const systemPrompt = await window.PortafolioAuth.getSystemPrompt(userText);
 
                     conversationHistory.push({ role: 'user', content: userText });
 
@@ -3929,11 +3983,11 @@
                         { role: 'system', content: systemPrompt },
                         ...conversationHistory.slice(-10)
                     ], (currentText) => {
-                        bubbleDiv.innerHTML = currentText.replace(/\n/g, '<br>');
+                        bubbleDiv.innerHTML = convertMarkdown(currentText);
                         scrollToBottom();
                     });
 
-                    bubbleDiv.innerHTML = fullResponse.replace(/\n/g, '<br>');
+                    bubbleDiv.innerHTML = convertMarkdown(fullResponse);
                     conversationHistory.push({ role: 'assistant', content: fullResponse });
 
                     addFollowUp();
@@ -3984,6 +4038,116 @@
                     flyRobotToElement(navLink);
                 }
             });
+
+            // Eye tracking - pupils follow cursor
+            let mouseX = 0, mouseY = 0;
+
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                if (!isDizzy) updatePupils();
+            });
+
+            function updatePupils() {
+                const pupils = document.querySelectorAll('.dn-robot__pupil');
+                if (!pupils.length) return;
+                const robot = document.getElementById('dnRobot');
+                if (!robot) return;
+
+                const rect = robot.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+
+                const dx = mouseX - cx;
+                const dy = mouseY - cy;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 1) return;
+                const maxMove = 2.5;
+                const factor = Math.min(1, dist / 60);
+                const px = (dx / dist) * maxMove * factor;
+                const py = (dy / dist) * maxMove * factor;
+
+                pupils.forEach(p => {
+                    p.style.transform = 'translate(calc(-50% + ' + px + 'px), calc(-50% + ' + py + 'px))';
+                });
+            }
+
+            // Dizzy detection - rapid circular mouse movement
+            let mouseTrace = [];
+            let isDizzy = false;
+            let dizzyTimeout = null;
+            let dizzyCooldown = false;
+
+            document.addEventListener('mousemove', function(e) {
+                if (isDizzy || dizzyCooldown) return;
+
+                const now = Date.now();
+                mouseTrace.push({ x: e.clientX, y: e.clientY, t: now });
+                mouseTrace = mouseTrace.filter(p => now - p.t < 500);
+
+                if (mouseTrace.length < 15) return;
+
+                let totalAngle = 0;
+                let prevAngle = null;
+                let validMoves = 0;
+
+                for (let i = 1; i < mouseTrace.length; i++) {
+                    const dx = mouseTrace[i].x - mouseTrace[i - 1].x;
+                    const dy = mouseTrace[i].y - mouseTrace[i - 1].y;
+                    const d = Math.sqrt(dx * dx + dy * dy);
+                    if (d < 5) continue;
+
+                    validMoves++;
+                    const angle = Math.atan2(dy, dx);
+                    if (prevAngle !== null) {
+                        let diff = angle - prevAngle;
+                        if (diff > Math.PI) diff -= 2 * Math.PI;
+                        if (diff < -Math.PI) diff += 2 * Math.PI;
+                        totalAngle += Math.abs(diff);
+                    }
+                    prevAngle = angle;
+                }
+
+                if (validMoves > 10 && totalAngle > Math.PI * 4) {
+                    triggerDizzy();
+                }
+            });
+
+            function triggerDizzy() {
+                if (isDizzy) return;
+                isDizzy = true;
+                dizzyCooldown = true;
+                const robot = document.getElementById('dnRobot');
+                if (!robot) return;
+
+                robot.classList.add('dn-robot--dizzy');
+                mouseTrace = [];
+
+                // Spawn floating stars around robot
+                for (let i = 0; i < 8; i++) {
+                    const star = document.createElement('div');
+                    star.style.cssText = 'position:fixed;width:8px;height:8px;background:var(--celeste);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);box-shadow:0 0 6px var(--celeste);pointer-events:none;z-index:10000;opacity:0.9;animation:dnStarFloat 0.6s ease-out forwards;';
+                    const robotRect = robot.getBoundingClientRect();
+                    star.style.left = (robotRect.left + robotRect.width / 2 - 4 + (Math.random() - 0.5) * 60) + 'px';
+                    star.style.top = (robotRect.top + robotRect.height / 2 - 4 + (Math.random() - 0.5) * 60) + 'px';
+                    star.style.animationDelay = (i * 0.08) + 's';
+                    document.body.appendChild(star);
+                    setTimeout(() => star.remove(), 1000);
+                }
+
+                clearTimeout(dizzyTimeout);
+                dizzyTimeout = setTimeout(function() {
+                    isDizzy = false;
+                    robot.classList.remove('dn-robot--dizzy');
+                    const pupils = document.querySelectorAll('.dn-robot__pupil');
+                    pupils.forEach(p => {
+                        p.style.transform = 'translate(-50%, -50%)';
+                    });
+                    setTimeout(function() {
+                        dizzyCooldown = false;
+                    }, 3000);
+                }, 2000);
+            }
 
             window.dnFlyRobotToElement = flyRobotToElement;
 

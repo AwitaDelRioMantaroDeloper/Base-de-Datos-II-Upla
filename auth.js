@@ -614,7 +614,7 @@ function requireGuest() {
 
 // ===== GEMINI AI INTEGRATION =====
 
-let GEMINI_MODEL = 'gemini-1.5-flash';
+let GEMINI_MODEL = 'gemini-2.5-flash';
 let GEMINI_API_VERSION = 'v1beta';
 
 function convertToGeminiMessages(messages) {
@@ -641,10 +641,10 @@ async function callAI(messages, onChunk = null) {
 
     const modelsToTry = [
         { model: GEMINI_MODEL, version: GEMINI_API_VERSION },
-        { model: 'gemini-1.5-flash', version: 'v1' },
-        { model: 'gemini-1.5-flash-001', version: 'v1beta' },
-        { model: 'gemini-1.5-pro', version: 'v1beta' },
-        { model: 'gemini-pro', version: 'v1beta' }
+        { model: 'gemini-2.0-flash', version: 'v1beta' },
+        { model: 'gemini-flash-latest', version: 'v1beta' },
+        { model: 'gemini-pro-latest', version: 'v1beta' },
+        { model: 'gemini-2.0-flash-lite', version: 'v1beta' }
     ];
 
     // Remove the current model from duplicates
@@ -729,29 +729,78 @@ async function callAI(messages, onChunk = null) {
     throw lastError || new Error('No se pudo conectar con Gemini');
 }
 
-async function getSystemPrompt() {
+async function getSystemPrompt(userQuery) {
     const unidades = window.UNIDADES || [];
     const weekKnowledge = window.WEEK_KNOWLEDGE || {};
+    
+    let archivosInfo = '';
+    if (userQuery) {
+        const weekMatch = userQuery.match(/semana\s*(\d+)/i);
+        if (weekMatch) {
+            const num = parseInt(weekMatch[1]);
+            if (num >= 1 && num <= 16) {
+                try {
+                    const trabajos = await obtenerTrabajosPorSemana(num);
+                    if (trabajos.length > 0) {
+                        archivosInfo += `\n\nARCHIVOS SUBIDOS EN SEMANA ${num}:\n`;
+                        trabajos.forEach(t => {
+                            archivosInfo += `- "${t.nombre_archivo || 'Sin nombre'}": ${t.descripcion || 'Sin descripción'} | Estado: ${t.estado || 'Pendiente'}\n`;
+                        });
+                    } else {
+                        archivosInfo += `\n\nSEMANA ${num}: No hay trabajos subidos aún.\n`;
+                    }
+                } catch(e) {}
+            }
+        }
+        
+        const unitMatch = userQuery.match(/unidad\s*(\d+)|unidad\s*(i|ii|iii|iv|v)/i);
+        if (unitMatch) {
+            let unitNum = parseInt(unitMatch[1]);
+            if (isNaN(unitNum)) {
+                const romanMap = { i:1, ii:2, iii:3, iv:4, v:5 };
+                unitNum = romanMap[unitMatch[2]?.toLowerCase()] || 0;
+            }
+            const unidad = unidades.find(u => u.numero === unitNum);
+            if (unidad) {
+                archivosInfo += `\n\nARCHIVOS EN UNIDAD ${unitNum} (${unidad.titulo}):\n`;
+                for (const s of unidad.semanas) {
+                    try {
+                        const trabajos = await obtenerTrabajosPorSemana(s.numero);
+                        if (trabajos.length > 0) {
+                            archivosInfo += `  Semana ${s.numero} (${s.titulo}):\n`;
+                            trabajos.forEach(t => {
+                                archivosInfo += `    - "${t.nombre_archivo || 'Sin nombre'}": ${t.descripcion || 'Sin descripción'}\n`;
+                            });
+                        }
+                    } catch(e) {}
+                }
+            }
+        }
+    }
     
     return `Eres DataNauta, un asistente experto en Bases de Datos del curso "Base de Datos II" de la Universidad Peruana Los Andes (UPLA).
 
 INSTRUCCIONES:
 - Respondes SIEMPRE en español, de forma clara y educativa.
-- Usa los iconos de Font Awesome cuando ayude a la legibilidad: <i class="fa-solid fa-database"></i>, <i class="fa-solid fa-link"></i>, <i class="fa-solid fa-bolt"></i>, etc.
-- Si te preguntan por comandos SQL incluye ejemplos prácticos.
+- Usa FORMATO HTML para las respuestas: <strong>negrita</strong> para conceptos clave, <br> para saltos de línea.
+- NO uses **markdown** porque no se renderiza. Usa <strong> en su lugar.
+- Usa <i class="fa-solid fa-database"></i> y similares cuando ayude a la legibilidad.
+- Si te preguntan por comandos SQL incluye ejemplos prácticos con <code>codigo</code>.
 - Si preguntan por conceptos de BD da explicaciones completas pero concisas.
+- Cuando te pregunten por un tema FUERA del curso, responde cordialmente que no tienes esa información y redirige al temario del curso.
 - NO inventes información sobre semanas o temas del curso. Usa SOLO lo que está en el contexto.
 
 ESTRUCTURA DEL CURSO:
 ${JSON.stringify(unidades, null, 2)}
 
 INFORMACIÓN DE CADA SEMANA:
-${JSON.stringify(weekKnowledge, null, 2)}
+${JSON.stringify(weekKnowledge, null, 2)}${archivosInfo}
 
-RESPONDE CON UN FORMATO COMO ESTE:
+RESPONDE CON ESTE FORMATO:
 <strong>Concepto:</strong> explicación breve
 <br><br><strong>Ejemplo:</strong> código o aplicación práctica
-<br><br><strong>Importancia:</strong> por qué es relevante`;
+<br><br><strong>Importancia:</strong> por qué es relevante
+<br><br><i class="fa-solid fa-lightbulb"></i> <strong>Dato clave:</strong> información adicional importante`;
 }
 
 // ===== EXPORTAR =====
